@@ -29,3 +29,21 @@ class EUser(User):
 
     def __str__(self) -> str:
         return self.username
+
+class Vendor(models.Model):
+    vid = models.AutoField(primary_key=True)
+    euser = models.ForeignKey(to=EUser, on_delete=models.CASCADE)
+    vname = models.CharField(max_length=20, unique=True)
+    city = models.CharField(max_length=20)
+    address = models.CharField(max_length=50)
+    postcode = models.CharField(max_length=6)
+    country = models.CharField(max_length=10)
+    language = models.CharField(max_length=10)
+    glAcount = models.CharField(max_length=6)
+    tpType = models.IntegerField()
+    complanyCode = models.CharField(max_length=4)
+    currency = models.CharField(max_length=10)
+    score = models.IntegerField()
+
+    def __str__(self) -> str:
+        return self.vname + ', ' + self.city + ', ' + self.country

@@ -1,4 +1,3 @@
-from email import message
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -13,7 +12,7 @@ def login(request: HttpRequest) -> HttpResponse:
             request=request,
             template_name='../templates/user/login.html',
         )
-    if request.method == 'POST':
+    elif request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
         message = None
@@ -43,7 +42,7 @@ def register(request: HttpRequest) -> HttpResponse:
             request=request,
             template_name='../templates/user/register.html',
         )
-    if request.method == 'POST':
+    elif request.method == 'POST':
         post = request.POST
         username = post.get('username')
         first_name = post.get('first_name')
