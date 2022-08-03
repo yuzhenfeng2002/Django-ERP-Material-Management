@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>Vendor</head>
+    <head>Vendor Search</head>
     <body>
         <!-- Option 1 -->
         <form>
             {% csrf_token %}
             <fieldset>
-                VID: <input type="text" name="pk" value="{% if pk %}{{pk}}{% else %}{{''}}{% endif %}" readonly>
-                {{ form.as_p }}
+                VID: <input type="text" name="pk" value="{% if pk %}{{pk}}{% else %}{{''}}{% endif %}">
+                Vname: <input type="text" name="vname">
+                Creater ID: <input type="text" name="uid">
+                City: <input type="text" name="city">
+                Country: <input type="text" name="country">
+                Company Code: <input type="text" name="companyCode">
             </fieldset>
             {% if messages %}
             <ul>
@@ -16,9 +20,17 @@
                 {% endfor %}
             </ul>
             {% endif %}
-            <button formaction="{% url 'MM:create_vendor' %}" formmethod="post">Submit</button>
-            <button formaction="{% url 'MM:update_vendor' %}" formmethod="post">Update</button>
+            <button formaction="{% url 'MM:search_vendor' %}" formmethod="post">Submit</button>
         </form>
+        {% if vendors %}
+            <ul>
+                {% for vendor in vendors %}
+                <li>
+                    {{ vendor }}: <a href="{% url 'MM:display_vendor' vendor.pk %}">show details</a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         
         
         <!-- Option 2 -->

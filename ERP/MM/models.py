@@ -15,12 +15,9 @@ class EUser(User):
             if not isdigit(s):
                 raise ValidationError("There is a character in the phone number.")
     
+    # username, password, date_joined, email
     uid = models.AutoField(primary_key=True)
-    # username = uname
-    # password
-    # date_joined = time
     sector = models.CharField(max_length=20)
-    # email = email
     phone = models.CharField(max_length=11, validators=[validate_phone])
     question1 = models.CharField(max_length=50)
     answer1 = models.CharField(max_length=50)
@@ -41,7 +38,7 @@ class Vendor(models.Model):
     language = models.CharField(max_length=10)
     glAcount = models.CharField(max_length=6)
     tpType = models.IntegerField()
-    complanyCode = models.CharField(max_length=4)
+    companyCode = models.CharField(max_length=4)
     currency = models.CharField(max_length=10)
     score = models.IntegerField()
 

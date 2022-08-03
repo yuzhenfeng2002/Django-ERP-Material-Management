@@ -13,4 +13,5 @@ urlpatterns = [
     path('vendor/create/', vendor.create, name='create_vendor'),
     path('vendor/display/<int:pk>/', vendor.display, name='display_vendor'),
     path('vendor/update/', vendor.update, name='update_vendor'),
+    path('vendor/search/', vendor.search, name='search_vendor'),
 ]
