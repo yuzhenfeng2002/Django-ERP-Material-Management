@@ -18,7 +18,8 @@ class VendorForm(forms.ModelForm):
         model = Vendor
         fields = (
             'vname', 'city', 'country', 'address', 'postcode', 'language',
-            'glAcount', 'tpType', 'companyCode', 'currency'
+            'phone', 'fax', 'companyCode', 'pOrg',
+            'glAcount', 'tpType', 'currency'
         )
 
 @login_required
@@ -50,6 +51,7 @@ def create(request: HttpRequest):
 
 @login_required
 def display(request: HttpRequest, pk):
+    pk = str(int(pk)) # turn '002' into '2'
     vendor = get_object_or_404(Vendor, pk=pk)
     form = VendorForm(instance=vendor)
     return render(
@@ -61,6 +63,7 @@ def display(request: HttpRequest, pk):
 @login_required
 def update(request: HttpRequest):
     pk = request.POST.get('pk')
+    pk = str(int(pk)) # turn '002' into '2'
     user = request.user
     vendor: Vendor = get_object_or_404(Vendor, pk=pk)
     form = VendorForm(request.POST, instance=vendor)
@@ -94,7 +97,7 @@ def search(request: HttpRequest):
         )
     elif request.method == 'POST':
         post = request.POST
-        pk = getRegex(post.get('pk'))
+        pk = getRegex(str(int(post.get('pk'))))
         vname = getRegex(post.get('vname'))
         uid = getRegex(post.get('uid'))
         city = getRegex(post.get('city'))

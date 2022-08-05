@@ -6,7 +6,7 @@
         <form>
             {% csrf_token %}
             <fieldset>
-                VID: <input type="text" name="pk" value="{% if pk %}{{pk}}{% else %}{{''}}{% endif %}" readonly>
+                VID: <input type="text" name="pk" value="{% if pk %}{{pk|stringformat:'03d'}}{% else %}{{''}}{% endif %}" readonly>
                 {{ form.as_p }}
             </fieldset>
             {% if messages %}
