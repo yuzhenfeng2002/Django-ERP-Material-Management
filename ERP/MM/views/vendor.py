@@ -105,7 +105,7 @@ def search(request: HttpRequest):
         companyCode = getRegex(post.get('companyCode'))
         vendors = Vendor.objects.filter(
             pk__regex=pk, vname__regex=vname, euser__uid__regex=uid, city__regex=city,
-            country__regex = country, companyCode__regex=companyCode
+            country__regex=country, companyCode__regex=companyCode
         )
         
         if len(vendors) > 0:
