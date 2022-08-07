@@ -6,12 +6,7 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 
 from ..models import EUser, Vendor
-
-def getRegex(string):
-    if string == '':
-        return r'.*'
-    else:
-        return string
+from .auxiliary import *
 
 class VendorForm(forms.ModelForm):
     class Meta:
@@ -29,7 +24,7 @@ def create(request: HttpRequest):
         form = VendorForm()
         return render(
             request=request,
-            template_name='../templates/vendor/vendor.html',
+            template_name='../templates/vendor/create.html',
             context={'form': form}
         )
     elif request.method == 'POST':
@@ -45,7 +40,7 @@ def create(request: HttpRequest):
         else:
             return render(
                 request=request,
-                template_name='../templates/vendor/vendor.html',
+                template_name='../templates/vendor/create.html',
                 context={'form': form}
             )
 
@@ -56,7 +51,7 @@ def display(request: HttpRequest, pk):
     form = VendorForm(instance=vendor)
     return render(
         request=request,
-        template_name='../templates/vendor/vendor.html',
+        template_name='../templates/vendor/display.html',
         context={'form': form, 'pk': vendor.pk}
     )
 
@@ -80,8 +75,8 @@ def update(request: HttpRequest):
         else:
             return render(
                 request=request,
-                template_name='../templates/vendor/vendor.html',
-                context={'form': form, 'pk': pk}
+                template_name='../templates/vendor/display.html',
+                context={'form': form, 'pk': int(pk)}
             )
     else:
         messages.error(request=request, message=error_message)
@@ -97,7 +92,7 @@ def search(request: HttpRequest):
         )
     elif request.method == 'POST':
         post = request.POST
-        pk = getRegex(str(int(post.get('pk'))))
+        pk = getPk(post.get('pk'))
         vname = getRegex(post.get('vname'))
         uid = getRegex(post.get('uid'))
         city = getRegex(post.get('city'))

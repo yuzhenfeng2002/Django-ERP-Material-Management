@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>Material Item</head>
+    <body>
+        <form>
+            {% csrf_token %}
+            <fieldset>
+                ID: <input type="text" name="pk" value="{% if pk %}{{pk|stringformat:'03d'}}{% else %}{{''}}{% endif %}" readonly>
+                {{ form.as_p }}
+            </fieldset>
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li> {{ message }} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <button formaction="{% url 'MM:create_item' %}" formmethod="post">Submit</button>
+            <button formaction="{% url 'MM:update_item' %}" formmethod="post">Update</button>
+        </form>
+    </body>
+</html>

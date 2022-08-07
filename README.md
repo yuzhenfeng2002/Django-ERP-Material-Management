@@ -57,20 +57,23 @@
 - 地址: `address`
 - 邮编: `postcode`
 - 语言: `language`
+- 电话: `phone`
+- 传真: `fax`
+- 采购组织: `pOrg`
 - GL账户: `glAcount`
 - TP类型: `tpType`
 - 公司编号: `companyCode`
 - 货币: `currency`
 
-若请求为POST方法，请求参数为表单中的各字段。若创建成功，则重定向至`mm/vendor/display/<int:pk>/`，并发送`messages`，只包括一条`"Successfully created!"`；否则，使用模板`vendor/vendor.html`载入原表单`form`（包括错误信息）返回。
+若请求为POST方法，请求参数为表单中的各字段。若创建成功，则重定向至`mm/vendor/display/<int:pk>/`，并发送`messages`，只包括一条`"Successfully created!"`；否则，使用模板`vendor/create.html`载入原表单`form`（包括错误信息）返回。
 
 #### `mm/vendor/display/<int:pk>/`
 
-请求为GET方法，请求参数为供应商的主键`pk`，使用模板`vendor/vendor.html`载入表单`form`和主键`pk`并返回，`form`包括的字段同上，`form`中的初始值是主键为`pk`的供应商的对应数据。
+请求为GET方法，请求参数为供应商的主键`pk`，使用模板`vendor/display.html`载入表单`form`和主键`pk`并返回，`form`包括的字段同上，`form`中的初始值是主键为`pk`的供应商的对应数据。
 
 #### `mm/vendor/update/`
 
-请求为POST方法，请求参数为同上表单中的各字段、主键`pk`。若修改该供应商信息的用户与创建用户不同，则重定向至`mm/vendor/display/<int:pk>/`，发送`messages`，只包括一条`"You do not have access to the vendor."`；若修改成功，则重定向至`mm/vendor/display/<int:pk>/`，发送`messages`，只包括一条`"Successfully updated!"`；否则，使用模板`vendor/vendor.html`载入原表单`form`（包括错误信息）和主键`pk`返回。
+请求为POST方法，请求参数为同上表单中的各字段、主键`pk`。若修改该供应商信息的用户与创建用户不同，则重定向至`mm/vendor/display/<int:pk>/`，发送`messages`，只包括一条`"You do not have access to the vendor."`；若修改成功，则重定向至`mm/vendor/display/<int:pk>/`，发送`messages`，只包括一条`"Successfully updated!"`；否则，使用模板`vendor/display.html`载入原表单`form`（包括错误信息）和主键`pk`返回。
 
 #### `mm/vendor/search/`
 

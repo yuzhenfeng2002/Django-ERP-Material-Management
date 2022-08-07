@@ -100,7 +100,7 @@ class MaterialItem(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.material.mmame + self.stock.id.zfill(4)
+        return self.material.mname + str(self.stock.id).zfill(4)
 
 class PurchaseRequisition(models.Model):
     id = models.AutoField(primary_key=True)

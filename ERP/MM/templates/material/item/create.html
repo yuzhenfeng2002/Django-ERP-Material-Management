@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <head>Material Item</head>
+    <body>
+        <form id="material" method="post">
+            {% csrf_token %}
+            <fieldset>
+                Mname: <input type="text" name="mname" id="mname">
+                Type: <input type="text" name="mType" id="mType">
+                Sector: <input type="text" name="industrySector" id="industrySector">
+            </fieldset>
+            <input type="submit" name="submit" value="submit">
+        </form>
+
+        <textarea id="material_result"></textarea>
+
+        <script>
+            $('#material').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_material' %}",
+                    data:{
+                        mname: $("#mname").val(),
+                        mType: $("#mType").val(),
+                        industrySector: $("#industrySector").val(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        dataType: "json"
+                    },
+                    success: function(data) {
+                        $('#material_result').text(data);
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+        </script>
+
+        <form id="stock" method="post">
+            {% csrf_token %}
+            <fieldset>
+                client: <input type="text" name="client" id="client">
+                companyCode: <input type="text" name="companyCode" id="companyCode">
+                pOrg: <input type="text" name="pOrg" id="pOrg">
+                pGrp: <input type="text" name="pGrp" id="pGrp">
+            </fieldset>
+            <input type="submit" name="submit" value="submit">
+        </form>
+
+        <textarea id="stock_result"></textarea>
+
+        <script>
+            $('#stock').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_stock' %}",
+                    data:{
+                        client: $("#client").val(),
+                        companyCode: $("#companyCode").val(),
+                        pOrg: $("#pOrg").val(),
+                        pGrp: $("#pGrp").val(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        dataType: "json"
+                    },
+                    success: function(data) {
+                        $('#stock_result').text(data);
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+        </script>
+
+
+        <form>
+            {% csrf_token %}
+            <fieldset>
+                Item ID: <input type="text" name="pk" value="{% if pk %}{{pk|stringformat:'03d'}}{% else %}{{''}}{% endif %}" readonly>
+                {{ form.as_p }}
+            </fieldset>
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li> {{ message }} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <button formaction="{% url 'MM:create_item' %}" formmethod="post">Submit</button>
+            <button formaction="{% url 'MM:update_item' %}" formmethod="post">Update</button>
+        </form>
+    </body>
+</html>
