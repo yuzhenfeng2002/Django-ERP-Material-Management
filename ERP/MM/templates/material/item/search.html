@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>Material Search</head>
+    <body>
+        <form>
+            {% csrf_token %}
+            <fieldset>
+                <!-- columns in Material table -->
+                MID: <input type="text" name="pk" value="{% if pk %}{{pk}}{% else %}{{''}}{% endif %}">
+                Mname: <input type="text" name="vname">
+                Creater ID: <input type="text" name="uid">
+                Type: <input type="text" name="city">
+                Sector: <input type="text" name="country">
+                <!-- columns in Stock table -->
+                Company Code: <input type="text" 
+                name="companyCode">
+                <!-- columns in MaterialItem table -->
+            </fieldset>
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li> {{ message }} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <button formaction="{% url 'MM:search_material_item' %}" formmethod="post">Submit</button>
+        </form>
+        {% if materials %}
+            <ul>
+                {% for material in materials %}
+                <li>
+                    {{ material }}: <a href="{% url 'MM:display_material' material.pk %}">show details</a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </body>
+</html>
