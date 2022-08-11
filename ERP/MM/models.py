@@ -105,7 +105,6 @@ class MaterialItem(models.Model):
 class PurchaseRequisition(models.Model):
     id = models.AutoField(primary_key=True)
     text = models.TextField(max_length=100, blank=True)
-    status = models.CharField(max_length=1, choices=[('0', 'Requisition Created'), ('1', 'Order Created')], default='0')
     time = models.DateTimeField(auto_now_add=True, auto_now=False)
     euser = models.ForeignKey(to=EUser, on_delete=models.CASCADE)
 
@@ -117,6 +116,7 @@ class RequisitionItem(models.Model):
     currency = models.CharField(max_length=10)
     quantity = models.IntegerField()
     deliveryDate = models.DateField()
+    status = models.CharField(max_length=1, choices=[('0', 'Requisition Created'), ('1', 'Order Created')], default='0')
     meterial = models.ForeignKey(Material, on_delete=models.CASCADE)
 
 class Quotation(models.Model):
@@ -129,6 +129,7 @@ class Quotation(models.Model):
     currency = models.CharField(blank=True, max_length=10)
     validTime = models.DateField(blank=True)
     time = models.DateTimeField(auto_now_add=True, auto_now=False)
+    rej = models.BooleanField(blank=True)
     ri = models.ForeignKey(RequisitionItem, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     euser = models.ForeignKey(to=EUser, on_delete=models.CASCADE)
@@ -156,6 +157,8 @@ class OrderItem(models.Model):
     status = models.CharField(max_length=1, choices=[('0', 'Not Deliveried'), ('1', 'Deliveried'), ('2', 'Invoice Received'), ('4', 'Payoff Completed')], default='0')
     qualityScore = models.IntegerField(blank=True)
     serviceScore = models.IntegerField(blank=True)
+    quantityScore = models.IntegerField(blank=True)
+    ontimeScore = models.IntegerField(blank=True)
     meterial = models.ForeignKey(Material, on_delete=models.CASCADE)
 
 class GoodReceipt(models.Model):
@@ -183,14 +186,14 @@ class Account(models.Model):
     JEType = models.CharField(max_length=2)
     sumAmount = models.IntegerField()
     postDate = models.DateField()
-    gr = models.ForeignKey(GoodReceipt, on_delete=models.CASCADE, blank=True)
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, blank=True)
 
 class AccountDetail(models.Model):
     id = models.AutoField(primary_key=True)
     glAccount = models.CharField(max_length=6)
     type = models.CharField(max_length=1, choices=[('0', 'Credit'), ('1', 'Debt')])
     amount = models.IntegerField()
+    gr = models.ForeignKey(GoodReceipt, on_delete=models.CASCADE, blank=True)
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, blank=True)
     je = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class Record(models.Model):

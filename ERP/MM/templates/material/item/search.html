@@ -1,38 +1,122 @@
 <!DOCTYPE html>
 <html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <head>Material Search</head>
     <body>
         <form>
-            {% csrf_token %}
             <fieldset>
-                <!-- columns in Material table -->
-                MID: <input type="text" name="pk" value="{% if pk %}{{pk}}{% else %}{{''}}{% endif %}">
-                Mname: <input type="text" name="vname">
-                Creater ID: <input type="text" name="uid">
-                Type: <input type="text" name="city">
-                Sector: <input type="text" name="country">
-                <!-- columns in Stock table -->
-                Company Code: <input type="text" 
-                name="companyCode">
-                <!-- columns in MaterialItem table -->
-            </fieldset>
-            {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li> {{ message }} </li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            <button formaction="{% url 'MM:search_material_item' %}" formmethod="post">Submit</button>
+                    <!-- 搜索商品条件 -->
+                    <!-- 三项内容都填才能发起搜索，否则返回提示 -->
+                    <input type="text"  placeholder="请输入商品编号">
+          
+                    <select>
+                        <option>请选择工厂</option>
+                        <option>工厂1</option>
+                        <option>工厂2</option>
+                        <option>...</option>
+                        
+                    </select>
+
+                    <select>
+                        <option>请选择存储位置</option>
+                        <option>存储位置1</option>
+                        <option>存储位置2</option>
+                        <option>...</option>
+                        
+                    </select>
+            </fieldset> 
+            <!-- 提交之后，转至修改页面。返回的内容见2.2.1表格。 -->     
+            <button type="submit" formmethod="post">Submit</button>
         </form>
-        {% if materials %}
-            <ul>
-                {% for material in materials %}
-                <li>
-                    {{ material }}: <a href="{% url 'MM:display_material' material.pk %}">show details</a>
-                </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+
+        <div id="myModal1">
+                  <!-- 搜索编号条件 -->
+                  <!-- 可填任意个条件，一个也不填则返回全部 -->
+                  <form id="material" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+                        <!-- id和name任取 -->
+                        物料名称:<input type="text" name="mname" id="mname">
+                        物料类型:<input type="text" name="industrySector" id="industrySector">
+                        储存位置:<input type="text" name="mType" id="mType">
+                        工厂:<input type="text" name="stock" id="stock">
+                        存储位置:<input type="text" name="sloc" id="sloc">
+                        <!-- 他们没有在数据库里存物料的创建者 创建者编号:<input type="text" name="mname" id="mname"> -->
+                    </fieldset>
+                    <input type="submit" name="submit" value="submit">
+                </form>
+        </div>
+
+        <table>
+            <h4> 商品</h4>
+            <hr>
+        <thead>
+            <!-- 搜索编号返回的属性 -->
+        <tr>
+            <th> 商品编号</th>
+            <th> 商品名称</th>
+            <th> 商品类型</th>
+            <th> 工业部门</th>
+            <th> 工厂</th>
+            <th> 存储位置</th>
+            <!-- <th> 创建者编号</th> -->
+        </tr>
+        </thead>
+        <tbody id="searchDiv">
+                                                
+        </tbody>
+
+        <textarea id="item_result"></textarea>
+
+        <script>
+            $('#material').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_item' %}",
+                    data:{
+                        //输入搜索条件的值
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        mname: $("#mname").val(),
+                        mType: $("#mType").val(),
+                        industrySector: $("#industrySector").val(),
+                        sloc: $("#sloc").val(),
+                        stock: $("#stock").val(),
+                    },
+                    success: function(data) {
+
+                        $('#item_result').text(data);
+                     
+                        var dataObj = eval("("+data+")");
+                        var out = "";
+                        var i;
+                        
+                        for(i = 0; i < dataObj.length; i++) {
+                            //dataObj[i].fields.xx
+                            fields = dataObj[i].fields
+                            material = dataObj[i].material
+                            stock = dataObj[i].stock
+                            out += '<tr><td>'+ dataObj[i].pk+ '</td><td>' + material.mname+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ fields.stock+ '</td><td>'+ fields.sloc + '</td><tr>';
+                        }
+                        document.getElementById("searchDiv").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+
+            
+            $("table").on("dblclick","tr",function(e){
+                //这几行不用测试
+                //document.getElementById("materialInput1").value=$(this).find('td').eq(0).text();
+                //$('#myModal1').modal('hide');
+                
+            })
+            
+        </script>
+    </table>
     </body>
 </html>

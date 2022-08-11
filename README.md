@@ -88,3 +88,21 @@
 - 公司编号: `companyCode`
 
 若检索成功，则使用模板`vendor/search.html`载入搜索结果`vendors`返回，发送`messages`，只包括一条`"Succeed to get {:} results."`；否则，直接使用模板`vendor/search.html`返回，发送`messages`，只包括一条`"There is no matched result."`。
+
+#### `mm/material/create/`
+
+#### `mm/material/display/<int:pk>/`
+
+#### `mm/material/update/`
+
+#### `material/search/`
+
+#### `material/item/create/`
+
+#### `material/item/display/<int:pk>/`
+
+### API
+
+#### `mm/api/material/search/`
+
+#### `mm/api/material/stock/search/`

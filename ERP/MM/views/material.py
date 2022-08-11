@@ -187,7 +187,7 @@ def search_item(request: HttpRequest):
     if request.method == 'GET':
         return render(
             request=request,
-            template_name='../templates/material/search_material.html'
+            template_name='../templates/material/item/search.html'
         )
     elif request.method == 'POST':
         post = request.POST

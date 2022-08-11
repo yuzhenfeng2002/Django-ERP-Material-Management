@@ -21,6 +21,8 @@ urlpatterns = [
     path('material/item/create/', material.create_item, name='create_item'),
     path('material/item/display/<int:pk>/', material.display_item, name='display_item'),
     path('material/item/update/', material.update_item, name='update_item'),
+    path('material/item/search/', material.search_item, name='search_item'),
     path('api/material/search/', material_api.search_material, name='ajax_search_material'),
+    path('api/material/item/search/', material_api.search_item, name='ajax_search_item'),
     path('api/material/stock/search/', material_api.search_stock, name='ajax_search_stock')
 ]
