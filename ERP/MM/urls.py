@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import user, test, vendor, material
-from .views.ajax import material_api
+from .views.ajax import material_api, data_api
 
 app_name = 'MM'
 urlpatterns = [
@@ -24,5 +24,17 @@ urlpatterns = [
     path('material/item/search/', material.search_item, name='search_item'),
     path('api/material/search/', material_api.search_material, name='ajax_search_material'),
     path('api/material/item/search/', material_api.search_item, name='ajax_search_item'),
-    path('api/material/stock/search/', material_api.search_stock, name='ajax_search_stock')
+    path('api/material/stock/search/', material_api.search_stock, name='ajax_search_stock'),
+
+    # pre-determined data
+    path('api/data/country/', data_api.load_country, name='ajax_load_country'),
+    path('api/data/company/', data_api.load_company, name='ajax_load_company'),
+    path('api/data/currency/', data_api.load_currency, name='ajax_load_currency'),
+    path('api/data/language/', data_api.load_language, name='ajax_load_language'),
+    path('api/data/meaunit/', data_api.load_meaunit, name='ajax_load_meaunit'),
+    path('api/data/pgrp/', data_api.load_pgrp, name='ajax_load_pgrp'),
+    path('api/data/plant/', data_api.load_plant, name='ajax_load_plant'),
+    path('api/data/porg/', data_api.load_porg, name='ajax_load_porg'),
+    path('api/data/sorg/', data_api.load_sorg, name='ajax_load_sorg'),
+    path('api/data/tptype/', data_api.load_tptype, name='ajax_load_tptype'),
 ]

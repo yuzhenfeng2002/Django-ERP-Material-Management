@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <head>Test</head>
+    <body>
+        <form>
+            <fieldset>
+                    
+                    <select id="country"></select>
+                    <select id="company"></select>
+                    <select id="currency"></select>
+                    <select id="language"></select>
+                    <select id="meaunit"></select>
+                    <select id="pgrp"></select>
+                    <select id="plant"></select>
+                    <select id="porg"></select>
+                    <select id="sorg"></select>
+                    <select id="distrchannel">
+                        <option value="">distrchannel</option>
+                        <option value="IN">Internet</option>
+                        <option value="WH">Wholesale</option>
+                    </select>
+                    <select id="tptype"></select>
+
+            </fieldset> 
+        </form>
+
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_country' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >country</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Country+'>'+ dataObj[i].ChineseName + '--' + dataObj[i].EnglishName + '</option>' ;
+                        }
+                        document.getElementById("country").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_company' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >company</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
+                        }
+                        document.getElementById("company").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_currency' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >currency</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Currency+'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
+                        }
+                        document.getElementById("currency").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_language' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >language</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Language+'>'+ dataObj[i].Language + '--' + dataObj[i].Name + '</option>' ;
+                        }
+                        document.getElementById("language").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_meaunit' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >meaunit</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Meaunit+'>'+ dataObj[i].Meaunit + '--' + dataObj[i].Name + '</option>' ;
+                        }
+                        document.getElementById("meaunit").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_pgrp' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >pgrp</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
+                        }
+                        document.getElementById("pgrp").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_plant' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >plant</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
+                        }
+                        document.getElementById("plant").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_porg' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >porg</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
+                        }
+                        document.getElementById("porg").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_sorg' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >sorg</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Sorg+'>'+ dataObj[i].Sorg + '--' + dataObj[i].Name1 + '</option>' ;
+                        }
+                        document.getElementById("sorg").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{% url 'MM:ajax_load_tptype' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(data) {
+                        var dataObj = eval("("+data+")");
+                        var out = "<option value='' >company</option>";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            out += '<option value=' + dataObj[i].Tptype+'>'+ dataObj[i].Tptype + '--' + dataObj[i].Description + '</option>' ;
+                        }
+                        document.getElementById("tptype").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                });
+            });
+        </script>
+
+    </body>
+</html>
