@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import user, test, vendor, material
-from .views.ajax import material_api, data_api
+from .views.ajax import material_api, data_api, stock_api
 
 app_name = 'MM'
 urlpatterns = [
@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/material/item/search/', material_api.search_item, name='ajax_search_item'),
     path('api/material/stock/search/', material_api.search_stock, name='ajax_search_stock'),
 
+    path('api/material/stock/getByName/', stock_api.getByName, name='ajax_getStockByName'),
     # pre-determined data
     path('api/data/country/', data_api.load_country, name='ajax_load_country'),
     path('api/data/company/', data_api.load_company, name='ajax_load_company'),
