@@ -67,6 +67,7 @@ class Material(models.Model):
     transGrp = models.CharField(max_length=1, blank=True)
     loadingGrp = models.CharField(max_length=1, blank=True)
     industrySector = models.CharField(max_length=1)
+    euser = models.ForeignKey(to=EUser, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.mname
@@ -78,6 +79,9 @@ class Stock(models.Model):
     companyCode = models.CharField(max_length=4)
     pOrg = models.CharField(max_length=4)
     pGrp = models.CharField(max_length=3)
+
+    def __str__(self) -> str:
+        return self.name
 
 class StockHistory(models.Model):
     id = models.AutoField(primary_key=True)
@@ -101,7 +105,7 @@ class MaterialItem(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.material.mname + str(self.stock.id).zfill(4)
+        return self.material.mname + str(self.stock.id).zfill(4) + self.distrChannel
 
 class PurchaseRequisition(models.Model):
     id = models.AutoField(primary_key=True)

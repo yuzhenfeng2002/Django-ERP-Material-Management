@@ -55,7 +55,7 @@ def display_material(request: HttpRequest, pk):
 @login_required
 def update_material(request: HttpRequest):
     pk = request.POST.get('pk')
-    pk = str(int(pk)) # turn '002' into '2'
+    pk = getPk(pk) # turn '002' into '2'
     material: Material = get_object_or_404(Material, pk=pk)
     form = MaterialForm(request.POST, instance=material)
     error_message = None
@@ -80,7 +80,7 @@ def search_material(request: HttpRequest):
     if request.method == 'GET':
         return render(
             request=request,
-            template_name='../templates/material/material/search.html'
+            template_name='../templates/material/search.html'
         )
     elif request.method == 'POST':
         post = request.POST
