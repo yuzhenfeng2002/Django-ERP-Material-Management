@@ -5,7 +5,9 @@ from django.contrib import auth, messages
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
+from django.db.models import QuerySet
 import json
 
 from ...models import EUser, Material, MaterialItem, Stock
@@ -25,21 +27,25 @@ def search_material(request: HttpRequest):
 @login_required
 def search_item(request: HttpRequest):
     post = request.POST
-    pk = post.get('pk')
-    if pk == '':
+    mid = post.get('mid')
+    if mid == '':
         mname = getRegex(post.get('mname'))
         mType = getRegex(post.get('mType'))
         industrySector = getRegex(post.get('industrySector'))
-        stock_id = getRegex(post.get('plant'))
+        stock_name = getRegex(post.get('plant'))
         sloc = getRegex(post.get('sloc'))
-        uid = getPk(post.get('uid'))
+        uid = getPk(post.get('uid'), 'U')
         items = MaterialItem.objects.filter(
             material__mname__regex=mname, material__mType__regex=mType, 
-            material__industrySector__regex=industrySector, stock__id__regex=stock_id,
+            material__industrySector__regex=industrySector, stock__name__regex=stock_name,
             sloc__regex=sloc, material__euser__id__regex=uid
         )
     else:
-        items = MaterialItem.objects.filter(pk__exact=int(pk))
+        stock_name = post.get('plant')
+        sloc = post.get('sloc')
+        items = MaterialItem.objects.filter(
+            material__id__exact=int(mid), stock__name__exact=stock_name, sloc__exact=sloc
+        )
     items_list = json.loads(serializers.serialize('json', list(items)))
     for i, item in enumerate(items):
         material: Material = Material.objects.get(pk__exact=item.material.pk)
@@ -49,6 +55,53 @@ def search_item(request: HttpRequest):
         items_list[i]['stock'] = model_to_dict(stock)
         items_list[i]['user'] = model_to_dict(user)
     return HttpResponse(json.dumps(items_list, default=str))
+
+@login_required
+def update_item(request: HttpRequest):
+    post = request.POST
+    material_id = getPkExact(post.get('material_id'), 'M')
+    mname = post.get('mname')
+    mType = post.get('mType')
+    meaunit = post.get('meaunit')
+    netWeight = post.get('netWeight')
+    weightUnit = post.get('weightUnit')
+    transGrp = post.get('transGrp')
+    loadingGrp = post.get('loadingGrp')
+    industrySector = post.get('industrySector')
+    mGroup = post.get('mGroup')
+    sloc = post.get('sloc')
+    sOrg = post.get('sOrg')
+    distrChannel = post.get('distrChannel')
+    companyCode = post.get('companyCode')
+    pOrg = post.get('pOrg')
+    pGrp = post.get('pGrp')
+    stock_name = post.get('name')
+    materials: QuerySet = Material.objects.filter(id__exact=material_id)
+    items: QuerySet = MaterialItem.objects.filter(
+        material__id__exact=material_id, stock__name__exact=stock_name, sloc__exact=sloc
+    )
+    if len(materials) != 1:
+        return HttpResponse(json.dumps({'status':0, 'message':"物料相关信息错误！"}))
+    if len(items) != 1:
+        return HttpResponse(json.dumps({'status':0, 'message':"物料条目相关信息错误！"}))
+    material: Material = materials.first(); item: MaterialItem = items.first()
+    item.distrChannel=distrChannel; item.sOrg=sOrg
+    try:
+        item.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    item.save()
+    material.mname=mname; material.mType=mType; material.meaunit=meaunit; material.netWeight=netWeight
+    material.weightUnit=weightUnit; material.transGrp=transGrp; material.loadingGrp=loadingGrp
+    material.industrySector=industrySector; material.mGroup=mGroup
+    try:
+        material.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    material.save()
+    return HttpResponse(json.dumps({'status':1, 'message':"商品信息已更新！"}))
 
 @login_required
 def search_stock(request: HttpRequest):
