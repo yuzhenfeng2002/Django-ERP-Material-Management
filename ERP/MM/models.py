@@ -83,15 +83,6 @@ class Stock(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class StockHistory(models.Model):
-    id = models.AutoField(primary_key=True)
-    type = models.CharField(max_length=1, choices=[('1', 'In'), ('0', 'Out')])
-    unrestrictUse = models.IntegerField(default=0)
-    blocked = models.IntegerField(default=0)
-    qltyInspection = models.IntegerField(default=0)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
-    time = models.DateTimeField(auto_now_add=True, auto_now=False)
-
 class MaterialItem(models.Model):
     id = models.AutoField(primary_key=True)
     sloc = models.CharField(max_length=4)
@@ -106,6 +97,17 @@ class MaterialItem(models.Model):
 
     def __str__(self) -> str:
         return self.material.mname + str(self.stock.id).zfill(4) + self.distrChannel
+
+class StockHistory(models.Model):
+    id = models.AutoField(primary_key=True)
+    type = models.CharField(max_length=1, choices=[('1', 'In'), ('0', 'Out')])
+    unrestrictUse = models.IntegerField(default=0)
+    blocked = models.IntegerField(default=0)
+    qltyInspection = models.IntegerField(default=0)
+    item = models.ForeignKey(MaterialItem, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True, auto_now=False)
+    def __str__(self) -> str:
+        return str(self.time) + ' ' + self.material.mname
 
 class PurchaseRequisition(models.Model):
     id = models.AutoField(primary_key=True)

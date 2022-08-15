@@ -212,3 +212,11 @@ def search_item(request: HttpRequest):
                 request=request,
                 template_name='../templates/material/search_material.html',
             )
+
+@login_required
+def search_item_stock(request: HttpRequest):
+    if request.method == 'GET':
+        return render(
+            request=request,
+            template_name='../templates/material/stock.html'
+        )

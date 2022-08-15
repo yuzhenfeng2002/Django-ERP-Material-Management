@@ -22,11 +22,12 @@ urlpatterns = [
     path('material/item/display/<int:pk>/', material.display_item, name='display_item'),
     path('material/item/update/', material.update_item, name='update_item'),
     path('material/item/search/', material.search_item, name='search_item'),
+    path('material/item/stock/', material.search_item_stock, name='search_item_stock'),
     path('api/material/search/', material_api.search_material, name='ajax_search_material'),
     path('api/material/item/search/', material_api.search_item, name='ajax_search_item'),
     path('api/material/item/update/', material_api.update_item, name='ajax_update_item'),
-    path('api/material/stock/search/', material_api.search_stock, name='ajax_search_stock'),
-
+    path('api/material/item/stockHistory/', material_api.update_item, name='ajax_update_item'),
+    path('api/material/stock/search/', material_api.search_stock_history, name='ajax_search_stock_history'),
     path('api/material/stock/getByName/', stock_api.getByName, name='ajax_getStockByName'),
     # pre-determined data
     path('api/data/country/', data_api.load_country, name='ajax_load_country'),

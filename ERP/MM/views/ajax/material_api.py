@@ -7,10 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Sum
+from django.utils import timezone
 import json
+import datetime
 
-from ...models import EUser, Material, MaterialItem, Stock
+from ...models import EUser, Material, MaterialItem, Stock, StockHistory
 from ..auxiliary import *
 
 @login_required
@@ -114,3 +116,35 @@ def search_stock(request: HttpRequest):
         client__regex=client, companyCode__regex=companyCode, pOrg__regex=pOrg, pGrp__regex=pGrp
     )
     return HttpResponse(serializers.serialize('json', list(stocks)))
+
+@login_required
+def search_stock_history(request: HttpRequest):
+    MONTH_NUM = 6
+    post = request.POST
+    material_id = getPkExact(post.get('material_id'), 'M')
+    stock_name = post.get('plant')
+    sloc = post.get('sloc')
+    items: QuerySet = MaterialItem.objects.filter(
+        material__id__exact=material_id, stock__name__exact=stock_name, sloc__exact=sloc
+    )
+    if len(items) != 1:
+        return HttpResponse(json.dumps({'status':0, 'message':"物料条目相关信息错误！"}))
+    item: MaterialItem = items.first()
+    init_ununrestrictUse = item.unrestrictUse
+    init_qltyInspection = item.qltyInspection
+    init_blocked = item.blocked
+    now = timezone.now()
+    history = StockHistory.objects.filter(
+        item__id=item.id, time__range=[now+datetime.timedelta(days=-40*MONTH_NUM), now]
+    ).values_list(
+        'time__year', 'time__month'
+    ).annotate(Sum('unrestrictUse'), Sum('qltyInspection'), Sum('blocked'))
+    history_list = list(history)
+    history_list.sort(key=lambda x:x[0]*100+x[1], reverse=True)
+    history_list = history_list[:MONTH_NUM]
+    result = [[now.year, now.month, init_ununrestrictUse, init_qltyInspection, init_blocked, item.transit]]
+    for his in history_list:
+        temp_date1 = datetime.date(year=his[0], month=his[1], day=1)
+        temp_date2 = temp_date1 + datetime.timedelta(days=-1)
+        result.append([temp_date2.year, temp_date2.month, result[-1][2] - his[2], result[-1][3] - his[3], result[-1][4] - his[4]])
+    return HttpResponse(json.dumps({'status':1, 'message':result}, default=str))
