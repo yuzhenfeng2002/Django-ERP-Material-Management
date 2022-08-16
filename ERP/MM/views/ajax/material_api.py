@@ -16,18 +16,9 @@ from ...models import EUser, Material, MaterialItem, Stock, StockHistory
 from ..auxiliary import *
 
 @login_required
-def search_material(request: HttpRequest):
-    post = request.POST
-    mname = getRegex(post.get('mname'))
-    mType = getRegex(post.get('mType'))
-    industrySector = getRegex(post.get('industrySector'))
-    materials = Material.objects.filter(
-        mname__regex=mname, mType__regex=mType, industrySector__regex=industrySector
-    )
-    return HttpResponse(serializers.serialize('json', list(materials)))
-
-@login_required
 def search_item(request: HttpRequest):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
     post = request.POST
     mid = post.get('mid')
     if mid == '':
@@ -43,10 +34,11 @@ def search_item(request: HttpRequest):
             sloc__regex=sloc, material__euser__id__regex=uid
         )
     else:
+        mid = getPkExact(mid)
         stock_name = post.get('plant')
         sloc = post.get('sloc')
         items = MaterialItem.objects.filter(
-            material__id__exact=int(mid), stock__name__exact=stock_name, sloc__exact=sloc
+            material__id__exact=mid, stock__name__exact=stock_name, sloc__exact=sloc
         )
     items_list = json.loads(serializers.serialize('json', list(items)))
     for i, item in enumerate(items):
@@ -60,8 +52,10 @@ def search_item(request: HttpRequest):
 
 @login_required
 def update_item(request: HttpRequest):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
     post = request.POST
-    material_id = getPkExact(post.get('material_id'), 'M')
+    # material_id = getPkExact(post.get('material_id'), 'M')
     mname = post.get('mname')
     mType = post.get('mType')
     meaunit = post.get('meaunit')
@@ -78,12 +72,13 @@ def update_item(request: HttpRequest):
     pOrg = post.get('pOrg')
     pGrp = post.get('pGrp')
     stock_name = post.get('name')
-    materials: QuerySet = Material.objects.filter(id__exact=material_id)
-    items: QuerySet = MaterialItem.objects.filter(
-        material__id__exact=material_id, stock__name__exact=stock_name, sloc__exact=sloc
-    )
+    # shortText = post.get('shortText')
+    materials: QuerySet = Material.objects.filter(mname__exact=mname)
     if len(materials) != 1:
         return HttpResponse(json.dumps({'status':0, 'message':"物料相关信息错误！"}))
+    items: QuerySet = MaterialItem.objects.filter(
+        material__id__exact=materials.first().id, stock__name__exact=stock_name, sloc__exact=sloc
+    )
     if len(items) != 1:
         return HttpResponse(json.dumps({'status':0, 'message':"物料条目相关信息错误！"}))
     material: Material = materials.first(); item: MaterialItem = items.first()
@@ -96,7 +91,7 @@ def update_item(request: HttpRequest):
     item.save()
     material.mname=mname; material.mType=mType; material.meaunit=meaunit; material.netWeight=netWeight
     material.weightUnit=weightUnit; material.transGrp=transGrp; material.loadingGrp=loadingGrp
-    material.industrySector=industrySector; material.mGroup=mGroup
+    material.industrySector=industrySector; material.mGroup=mGroup#; material.shortText=shortText
     try:
         material.full_clean()
     except ValidationError as e:
@@ -106,7 +101,71 @@ def update_item(request: HttpRequest):
     return HttpResponse(json.dumps({'status':1, 'message':"商品信息已更新！"}))
 
 @login_required
+def create_item(request: HttpRequest):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+    post = request.POST
+    # material_id = getPkExact(post.get('material_id'), 'M')
+    mname = post.get('mname')
+    mType = post.get('mType')
+    meaunit = post.get('meaunit')
+    netWeight = post.get('netWeight')
+    weightUnit = post.get('weightUnit')
+    transGrp = post.get('transGrp')
+    loadingGrp = post.get('loadingGrp')
+    industrySector = post.get('industrySector')
+    mGroup = post.get('mGroup')
+    sloc = post.get('sloc')
+    sOrg = post.get('sOrg')
+    distrChannel = post.get('distrChannel')
+    companyCode = post.get('companyCode')
+    pOrg = post.get('pOrg')
+    pGrp = post.get('pGrp')
+    stock_name = post.get('name')
+    shortText = post.get('shortText')
+    materials: QuerySet = Material.objects.filter(mname__exact=mname)
+    if len(materials) == 0:
+        new_material = Material(
+            mname=mname, mType=mType, mGroup=mGroup, meaunit=meaunit,
+            netWeight=netWeight, weightUnit=weightUnit, transGrp=transGrp,
+            loadingGrp=loadingGrp, industrySector=industrySector, shortText=shortText
+        )
+        user = request.user
+        euser = EUser.objects.get(pk=user.pk)
+        new_material.euser = euser
+        try:
+            new_material.full_clean()
+        except ValidationError as e:
+            error_fields = list(e.error_dict.keys())
+            return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+        new_material.save()
+        material: Material = new_material
+    else:
+        material = materials.first()
+    items: QuerySet = MaterialItem.objects.filter(
+        material__id__exact=material.id, stock__name__exact=stock_name, sloc__exact=sloc
+    )
+    stocks = Stock.objects.filter(
+        companyCode__regex=companyCode, pOrg__regex=pOrg, pGrp__regex=pGrp
+    )
+    if len(items) == 0:
+        new_item = MaterialItem(
+            sloc=sloc, sOrg=sOrg, distrChannel=distrChannel, material=material, stock=stocks.first()
+        )
+        try:
+            new_item.full_clean()
+        except ValidationError as e:
+            error_fields = list(e.error_dict.keys())
+            return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+        new_item.save()
+        return HttpResponse(json.dumps({'status':1, 'message':"创建成功！"}))
+    else:
+        return HttpResponse(json.dumps({'status':0, 'message':"该商品在当前工厂已存在！"}))
+
+@login_required
 def search_stock(request: HttpRequest):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
     post = request.POST
     client = getRegex(post.get('client'))
     companyCode = getRegex(post.get('companyCode'))
@@ -119,6 +178,8 @@ def search_stock(request: HttpRequest):
 
 @login_required
 def search_stock_history(request: HttpRequest):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
     MONTH_NUM = 6
     post = request.POST
     material_id = getPkExact(post.get('material_id'), 'M')

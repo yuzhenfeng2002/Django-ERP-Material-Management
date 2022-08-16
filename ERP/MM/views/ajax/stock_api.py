@@ -12,6 +12,8 @@ import pandas as pd
 
 @login_required
 def getByName(request: HttpRequest):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
     if request.method == 'POST':
         stock_name = request.POST['name']
         init = {'companyCode':'', 'pOrg':'', 'pGrp':''}

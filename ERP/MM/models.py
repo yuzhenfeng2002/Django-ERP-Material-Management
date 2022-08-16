@@ -58,7 +58,8 @@ class Vendor(models.Model):
 
 class Material(models.Model):
     id = models.AutoField(primary_key=True)
-    mname = models.CharField(max_length=20, unique=True)
+    mname = models.CharField(max_length=5, unique=True)
+    shortText = models.CharField(max_length=20, default='')
     mType = models.CharField(max_length=5)
     mGroup = models.CharField(max_length=4)
     meaunit = models.CharField(max_length=3)
