@@ -34,7 +34,7 @@ def search_item(request: HttpRequest):
             sloc__regex=sloc, material__euser__id__regex=uid
         )
     else:
-        mid = getPkExact(mid)
+        mid = getPkExact(mid, 'M')
         stock_name = post.get('plant')
         sloc = post.get('sloc')
         items = MaterialItem.objects.filter(

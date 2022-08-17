@@ -16,6 +16,39 @@ from ...models import *
 from ..auxiliary import *
 
 @login_required
+def create_vendor(request: HttpRequest):
+    post = request.POST
+    vname = post.get('vname')
+    city = post.get('city')
+    address = post.get('address')
+    postcode = post.get('postcode')
+    country = post.get('country')
+    language = post.get('language')
+    glAcount = post.get('glAcount')
+    phone = post.get('phone')
+    fax = post.get('fax')
+    tpType = post.get('tpType')
+    companyCode = post.get('companyCode')
+    pOrg = post.get('pOrg')
+    currency = post.get('currency')
+    new_vendor = Vendor(
+        vname=vname, city=city, address=address, country=country,
+        postcode=postcode, language=language, glAcount=glAcount,
+        phone=phone, fax=fax, tpType=tpType, companyCode=companyCode, 
+        pOrg=pOrg, currency=currency, 
+    )
+    user = request.user
+    euser = EUser.objects.get(pk=user.pk)
+    new_vendor.euser = euser
+    try:
+        new_vendor.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    new_vendor.save()
+    return HttpResponse(json.dumps({'status':1, 'message':"供应商创建成功！", 'vendor':model_to_dict(new_vendor)}))
+
+@login_required
 def search_vendor_history(request: HttpRequest):
     if request.method != 'POST':
         return HttpResponse(status=405)
@@ -45,3 +78,68 @@ def search_vendor_history(request: HttpRequest):
             'num':vendor_list[i][2], 'score':vendor_list[i][3],
         }
     return HttpResponse(json.dumps(vendor_list, default=str))
+
+@login_required
+def search_vendor(request: HttpRequest):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+    post = request.POST
+    pk = post.get('pk')
+    if pk == '' or pk is None:
+        vname = getRegex(post.get('vname'))
+        uid = getPk(post.get('uid'), 'U')
+        city = getRegex(post.get('city'))
+        country = getRegex(post.get('country'))
+        companyCode = getRegex(post.get('company'))
+        vendors = Vendor.objects.filter(
+            vname__regex=vname, euser__uid__regex=uid, city__regex=city,
+            country__regex=country, companyCode__regex=companyCode
+        )
+        vendor_list = json.loads(serializers.serialize('json', list(vendors)))
+        for i, vendor in enumerate(vendors):
+            user: EUser = EUser.objects.get(pk__exact=vendor.euser.pk)
+            vendor_list[i]['user'] = model_to_dict(user)
+        return HttpResponse(json.dumps(vendor_list, default=str))
+    else:
+        pk = getPkExact(pk, 'V')
+        vendors: QuerySet = Vendor.objects.filter(pk__exact=pk)
+        if len(vendors) != 1:
+            return HttpResponse(json.dumps({'status':0, 'message':"物料相关信息错误！"}))
+        else:
+            return HttpResponse(json.dumps({'status':1, 'message':"供应商创建成功！", 'vendor':model_to_dict(vendors.first())}))
+
+@login_required
+def update_vendor(request: HttpRequest):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+    post = request.POST
+    vid = post.get('vid')
+    uid = post.get('uid')
+    vendors = Vendor.objects.filter(vid__exact=vid)
+    if len(vendors) != 1:
+        return HttpResponse(json.dumps({'status':0, 'message':"物料相关信息错误！"}))
+    vendor: Vendor = vendors.first()
+    vname = post.get('vname')
+    city = post.get('city')
+    address = post.get('address')
+    postcode = post.get('postcode')
+    country = post.get('country')
+    language = post.get('language')
+    glAcount = post.get('glAcount')
+    phone = post.get('phone')
+    fax = post.get('fax')
+    tpType = post.get('tpType')
+    companyCode = post.get('companyCode')
+    pOrg = post.get('pOrg')
+    currency = post.get('currency')
+    vendor.vname=vname; vendor.city=city; vendor.address=address; vendor.country=country
+    vendor.postcode=postcode; vendor.language=language; vendor.glAcount=glAcount
+    vendor.phone=phone; vendor.fax=fax; vendor.tpType=tpType; vendor.companyCode=companyCode
+    vendor.pOrg=pOrg; vendor.currency=currency
+    try:
+        vendor.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    vendor.save()
+    return HttpResponse(json.dumps({'status':1, 'message':"供应商信息已更新！"}))
