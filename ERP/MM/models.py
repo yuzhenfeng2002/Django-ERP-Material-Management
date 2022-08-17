@@ -163,10 +163,10 @@ class OrderItem(models.Model):
     price = models.IntegerField()
     currency = models.CharField(max_length=10, blank=True)
     status = models.CharField(max_length=1, choices=[('0', 'Not Deliveried'), ('1', 'Deliveried'), ('2', 'Invoice Received'), ('4', 'Payoff Completed')], default='0')
-    qualityScore = models.IntegerField(blank=True)
-    serviceScore = models.IntegerField(blank=True)
-    quantityScore = models.IntegerField(blank=True)
-    ontimeScore = models.IntegerField(blank=True)
+    qualityScore = models.IntegerField(blank=True, null=True)
+    serviceScore = models.IntegerField(blank=True, null=True)
+    quantityScore = models.IntegerField(blank=True, null=True)
+    ontimeScore = models.IntegerField(blank=True, null=True)
     meterial = models.ForeignKey(Material, on_delete=models.CASCADE)
 
 class GoodReceipt(models.Model):
