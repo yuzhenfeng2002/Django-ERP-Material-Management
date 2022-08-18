@@ -158,7 +158,7 @@
                 if($("#"+status).html()=='货物未发出') {
                     //window.location.href="https://www.php.cn"; 
                 }else {
-                    var target="{% url 'MM:display_order_item' %}"+'?'+'itemID='+ $("#"+itempk).html()+'&'+'orderID='+$("#pk").text();
+                    var target="{% url 'MM:load_order_item_invoice' %}"+'?'+'itemID='+ $("#"+itempk).html()+'&'+'orderID='+$("#pk").text();
                     window.location.href=target; 
                 }
             }

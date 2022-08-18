@@ -20,9 +20,11 @@ urlpatterns = [
 
     path('receipt/create/', receipt.create_receipt, name='create_receipt'),
     path('receipt/display/', receipt.display_receipt, name='display_receipt'),
-    path('order/item/display/', receipt.display_order_item, name='display_order_item'),
+    path('receipt/search/', receipt.search_receipt, name='search_receipt'),
+    path('receipt/create2/', receipt.load_order_item, name='load_order_item_receipt'),
 
     path('invoice/create/', invoice.create_invoice, name='create_invoice'),
+    path('invoice/create2/', invoice.load_order_item, name='load_order_item_invoice'),
 
     # ajax
     ## user
@@ -40,7 +42,9 @@ urlpatterns = [
     path('api/material/stock/search/', material_api.search_stock_history, name='ajax_search_stock_history'),
     path('api/material/stock/getByName/', stock_api.getByName, name='ajax_getStockByName'),
 
+    path('api/receipt/create/', receipt_api.create_receipt, name='ajax_create_receipt'),
     path('api/receipt/search/', receipt_api.search_receipt, name='ajax_search_receipt'),
+
 
     # pre-determined data
     path('api/data/country/', data_api.load_country, name='ajax_load_country'),

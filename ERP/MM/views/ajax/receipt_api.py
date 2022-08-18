@@ -83,13 +83,15 @@ def search_receipt(request: HttpRequest):
 def create_receipt(request: HttpRequest):
     post = request.POST
     po_id = getPkExact(post.get('po_id'), 'PO')
-    oi_id = getPkExact(post.get('oi_id'), 'OI')
-    actualQnty = post.get('actualQnty')
+    oi_itemId = getPkExact(post.get('oi_id'), 'OI')
+    actualQnty = int(post.get('actualQnty'))
     sType = post.get('sType')
+    qualityScore = post.get('qualityScore')
+    serviceScore = post.get('serviceScore')
     postTime = getDate(post.get('postTime'))
     time = getDate(post.get('time'))
     
-    orderItem: OrderItem = OrderItem.objects.get(pk__exact=oi_id)
+    orderItem: OrderItem = OrderItem.objects.get(po__id__exact=po_id, itemId=oi_itemId)
     euser = EUser.objects.get(pk__exact=request.user.id)
     new_gr = GoodReceipt(
         actualQnty=actualQnty, sType=sType, time=time, postTime=postTime, orderItem=orderItem, euser=euser
@@ -101,6 +103,17 @@ def create_receipt(request: HttpRequest):
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
     new_gr.save()
     orderItem.status = '1'
+    orderItem.qualityScore = qualityScore
+    orderItem.serviceScore = serviceScore
+    orderItem.quantityScore = actualQnty / orderItem.quantity * 100
+    dif = (time - orderItem.deliveryDate).days
+    score = 0
+    if dif <= 0: score=100
+    elif 0 < dif < 7: score=80
+    elif 7 <= dif < 15: score=60
+    elif 15 <= dif < 30: score=40
+    else: score= 20
+    orderItem.ontimeScore = score
     orderItem.save()
     materialItem: MaterialItem = MaterialItem.objects.get(pk__exact=orderItem.meterialItem.id)
 
@@ -114,8 +127,9 @@ def create_receipt(request: HttpRequest):
     except ValidationError as e:
         error_fields = list(e.error_dict.keys())
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
-    ##### 根据库存类型再定，但我不知道库存类型
-    materialItem.unrestrictUse += actualQnty
+    if sType=='1': materialItem.blocked += actualQnty
+    elif sType=='2': materialItem.qltyInspection += actualQnty
+    elif sType=='3': materialItem.unrestrictUse += actualQnty
     materialItem.save()
     new_account = Account(
         sumAmount=orderItem.price * actualQnty, JEType='WE', postDate=postTime
@@ -125,12 +139,13 @@ def create_receipt(request: HttpRequest):
     except ValidationError as e:
         error_fields = list(e.error_dict.keys())
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    new_account.save()
     accountDetail1 = AccountDetail(
-        glAccount='200200', type='0', amount=orderItem.price * actualQnty,
+        glAccount='200200', type='0', amount=orderItem.price * actualQnty, je=new_account
     )
     accountDetail2 = AccountDetail(
         glAccount='310000', type='1', amount=orderItem.price * actualQnty,
-        gr=new_gr
+        gr=new_gr, je=new_account
     )
     try:
         accountDetail1.full_clean()
@@ -138,4 +153,6 @@ def create_receipt(request: HttpRequest):
     except ValidationError as e:
         error_fields = list(e.error_dict.keys())
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    accountDetail1.save()
+    accountDetail2.save()
     return HttpResponse(json.dumps({'status':1, 'message':"Succeed!"}))
