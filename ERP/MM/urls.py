@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import user, test, vendor, material, receipt
+from .views import user, test, vendor, material, receipt, invoice
 from .views.ajax import material_api, data_api, stock_api, vendor_api, user_api, receipt_api
 
 app_name = 'MM'
@@ -21,6 +21,8 @@ urlpatterns = [
     path('receipt/create/', receipt.create_receipt, name='create_receipt'),
     path('receipt/display/', receipt.display_receipt, name='display_receipt'),
     path('order/item/display/', receipt.display_order_item, name='display_order_item'),
+
+    path('invoice/create/', invoice.create_invoice, name='create_invoice'),
 
     # ajax
     ## user

@@ -106,7 +106,7 @@ class StockHistory(models.Model):
     blocked = models.IntegerField(default=0)
     qltyInspection = models.IntegerField(default=0)
     item = models.ForeignKey(MaterialItem, on_delete=models.CASCADE)
-    time = models.DateTimeField(auto_now_add=True, auto_now=False)
+    time = models.DateTimeField(auto_now_add=False, auto_now=False)
     def __str__(self) -> str:
         return str(self.time) + ' ' + self.material.mname
 
@@ -173,8 +173,8 @@ class GoodReceipt(models.Model):
     id = models.AutoField(primary_key=True)
     actualQnty = models.IntegerField()
     sType = models.CharField(max_length=1)
-    time = models.DateTimeField(auto_now_add=True, auto_now=False)
-    postTime = models.DateTimeField(auto_now_add=False, auto_now=False)
+    time = models.DateField(auto_now_add=False, auto_now=False)
+    postTime = models.DateField(auto_now_add=False, auto_now=False)
     orderItem = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
     euser = models.ForeignKey(to=EUser, on_delete=models.CASCADE)
 
@@ -200,8 +200,8 @@ class AccountDetail(models.Model):
     glAccount = models.CharField(max_length=6)
     type = models.CharField(max_length=1, choices=[('0', 'Credit'), ('1', 'Debt')])
     amount = models.IntegerField()
-    gr = models.ForeignKey(GoodReceipt, on_delete=models.CASCADE, blank=True)
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, blank=True)
+    gr = models.ForeignKey(GoodReceipt, on_delete=models.CASCADE, blank=True, null=True)
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, blank=True, null=True)
     je = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class Record(models.Model):

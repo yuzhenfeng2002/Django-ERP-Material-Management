@@ -1,3 +1,6 @@
+import datetime
+import pytz
+
 def getRegex(string):
     if string == '' or string is None:
         return r'.*'
@@ -15,3 +18,10 @@ def getPkExact(string, type='*'):
         return ''
     else:
         return str(int(string))
+
+def getDate(string):
+    dateInfo = string.split('. ')
+    string = datetime.date(
+        year=int(dateInfo[2]), month=int(dateInfo[0]), day=int(dateInfo[1])
+    )
+    return string

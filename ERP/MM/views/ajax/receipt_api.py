@@ -31,17 +31,17 @@ def search_receipt(request: HttpRequest):
             )
         else:
             dateInfo = date.split('. ')
-            # return HttpResponse(str(dateInfo))
-            startDate = datetime.datetime(
-                year=int(dateInfo[2]), month=int(dateInfo[0]), day=int(dateInfo[1]),
-                hour=0,minute=0,second=0, tzinfo=pytz.UTC
-            )
-            endDate = datetime.datetime(
-                year=int(dateInfo[2]), month=int(dateInfo[0]), day=int(dateInfo[1]),
-                hour=23,minute=59,second=59, tzinfo=pytz.UTC
-            )
+            # startDate = datetime.datetime(
+            #     year=int(dateInfo[2]), month=int(dateInfo[0]), day=int(dateInfo[1]),
+            #     hour=0,minute=0,second=0, tzinfo=pytz.UTC
+            # )
+            # endDate = datetime.datetime(
+            #     year=int(dateInfo[2]), month=int(dateInfo[0]), day=int(dateInfo[1]),
+            #     hour=23,minute=59,second=59, tzinfo=pytz.UTC
+            # )
             results: QuerySet = GoodReceipt.objects.filter(
-                euser__uid__regex=uid, time__range=[startDate, endDate]
+                euser__uid__regex=uid, time__year=int(dateInfo[2]), 
+                time__month=int(dateInfo[0]), time__day=int(dateInfo[1])
             )
         results_list = json.loads(serializers.serialize('json', list(results)))
         for i, r in enumerate(results):
@@ -78,3 +78,64 @@ def search_receipt(request: HttpRequest):
                 results_list[i]['stock'] = model_to_dict(stock)
                 results_list[i]['material'] = model_to_dict(material)
             return HttpResponse(json.dumps({'status':1, 'message':"商品收据检索成功！", 'gr':results_list}, default=str))
+
+@login_required
+def create_receipt(request: HttpRequest):
+    post = request.POST
+    po_id = getPkExact(post.get('po_id'), 'PO')
+    oi_id = getPkExact(post.get('oi_id'), 'OI')
+    actualQnty = post.get('actualQnty')
+    sType = post.get('sType')
+    postTime = getDate(post.get('postTime'))
+    time = getDate(post.get('time'))
+    
+    orderItem: OrderItem = OrderItem.objects.get(pk__exact=oi_id)
+    euser = EUser.objects.get(pk__exact=request.user.id)
+    new_gr = GoodReceipt(
+        actualQnty=actualQnty, sType=sType, time=time, postTime=postTime, orderItem=orderItem, euser=euser
+    )
+    try:
+        new_gr.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    new_gr.save()
+    orderItem.status = '1'
+    orderItem.save()
+    materialItem: MaterialItem = MaterialItem.objects.get(pk__exact=orderItem.meterialItem.id)
+
+    new_stockHistory = StockHistory(
+        item=materialItem, type='1', unrestrictUse=materialItem.unrestrictUse,
+        blocked=materialItem.blocked, qltyInspection=materialItem.qltyInspection,
+        time=time, 
+    )
+    try:
+        new_stockHistory.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    ##### 根据库存类型再定，但我不知道库存类型
+    materialItem.unrestrictUse += actualQnty
+    materialItem.save()
+    new_account = Account(
+        sumAmount=orderItem.price * actualQnty, JEType='WE', postDate=postTime
+    )
+    try:
+        new_account.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    accountDetail1 = AccountDetail(
+        glAccount='200200', type='0', amount=orderItem.price * actualQnty,
+    )
+    accountDetail2 = AccountDetail(
+        glAccount='310000', type='1', amount=orderItem.price * actualQnty,
+        gr=new_gr
+    )
+    try:
+        accountDetail1.full_clean()
+        accountDetail2.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    return HttpResponse(json.dumps({'status':1, 'message':"Succeed!"}))
