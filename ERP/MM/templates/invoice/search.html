@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <head>Material Search</head>
+  <body>
+    <form id="material1">
+        {% comment %} 创建者编码 {% endcomment %}
+        <input type="text" placeholder="请输入" onclick="openInsertModal()" id="cjzcode">
+        
+        {% comment %} 收据编号 {% endcomment %}
+        <input type="text" placeholder="请输入" id="sjcode">
+
+        {% comment %} 创建日期 {% endcomment %}
+        <input type="text" id="my-input">
+        <input type="submit">
+    <table >
+        <thead>
+        <tr>
+            <th>发票编码</th>
+            <th>财年</th>
+            <th> 商品名称</th>
+            <th> 数量</th>
+            <th> 实收数量</th>
+            <th> 总金额+货币</th>
+            <th>查看详情</th>
+        
+        </tr>
+        </thead>
+        <tbody id="searchDiv"></tbody>
+        
+    </table>
+    <textarea id="item_result"></textarea>
+    <script>
+        //收据搜索 不限制三项内容是否填写默认返回全部
+                $('#material1').on('submit', function(e) {
+                    e.preventDefault();
+                    $.ajax(
+                    {
+                        type: "POST",
+                        url: "{% url 'MM:ajax_search_invoice' %}",
+                        data:{
+                            dataType: "json",
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            //输入三个搜索框的值
+                            uid: $("#cjzcode").val(),
+                            pk: $("#sjcode").val(),
+                            date: $("#my-input").val(),
+                        },
+                        success: function(data) {
+                            $('#item_result').text(data);
+                            var dataObj = eval("("+data+")");
+                            
+                            //console.log(dataObj.gr[0].pk);
+                            
+                            for(i = 0; i < dataObj.gr.length; i++) {
+                               content2 =dataObj.gr[i].fields;
+                               var out='';
+                                out += '<tr><td id="itempk'+i+'">'+ dataObj.gr[i].pk+ '</td><td>' + content2.fiscal + '</td><td>' + dataObj.gr[i].material.mname + '</td><td>'+ dataObj.gr[i].orderItem.quantity+ '</td><td>'+ dataObj.gr[i].goodReceipt.actualQnty+ '</td><td>'+ content2.sumAmount + content2.currency +'</td><td><button class="btn btn-success btn-xs" onclick="submitpk(this.id)" id="bid'+i+'"><i class="fa fa-search-plus">click</i></button></td></tr>';
+                            }
+                            document.getElementById("searchDiv").innerHTML=out;
+                        },
+                        failure: function() {
+
+                        }
+                    })
+                });
+
+                //点击按钮，收据编码给后端
+                function submitpk(clicked_id){
+                    var itempk='itempk'+clicked_id[6];
+                    
+                    var target="{% url 'MM:display_invoice' %}"+'?'+'itemID='+ '1'+'&'+'orderID='+'1';
+                    window.location.href=target; 
+                        window.location.href=target; 
+                    
+                }
+            </script>
+                    
+
+  </body>
+</html>

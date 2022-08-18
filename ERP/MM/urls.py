@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import user, test, vendor, material, receipt, invoice
-from .views.ajax import material_api, data_api, stock_api, vendor_api, user_api, receipt_api
+from .views.ajax import material_api, data_api, stock_api, vendor_api, user_api, receipt_api, invoice_api
 
 app_name = 'MM'
 urlpatterns = [
@@ -25,6 +25,8 @@ urlpatterns = [
 
     path('invoice/create/', invoice.create_invoice, name='create_invoice'),
     path('invoice/create2/', invoice.load_order_item, name='load_order_item_invoice'),
+    path('invoice/search/', invoice.search_invoice, name='search_invoice'),
+    path('invoice/display/', invoice.display_invoice, name='display_invoice'),
 
     # ajax
     ## user
@@ -44,6 +46,7 @@ urlpatterns = [
 
     path('api/receipt/create/', receipt_api.create_receipt, name='ajax_create_receipt'),
     path('api/receipt/search/', receipt_api.search_receipt, name='ajax_search_receipt'),
+    path('api/invoice/search/', invoice_api.search_invoice, name='ajax_search_invoice'),
 
 
     # pre-determined data

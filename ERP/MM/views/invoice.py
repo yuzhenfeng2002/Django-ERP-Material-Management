@@ -21,6 +21,39 @@ def create_invoice(request: HttpRequest):
         return HttpResponse(status=405)
 
 @login_required
+def search_invoice(request: HttpRequest):
+    if request.method == 'GET':
+        return render(
+            request=request,
+            template_name='../templates/invoice/search.html'
+        )
+    else:
+        return HttpResponse(status=405)
+
+@login_required
+def display_invoice(request: HttpRequest):
+    get = request.GET
+    orderID = get.get('orderID')
+    itemID = get.get('itemID')
+    item: OrderItem = get_object_or_404(OrderItem, po__id__exact=orderID, itemId__exact=itemID)
+    invoice = Invoice.objects.get(orderItem__id__exact=item.id)
+    item_dict = model_to_dict(item)
+    materialItem: MaterialItem = get_object_or_404(MaterialItem, id__exact=item.meterialItem.id)
+    material: Material = get_object_or_404(Material, id__exact=materialItem.material.id)
+    stock: Stock = get_object_or_404(Stock, id__exact=materialItem.stock.id)
+    po: PurchaseOrder = get_object_or_404(PurchaseOrder, id__exact=item.po.id)
+    item_dict['po'] = model_to_dict(po)
+    item_dict['materialItem'] = model_to_dict(materialItem)
+    item_dict['material'] = model_to_dict(material)
+    item_dict['stock'] = model_to_dict(stock)
+    item_dict['invoice'] = model_to_dict(invoice)
+    return render(
+        request=request,
+        template_name='../templates/invoice/display.html',
+        context={'context': item_dict}
+    )
+
+@login_required
 def load_order_item(request: HttpRequest):
     get = request.GET
     orderID = get.get('orderID')
