@@ -125,7 +125,7 @@ class RequisitionItem(models.Model):
     quantity = models.IntegerField()
     deliveryDate = models.DateField()
     status = models.CharField(max_length=1, choices=[('0', 'Requisition Created'), ('1', 'Order Created')], default='0')
-    meterial = models.ForeignKey(Material, on_delete=models.CASCADE)
+    meterial = models.ForeignKey(MaterialItem, on_delete=models.CASCADE)
 
 class Quotation(models.Model):
     id = models.AutoField(primary_key=True)
@@ -167,7 +167,7 @@ class OrderItem(models.Model):
     serviceScore = models.IntegerField(blank=True, null=True)
     quantityScore = models.IntegerField(blank=True, null=True)
     ontimeScore = models.IntegerField(blank=True, null=True)
-    meterial = models.ForeignKey(Material, on_delete=models.CASCADE)
+    meterialItem = models.ForeignKey(MaterialItem, on_delete=models.CASCADE)
 
 class GoodReceipt(models.Model):
     id = models.AutoField(primary_key=True)
@@ -175,7 +175,7 @@ class GoodReceipt(models.Model):
     sType = models.CharField(max_length=1)
     time = models.DateTimeField(auto_now_add=True, auto_now=False)
     postTime = models.DateTimeField(auto_now_add=False, auto_now=False)
-    po = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE)
+    orderItem = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
     euser = models.ForeignKey(to=EUser, on_delete=models.CASCADE)
 
 class Invoice(models.Model):
@@ -186,7 +186,7 @@ class Invoice(models.Model):
     text = models.TextField(max_length=100, blank=True)
     invoiceDate = models.DateField()
     postDate = models.DateField()
-    po = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE)
+    orderItem = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
     euser = models.ForeignKey(to=EUser, on_delete=models.CASCADE)
 
 class Account(models.Model):
