@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import user, test, vendor, material
-from .views.ajax import material_api, data_api, stock_api, vendor_api
+from .views import user, test, vendor, material, receipt
+from .views.ajax import material_api, data_api, stock_api, vendor_api, user_api, receipt_api
 
 app_name = 'MM'
 urlpatterns = [
@@ -18,7 +18,13 @@ urlpatterns = [
     path('material/item/create/', material.create_item, name='create_item'),
     path('material/item/stock/', material.search_item_stock, name='search_item_stock'),
 
+    path('receipt/create/', receipt.create_receipt, name='create_receipt'),
+    path('receipt/display/', receipt.display_receipt, name='display_receipt'),
+    path('order/item/display/', receipt.display_order_item, name='display_order_item'),
+
     # ajax
+    ## user
+    path('api/user/loadAll/', user_api.load_user, name='ajax_load_user'),
     ## vendor
     path('api/vendor/update/', vendor_api.update_vendor, name='ajax_update_vendor'),
     path('api/vendor/search/', vendor_api.search_vendor, name='ajax_search_vendor'),
@@ -31,6 +37,8 @@ urlpatterns = [
     path('api/material/item/stockHistory/', material_api.update_item, name='ajax_update_item'),
     path('api/material/stock/search/', material_api.search_stock_history, name='ajax_search_stock_history'),
     path('api/material/stock/getByName/', stock_api.getByName, name='ajax_getStockByName'),
+
+    path('api/receipt/search/', receipt_api.search_receipt, name='ajax_search_receipt'),
 
     # pre-determined data
     path('api/data/country/', data_api.load_country, name='ajax_load_country'),
