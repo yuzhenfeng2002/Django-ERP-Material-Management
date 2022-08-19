@@ -31,6 +31,16 @@ def search_invoice(request: HttpRequest):
         return HttpResponse(status=405)
 
 @login_required
+def payment(request: HttpRequest):
+    if request.method == 'GET':
+        return render(
+            request=request,
+            template_name='../templates/invoice/pay.html'
+        )
+    else:
+        return HttpResponse(status=405)
+
+@login_required
 def display_invoice(request: HttpRequest):
     get = request.GET
     orderID = get.get('orderID')
