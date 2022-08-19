@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <head>Material Search</head>
+    <body>
+        
+
+        <div id="myModal1">
+            <!-- 搜索编号条件 -->
+            <!-- 可填任意个条件，一个也不填则返回全部 -->
+            <form id="material2" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <!-- id和name任取 -->
+                    商品名称:
+                    <input type="text" name="mname" id="mname">
+                    商品类型:
+                    <select name="mType" id="mType">
+                        <!-- 默认为未选 -->
+                        <option value=''>请选择商品类型</option>
+                        <option value='RM'>RM--原材料</option>
+                        <option value='HALB'>HALB--半成品</option>
+                        <option value='FERT'>SF00--成品</option>
+                        <option value='FREMD'>FG00--外部采购物料</option>
+                        <option value='PROC'>MI00--加工物料</option>
+                        <option value='HAWA'>RE00--贸易货物</option> 
+                        <option value='HIBE'>RE00--经营供应</option>
+                    </select>
+                    
+                    <!-- 他们数据库设计只允许一个字符作为值，我改一下 -->
+                    工业部门：<select name="industrySector" id="industrySector">
+                        <option value=''>请选择工业部门</option>
+                        <option value='C'>化学工业</option>
+                        <option value='M'>机械工业</option>
+                        <option value='E'>药剂工业</option>
+                        <option value='F'>设备工程</option>
+                        <option value='R'>零售</option>
+                    </select>
+                    
+                    存储位置:
+                    <select name="sloc" id="sloc">
+                    <option value=''>请选择存储位置</option> 
+                    <option value='TG00'>TG00--贸易商品</option>
+                    <option value='RM00'>RM00--原材料</option>
+                    <option value='SF00'>SF00--半成品</option>
+                    <option value='FG00'>FG00--产成品</option>
+                    <option value='MI00'>MI00--混合产品</option>
+                    <option value='RE00'>RE00--退货产品</option> 
+                    </select>
+                    
+                    工厂:
+                    <select name="plant" id="plant"></select>
+
+                    创建者编号:
+                    <input type="text" name="uid" id="uid">
+                    
+                </fieldset>
+                <input type="submit" name="submit" value="submit">
+            </form>
+        </div>
+
+        <table>
+            <h4> 商品</h4>
+            <hr>
+            <thead>
+            <!-- 搜索编号返回的属性 -->
+            <tr>
+                <th> 商品ID</th>
+                <th> 商品编号</th>
+                <th> 商品名称</th>
+                <th> 商品类型</th>
+                <th> 工业部门</th>
+                <th> 工厂</th>
+                <th> 存储位置</th>
+                <th> 创建者编号</th>
+            </tr>
+            </thead>
+            <tbody id="searchDiv"></tbody>
+        </table>
+
+        <!-- 创建商品-->
+        <form id="material3">
+            {% csrf_token %}
+            <fieldset>
+                <!-- 本页面共三个表单，故需要三份不同的id。name统一命名，但三个表单属性的id需要各不相同-->
+                {% comment %} 商品编号：<input type="text" name="pk" id="pk2" value=""  disabled> {% endcomment %}
+                商品名称: <input type="text" name="mname" id="mname2">
+                {% comment %} 创建人编号：<input type="text"> {% endcomment %}
+                -------------------------
+                商品类型:<select name="mType" id="mType2">
+                    <option value=''>请选择商品类型</option>
+                    <option value='RM'>RM--原材料</option>
+                    <option value='HALB'>HALB--半成品</option>
+                    <option value='FERT'>SF00--成品</option>
+                    <option value='FREMD'>FG00--外部采购物料</option>
+                    <option value='PROC'>MI00--加工物料</option>
+                    <option value='HAWA'>RE00--贸易货物</option> 
+                    <option value='HIBE'>RE00--经营供应</option>
+                </select>
+                商品组:<select name='mGroup' id='mGroup2'>
+                    <option value=''>请选择商品组</option>
+                    <option value='AS'>AS--配件</option>
+                    <option value='RAW'>RAW--原材料</option>
+                    <option value='WASH'>WASH--洗衣机</option>
+                    <option value='AIRC'>AIRC--空调</option>
+                    <option value='FRIG'>MI00--冰箱</option>
+                </select>
+                单位:<select name="meaunit" id="meaunit2"> </select>
+                净重：<input name='netWeight' id='netWeight2' type="text" >
+                重量单位:<select name='weightUnit' id='weightUnit2'>
+                    <option value=''>请选择重量单位</option>
+                    <option value='G'>G</option>
+                    <option value='KG'>KG</option>
+                    <option value='KT'>KT</option>
+                    <option value='LB'>LB</option>
+                    <option value='MG'>MG</option>
+                    <option value='KT'>KT</option>
+                    <option value='OZ'>OZ</option>
+                    <option value='TO'>TO</option>
+                    <option value='TON'>TON</option>
+                </select>
+                工业部门：<select name='industrySector' id='industrySector2'>
+                    <option value=''>请选择工业部门</option>
+                    <option value='C'>化学工业</option>
+                    <option value='M'>机械工业</option>
+                    <option value='W'>药剂工业</option>
+                    <option value='F'>设备工程</option>
+                    <option value='R'>零售</option>
+                </select>
+                运输组：<select name='transGrp' id='transGrp2'>
+                    <option value=''>请选择运输组</option>
+                    <option value='C'>起重机</option>
+                    <option value='L'>手动升降机</option>
+                    <option value='F'>叉车</option>
+                    <option value='M'>人手搬运</option>
+                    <option value='T'>手推车</option>   
+                </select>
+                装载组：<select name='loadingGrp' id='loadingGrp2'>
+                    <option value=''>请选择装载组</option>
+                    <option value='P'>托板</option>
+                    <option value='C'>集装箱</option>
+                    <option value='B'>盒装</option>
+                </select>
+                ---------------------
+                工厂:<select name='plant' id='plant2' ></select>
+                公司编码：<select name="company" id="company2" disabled></select>
+                采购组织：<select name="porg" id="porg2" disabled></select>
+                采购组：<select name="pgrp" id="pgrp2" disabled></select>
+                存储位置:<select name="sloc" id="sloc2" >
+                    <option value=''>请选择存储位置</option>
+                    <option value='TG00'>TG00--贸易商品</option>
+                    <option value='RM00'>RM00--原材料</option>
+                    <option value='SF00'>SF00--半成品</option>
+                    <option value='FG00'>FG00--产成品</option>
+                    <option value='MI00'>MI00--混合产品</option>
+                    <option value='RE00'>RE00--退货产品</option> 
+                </select>
+                销售组织：<select name="sorg" id="sorg2"></select>
+                分销渠道：<select  name="distrchannel" id="distrchannel2">
+                    <option value=''>请选择分销渠道</option>
+                    <option value='I'>Internet</option>
+                    <option value='W'>Wholesale</option>
+                </select>
+                完整名称：<input type="text" name="shortText" id="shortText2">
+                
+            </fieldset>
+
+            <!-- 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项）。必填项见word/微信发的图-->
+            <button type="reset" >重置</button>
+            <!-- 提交修改后的商品，数据库更新-->
+            <button type="submit" formmethod="post" onclick="return tip()">Submit</button>
+        </form>
+
+        <textarea id="item_result"></textarea>
+
+        <script>
+            //plant改变
+            $(document).ready(function() {
+                $("#plant2").change(function(){ 
+                    
+                    $.ajax({
+                        type: "post",
+                        url: "{% url 'MM:ajax_getStockByName' %}",
+                        data:{
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            //plant值
+                            name:$("#plant2").val(),
+                        },
+                        success: function(data) {
+                            $('#test').text(data);
+                            //add：如果没有该工厂，回传回来一个message提示
+                            //[{'message': '暂无该工厂相关数据，请重新确认！', 'fields': init}]
+                            var dataObj = eval("("+data+")");
+                            //注意：plant选择空的时候，这三项也返回空
+                            fields = dataObj[0].fields
+                            $("#pgrp2").val(fields.pGrp);
+                            $("#porg2").val(fields.pOrg);
+                            $("#company2").val(fields.companyCode);
+                        },
+                        failure: function() {
+    
+                        }
+                    });
+                
+                }); 
+                
+            });
+
+            //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
+            $('#material2').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_item' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        mid: '',
+                        mname: $("#mname").val(),
+                        mType: $("#mType").val(),
+                        industrySector: $("#industrySector").val(),
+                        sloc: $("#sloc").val(),
+                        plant: $("#plant").val(),
+                        uid: $('#uid').val(),
+                    },
+                    success: function(data) {
+
+                        $('#item_result').text(data);
+                    
+                        var dataObj = eval("("+data+")");
+                        var out = "";
+                        var i;
+                        
+                        for(i = 0; i < dataObj.length; i++) {
+                            //dataObj[i].fields.xx
+                            fields = dataObj[i].fields
+                            material = dataObj[i].material
+                            stock = dataObj[i].stock
+                            user = dataObj[i].user
+                            out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.shortText+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
+                        }
+                        document.getElementById("searchDiv").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+
+            //复制商品
+            $("table").on("dblclick","tr",function(e){
+                e.preventDefault();
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "{% url 'MM:ajax_search_item' %}",
+                        data:{
+                            dataType: "json",
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            //输入三个搜索框的值
+                            mid: '',
+                            mname: $(this).find('td').eq(1).text(),
+                            plant: $(this).find('td').eq(5).text(),
+                            sloc: $(this).find('td').eq(6).text(),
+                        },
+                        success: function(data) {
+                            $('#item_result').text(data);
+                            var dataObj = eval("("+data+")");
+                            fields = dataObj[0].fields;
+                            material = dataObj[0].material;
+                            stock = dataObj[0].stock;
+                            user = dataObj[0].user;
+                            //输入表单material3的属性的id
+                            //$("#pk2").val(material.id);
+                            $("#mname2").val(material.mname); 
+                            $("#mType2").val(material.mType);
+                            $("#meaunit2").val(material.meaunit);
+                            $("#netWeight2").val(material.netWeight);
+                            $("#weightUnit2").val(material.weightUnit);
+                            $("#transGrp2").val(material.transGrp);
+                            $("#loadingGrp2").val(material.loadingGrp);
+                            $("#industrySector2").val(material.industrySector);
+                            $("#mGroup2").val(material.mGroup);
+                            $("#sloc2").val(fields.sloc);
+                            $("#sorg2").val(fields.sOrg);
+                            $("#distrchannel2").val(fields.distrChannel);
+                            $("#company2").val(stock.companyCode);
+                            $("#porg2").val(stock.pOrg);
+                            $("#pgrp2").val(stock.pGrp);
+                            $("#plant2").val(stock.name);
+                            $("#shortText2").val(material.shortText);
+                            //document.getElementById("material3").style.visibility="visible";
+                        },
+                        failure: function() {
+    
+                        }
+                    })
+                $('#myModal1').modal('hide');
+            });
+
+            //提交创建信息，返回商品编号，商品编号和创建人编号进入数据库
+            //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
+            $('#material3').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_create_item' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        //material_id: $("#pk2").val(),
+                        mname: $("#mname2").val(),
+                        mType: $("#mType2").val(),
+                        meaunit: $("#meaunit2").val(),
+                        netWeight: $("#netWeight2").val(),
+                        weightUnit: $("#weightUnit2").val(),
+                        transGrp: $("#transGrp2").val(),
+                        loadingGrp: $("#loadingGrp2").val(),
+                        industrySector: $("#industrySector2").val(),
+                        mGroup: $("#mGroup2").val(),
+                        sloc: $("#sloc2").val(),
+                        sOrg: $("#sorg2").val(),
+                        distrChannel: $("#distrchannel2").val(),
+                        companyCode: $("#company2").val(),
+                        pOrg: $("#porg2").val(),
+                        pGrp: $("#pgrp2").val(),
+                        name: $("#plant2").val(),
+                        shortText: $("#shortText2").val(),
+                        //输入修改信息
+                    },
+                    success: function(data) {
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                        //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
+                        //根据status写。。。
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+        </script>
+
+        <!-- 确认提示 -->
+        <script>
+            function tip(){
+                if(confirm("您确认修改吗？")){
+                return true;
+                }
+                else{
+                return false;
+                }
+            } 
+        </script>
+
+        <!-- 下拉框ajax -->
+        <script>
+            $(document).ready(function () {
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_plant' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择工厂</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
+                    var items=document.getElementsByName("plant");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_meaunit' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >meaunit</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Meaunit+'>'+ dataObj[i].Meaunit + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("meaunit");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }                
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_pgrp' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >pgrp</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("pgrp");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }  
+                },
+                failure: function() {
+
+                }
+            });
+            
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_porg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >porg</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("porg");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_sorg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >sorg</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Sorg+'>'+ dataObj[i].Sorg + '--' + dataObj[i].Name1 + '</option>' ;
+                    }
+                    var items=document.getElementsByName("sorg");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_company' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >company</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("company");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+
+                }
+            });
+        });
+        </script>
+    </body>
+</html>

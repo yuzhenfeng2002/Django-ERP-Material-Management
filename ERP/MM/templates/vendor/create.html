@@ -437,7 +437,43 @@
                                       <div class="pull-right">交易货币：</div>
                                     </label>
                                     <div class="col-sm-7">
-                                        <select class="form-control" name="currency" id="currency2"></select>
+                                        <input type="text" class="form-control po-text-modify" onclick="currencyf()" name="currency" id="currency2">
+                                        <div class="col-sm-12">
+                                            <div class="modal fade" id="myModalcurr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">货币</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    *双击填入货币
+                                                    <table  class="table table-bordered table-striped table-condensed">
+                                                        <thead>
+                                                            <!-- tr 指定表行标签-->
+                                                            <tr>
+                                                                <!-- th 设置表头内容，默认加粗-->
+                                                                <th style="width: 100px;">序号</th>
+                                                                <th style="width: 120px;">货币</th>
+                                                                <th>名称</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="currDiv">
+
+                                                        </tbody>
+                                                    </table>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            <!--结算货币modal-->
+
+
+                                        {% comment %} <select class="form-control" name="currency" id="currency2"></select> {% endcomment %}
                                     </div>
                                 </div>
                                
@@ -526,9 +562,50 @@
 	
 	
 	<script src="{% static 'assets/js/form-component.js' %}"></script>
-
-    <script>
+    <script>   //不需要提交表单，点击input框加载modal直接列出
+                                                        
+        $(document).ready(function() {
             
+            $.ajax(
+            {
+                type: "post",
+                url: "{% url 'MM:ajax_load_currency' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<tr><td>'+ i + '</td><td>' +dataObj[i].Currency + '</td><td>' + dataObj[i].Name +'</td><tr>';
+                            //out += '<option value=' + +'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    document.getElementById("currDiv").innerHTML=out;
+                    
+                },
+                failure: function() {
+
+                }
+            })
+        });
+        $("table").on("dblclick","tr",function(e){
+            
+            document.getElementById("currency2").value=$(this).find('td').eq(1).text();
+            $('#myModalcurr').modal('hide')
+            
+        });
+        
+    </script>
+    <script type="text/javascript">
+        function currencyf() {
+            console.log(1);
+
+            //弹出模态框
+            
+            $("#myModalcurr").modal("show")}
+            
+        
 
         //提交修改信息 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项），必填项见word/微信发的图；提交成功后，返回提示：商品信息已更新
         //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
@@ -635,28 +712,7 @@
 
                 }
             });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_currency' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择交易货币</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Currency+'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("currency");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }
-                },
-                failure: function() {
-
-                }
-            });
+            
             $.ajax({
                 type: "post",
                 url: "{% url 'MM:ajax_load_country' %}",

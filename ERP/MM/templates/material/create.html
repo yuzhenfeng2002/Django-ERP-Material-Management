@@ -1,498 +1,1385 @@
+
+
 <!DOCTYPE html>
-<html>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <head>Material Search</head>
-    <body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    {% load static %}
+<!-- import CSS -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Bootstrap core CSS -->
+<link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+<!--external css-->
+<link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    
+<!-- Custom styles for this template -->
+<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+
+
+<!--common script for all pages-->
+<script src="{% static 'assets/js/common-scripts.js' %}"></script>
+
+<!--script for this page-->
+
+<!-- 引入刚刚下载的 ECharts 文件 -->
+<script src="{% static 'assets/js/echarts.js' %}"></script>
+<script src="{% static 'assets/js/highlight.min.js' %}"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+
+    <script src="{% static 'assets/dist/notice.min.js' %}"></script>
+    <script>
+        const notice = new Notice();
+    </script>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/dist/notice.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/default.min.css' %}">
+
+
+    
+  </head>
+  <script>
+    //plant改变
+    $(document).ready(function() {
+        $("#plant2").change(function(){ 
+            
+            $.ajax({
+                type: "POST",
+                url: "{% url 'MM:ajax_getStockByName' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    //plant值
+                    name:$("#plant2").val(),
+                },
+                
+                success: function(data) {
+                    $('#test2').text(data);
+                    //add：如果没有该工厂，回传回来一个message提示
+                    var dataObj = eval("("+data+")");
+                    //注意：plant选择空的时候，这三项也返回空
+                    fields = dataObj[0].fields
+                    $("#pgrp2").val(fields.pGrp);
+                    $("#pOrg2").val(fields.pOrg);
+                    $("#company2").val(fields.companyCode);
+                },
+                failure: function() {
+
+                }
+            });
         
+        }); 
+        $("#plant3").change(function(){ 
+            
+            $.ajax({
+                type: "POST",
+                url: "{% url 'MM:ajax_getStockByName' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    //plant值
+                    name:$("#plant3").val(),
+                },
+                
+                success: function(data) {
+                    $('#test2').text(data);
+                    //add：如果没有该工厂，回传回来一个message提示
+                    var dataObj = eval("("+data+")");
+                    //注意：plant选择空的时候，这三项也返回空
+                    fields = dataObj[0].fields
+                    $("#pgrp3").val(fields.pGrp);
+                    $("#pOrg3").val(fields.pOrg);
+                    $("#company3").val(fields.companyCode);
+                },
+                failure: function() {
 
-        <div id="myModal1">
-            <!-- 搜索编号条件 -->
-            <!-- 可填任意个条件，一个也不填则返回全部 -->
-            <form id="material2" method="post">
-                {% csrf_token %}
-                <fieldset>
-                    <!-- id和name任取 -->
-                    商品名称:
-                    <input type="text" name="mname" id="mname">
-                    商品类型:
-                    <select name="mType" id="mType">
-                        <!-- 默认为未选 -->
-                        <option value=''>请选择商品类型</option>
-                        <option value='RM'>RM--原材料</option>
-                        <option value='HALB'>HALB--半成品</option>
-                        <option value='FERT'>SF00--成品</option>
-                        <option value='FREMD'>FG00--外部采购物料</option>
-                        <option value='PROC'>MI00--加工物料</option>
-                        <option value='HAWA'>RE00--贸易货物</option> 
-                        <option value='HIBE'>RE00--经营供应</option>
-                    </select>
-                    
-                    <!-- 他们数据库设计只允许一个字符作为值，我改一下 -->
-                    工业部门：<select name="industrySector" id="industrySector">
-                        <option value=''>请选择工业部门</option>
-                        <option value='C'>化学工业</option>
-                        <option value='M'>机械工业</option>
-                        <option value='E'>药剂工业</option>
-                        <option value='F'>设备工程</option>
-                        <option value='R'>零售</option>
-                    </select>
-                    
-                    存储位置:
-                    <select name="sloc" id="sloc">
-                    <option value=''>请选择存储位置</option> 
-                    <option value='TG00'>TG00--贸易商品</option>
-                    <option value='RM00'>RM00--原材料</option>
-                    <option value='SF00'>SF00--半成品</option>
-                    <option value='FG00'>FG00--产成品</option>
-                    <option value='MI00'>MI00--混合产品</option>
-                    <option value='RE00'>RE00--退货产品</option> 
-                    </select>
-                    
-                    工厂:
-                    <select name="plant" id="plant"></select>
+                }
+            });
+        
+        }); 
+        $.ajax({
+            type: "POST",
+            url: "{% url 'MM:ajax_load_sorg' %}",
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(data) {
+                var dataObj = eval("("+data+")");
+                var out = "<option value='' >请选择销售组织</option>";
+                var i;
+                for(i = 0; i < dataObj.length; i++) {
+                    out += '<option value=' + dataObj[i].Sorg+'>'+ dataObj[i].Sorg + '--' + dataObj[i].Name1 + '</option>' ;
+                }
+                var items=document.getElementsByName("sorg");
+                for(i = 0; i < items.length; i++) {
+                    items[i].innerHTML=out;
+                } 
+            },
+            failure: function() {
 
-                    创建者编号:
-                    <input type="text" name="uid" id="uid">
-                    
-                </fieldset>
-                <input type="submit" name="submit" value="submit">
+            }
+        });
+        $.ajax({
+            type: "post",
+            url: "{% url 'MM:ajax_load_meaunit' %}",
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(data) {
+                var dataObj = eval("("+data+")");
+                var out = "<option value='' >请选择单位</option>";
+                var i;
+                for(i = 0; i < dataObj.length; i++) {
+                    out += '<option value=' + dataObj[i].Meaunit+'>'+ dataObj[i].Meaunit + '--' + dataObj[i].Name + '</option>' ;
+                }
+                
+                var items=document.getElementsByName("meaunit");
+                console.log(items);
+                for(i = 0; i < items.length; i++) {
+                    items[i].innerHTML=out;
+                }
+            },
+            failure: function() {
+
+            }
+        });
+        
+        $.ajax({
+            type: "post",
+            url: "{% url 'MM:ajax_load_plant' %}",
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(data) {
+                var dataObj = eval("("+data+")");
+                var out = "<option value='' >请选择工厂</option>";
+                var i;
+                for(i = 0; i < dataObj.length; i++) {
+                    out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
+                }
+                //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
+                var items=document.getElementsByName("plant");
+                console.log(items);
+                for(i = 0; i < items.length; i++) {
+                    items[i].innerHTML=out;
+                }
+            },
+            failure: function() {
+
+            }
+        });
+        $.ajax({
+            type: "post",
+            url: "{% url 'MM:ajax_load_porg' %}",
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(data) {
+                var dataObj = eval("("+data+")");
+                var out = "<option value='' >请选择采购组织</option>";
+                var i;
+                for(i = 0; i < dataObj.length; i++) {
+                    out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
+                }
+                var items=document.getElementsByName("pOrg");
+                for(i = 0; i < items.length; i++) {
+                    items[i].innerHTML=out;
+                } 
+            },
+            failure: function() {
+
+            }
+        });
+        $.ajax({
+            type: "post",
+            url: "{% url 'MM:ajax_load_company' %}",
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(data) {
+                var dataObj = eval("("+data+")");
+                var out = "<option value='' >请选择公司编码</option>";
+                var i;
+                for(i = 0; i < dataObj.length; i++) {
+                    out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
+                }
+                var items=document.getElementsByName("company");
+                for(i = 0; i < items.length; i++) {
+                    items[i].innerHTML=out;
+                } 
+            },
+            failure: function() {
+
+            }
+        });
+        $.ajax({
+            type: "post",
+            url: "{% url 'MM:ajax_load_pgrp' %}",
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(data) {
+                var dataObj = eval("("+data+")");
+                var out = "<option value='' >请选择采购组</option>";
+                var i;
+                for(i = 0; i < dataObj.length; i++) {
+                    out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
+                }
+                var items=document.getElementsByName("pgrp");
+                for(i = 0; i < items.length; i++) {
+                    items[i].innerHTML=out;
+                }  
+            },
+            failure: function() {
+
+            }
+        });
+        
+    });
+function re(){
+    document.getElementById("fu").style.display="none";
+            document.getElementById("yuan").style.display="";
+}
+</script>
+  <body>
+
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <section id="container" >
+        <!-- **********************************************************************************************************************************************************
+        TOP BAR CONTENT & NOTIFICATIONS
+        *********************************************************************************************************************************************************** -->
+        <!--header start-->
+        <header class="header black-bg">
+                <div class="sidebar-toggle-box">
+                    <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+                </div>
+              <!--logo start-->
+              <a href="index.html" class="logo"><b>DASHGUM FREE</b></a>
+              <!--logo end-->
+              <div class="nav notify-row" id="top_menu">
+                  <!--  notification start -->
+                  <ul class="nav top-menu">
+                      <!-- settings start -->
+                      <li class="dropdown">
+                          <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                              <i class="fa fa-tasks"></i>
+                              <span class="badge bg-theme">4</span>
+                          </a>
+                          <ul class="dropdown-menu extended tasks-bar">
+                              <div class="notify-arrow notify-arrow-green"></div>
+                              <li>
+                                  <p class="green">You have 4 pending tasks</p>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <div class="task-info">
+                                          <div class="desc">DashGum Admin Panel</div>
+                                          <div class="percent">40%</div>
+                                      </div>
+                                      <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                              <span class="sr-only">40% Complete (success)</span>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <div class="task-info">
+                                          <div class="desc">Database Update</div>
+                                          <div class="percent">60%</div>
+                                      </div>
+                                      <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                              <span class="sr-only">60% Complete (warning)</span>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <div class="task-info">
+                                          <div class="desc">Product Development</div>
+                                          <div class="percent">80%</div>
+                                      </div>
+                                      <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                              <span class="sr-only">80% Complete</span>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <div class="task-info">
+                                          <div class="desc">Payments Sent</div>
+                                          <div class="percent">70%</div>
+                                      </div>
+                                      <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                                              <span class="sr-only">70% Complete (Important)</span>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </li>
+                              <li class="external">
+                                  <a href="#">See All Tasks</a>
+                              </li>
+                          </ul>
+                      </li>
+                      <!-- settings end -->
+                      <!-- inbox dropdown start-->
+                      <li id="header_inbox_bar" class="dropdown">
+                          <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                              <i class="fa fa-envelope-o"></i>
+                              <span class="badge bg-theme">5</span>
+                          </a>
+                          <ul class="dropdown-menu extended inbox">
+                              <div class="notify-arrow notify-arrow-green"></div>
+                              <li>
+                                  <p class="green">You have 5 new messages</p>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <span class="photo"><img alt="avatar" src="D:/小学期/Django-ERP-Material-Management-main/ERP/MM/templates/assets/img/ui-zac.jpg"></span>
+                                      <span class="subject">
+                                      <span class="from">Zac Snider</span>
+                                      <span class="time">Just now</span>
+                                      </span>
+                                      <span class="message">
+                                          Hi mate, how is everything?
+                                      </span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <span class="photo"><img alt="avatar" src="assets/img/ui-divya.jpg"></span>
+                                      <span class="subject">
+                                      <span class="from">Divya Manian</span>
+                                      <span class="time">40 mins.</span>
+                                      </span>
+                                      <span class="message">
+                                       Hi, I need your help with this.
+                                      </span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <span class="photo"><img alt="avatar" src="assets/img/ui-danro.jpg"></span>
+                                      <span class="subject">
+                                      <span class="from">Dan Rogers</span>
+                                      <span class="time">2 hrs.</span>
+                                      </span>
+                                      <span class="message">
+                                          Love your new Dashboard.
+                                      </span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <span class="photo"><img alt="avatar" src="assets/img/ui-sherman.jpg"></span>
+                                      <span class="subject">
+                                      <span class="from">Dj Sherman</span>
+                                      <span class="time">4 hrs.</span>
+                                      </span>
+                                      <span class="message">
+                                          Please, answer asap.
+                                      </span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">See all messages</a>
+                              </li>
+                          </ul>
+                      </li>
+                      <!-- inbox dropdown end -->
+                  </ul>
+                  <!--  notification end -->
+              </div>
+              <div class="top-menu">
+                  <ul class="nav pull-right top-menu">
+                      <li><a class="logout" href="login.html">Logout</a></li>
+                  </ul>
+              </div>
+          </header>
+        <!--header end-->
+        
+        <!-- **********************************************************************************************************************************************************
+        MAIN SIDEBAR MENU
+        *********************************************************************************************************************************************************** -->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar"  class="nav-collapse ">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu" id="nav-accordion">
+                
+                      <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                      <h5 class="centered">Marcel Newman</h5>
+                          
+                    <li class="mt">
+                        <a href="index.html">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+  
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-desktop"></i>
+                            <span>UI Elements</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="general.html">General</a></li>
+                            <li><a  href="buttons.html">Buttons</a></li>
+                            <li><a  href="panels.html">Panels</a></li>
+                        </ul>
+                    </li>
+  
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-cogs"></i>
+                            <span>Components</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="calendar.html">Calendar</a></li>
+                            <li><a  href="gallery.html">Gallery</a></li>
+                            <li><a  href="todo_list.html">Todo List</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-book"></i>
+                            <span>Extra Pages</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="blank.html">Blank Page</a></li>
+                            <li><a  href="login.html">Login</a></li>
+                            <li><a  href="lock_screen.html">Lock Screen</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a class="active" href="javascript:;" >
+                            <i class="fa fa-tasks"></i>
+                            <span>Forms</span>
+                        </a>
+                        <ul class="sub">
+                            <li class="active"><a  href="form_component.html">Form Components</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-th"></i>
+                            <span>Data Tables</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="basic_table.html">Basic Table</a></li>
+                            <li><a  href="responsive_table.html">Responsive Table</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class=" fa fa-bar-chart-o"></i>
+                            <span>Charts</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="morris.html">Morris</a></li>
+                            <li><a  href="chartjs.html">Chartjs</a></li>
+                        </ul>
+                    </li>
+  
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        
+        <!-- **********************************************************************************************************************************************************
+        MAIN CONTENT
+        *********************************************************************************************************************************************************** -->
+        <!--main content start-->
+        <section id="main-content">
+            
+            <section class="wrapper">
+                <h3><i class="fa fa-angle-right"></i> 创建新商品</h3>
+                
+                <!-- BASIC FORM ELELEMNTS -->
+                <div class="col-lg-12">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-theme03" data-toggle="modal" data-target="#myModal1">根据已有商品信息创建</button>
+                  </div><br>
+            <div id='yuan'>
+                <div class="row mt">   
+                    <div class="form-panel">
+                          <h4 class="mb"><i class="fa fa-angle-right"></i> 商品信息</h4>
+                          
+                          <form id="material3" class="form-horizontal style-form">
+                            
+                            {% csrf_token %}
+                            <fieldset>
+                               
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">商品名称： </div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" name="mname" id="mname2" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">完整名称： </div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text"name="shortText" id="shortText2" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">商品类型：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select name="mType" id="mType2" class="form-control" required>
+                                            <!-- 默认为未选 -->
+                                            <option value=''>请选择商品类型</option>
+                                            <option value='RM'>RM--原材料</option>
+                                            <option value='HALB'>HALB--半成品</option>
+                                            <option value='FERT'>SF00--成品</option>
+                                            <option value='FREMD'>FG00--外部采购物料</option>
+                                            <option value='PROC'>MI00--加工物料</option>
+                                            <option value='HAWA'>RE00--贸易货物</option> 
+                                            <option value='HIBE'>RE00--经营供应</option>
+                                        </select>
+                                       
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">商品组： </div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select name='mGroup' id='mGroup2' class="form-control" required>
+                                            <option value=''>请选择商品组</option>
+                                            <option value='AS'>AS--配件</option>
+                                            <option value='RAW'>RAW--原材料</option>
+                                            <option value='WASH'>WASH--洗衣机</option>
+                                            <option value='AIRC'>AIRC--空调</option>
+                                            <option value='FRIG'>MI00--冰箱</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">单位：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select name="meaunit" id="meaunit2" class="form-control" required> </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">净重：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" name='netWeight' id='netWeight2' type="text" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">重量单位：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name='weightUnit' id='weightUnit2' required>
+                                            <option value=''>请选择重量单位</option>
+                                            <option value='G'>G</option>
+                                            <option value='KG'>KG</option>
+                                            <option value='KT'>KT</option>
+                                            <option value='LB'>LB</option>
+                                            <option value='MG'>MG</option>
+                                            <option value='KT'>KT</option>
+                                            <option value='OZ'>OZ</option>
+                                            <option value='TO'>TO</option>
+                                            <option value='TON'>TON</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">工业部门：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name='industrySector' id='industrySector2' required>
+                                            <option value=''>请选择工业部门</option>
+                                            <option value='C'>化学工业</option>
+                                            <option value='M'>机械工业</option>
+                                            <option value='W'>药剂工业</option>
+                                            <option value='F'>设备工程</option>
+                                            <option value='R'>零售</option>
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">装载组：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name='loadingGrp' id='loadingGrp2'>
+                                            <option value=''>请选择装载组</option>
+                                            <option value='P'>托板</option>
+                                            <option value='C'>集装箱</option>
+                                            <option value='B'>盒装</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">运输组：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name='transGrp' id='transGrp2'>
+                                            <option value=''>请选择运输组</option>
+                                            <option value='C'>起重机</option>
+                                            <option value='L'>手动升降机</option>
+                                            <option value='F'>叉车</option>
+                                            <option value='M'>人手搬运</option>
+                                            <option value='T'>手推车</option>   
+                                        </select>
+                                    </div>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">工厂：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name='plant' id='plant2' required></select>
+                                        
+                                    </div>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">公司编码：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="company" id="company2" required disabled></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">采购组织：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="pOrg" id="pOrg2" required disabled></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">采购组：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="pgrp" id="pgrp2" required disabled></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">存储位置：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="sloc" id="sloc2" required>
+                                            <option value=''>请选择存储位置</option>
+                                            <option value='TG00'>TG00--贸易商品</option>
+                                            <option value='RM00'>RM00--原材料</option>
+                                            <option value='SF00'>SF00--半成品</option>
+                                            <option value='FG00'>FG00--产成品</option>
+                                            <option value='MI00'>MI00--混合产品</option>
+                                            <option value='RE00'>RE00--退货产品</option> 
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">销售组织：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="sorg" id="sorg2"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">分销渠道：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="distrchannel" id="distrchannel2">
+                                            <option value=''>请选择分销渠道</option>
+                                            <option value='I'>Internet</option>
+                                            <option value='W'>Wholesale</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                 
+                            </fieldset>
+                           
+                            <div class="col-sm-10"></div>
+                            <button class="btn btn-theme04" type="reset">重置</button>
+                            <button class="btn btn-primary" type="submit" formmethod="post" onclick="return tip()">提交</button>
+                            
+        {% comment %} <textarea id="test"></textarea> {% endcomment %}                          
+                        </form>
+                    </div>
+                    </div><!-- col-lg-12-->      	
+                
+                
+                </div>
+
+                <div id='fu' style="display: none;">
+                    <div class="row mt">   
+                        <div class="form-panel">
+                              <h4 class="mb"><i class="fa fa-angle-right"></i> 商品信息</h4>
+                              
+                              <form id="material4" class="form-horizontal style-form">
+                                
+                                {% csrf_token %}
+                                <fieldset>
+                                    <input class="form-control" type="hidden" id="pk3" >
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">商品名称： </div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <input class="form-control" type="text" name="mname" id="mname3" required disabled>
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">完整名称： </div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <input class="form-control" type="text"name="shortText" id="shortText3" disabled>
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">商品类型：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select name="mType" id="mType3" class="form-control" required disabled>
+                                                <!-- 默认为未选 -->
+                                                <option value=''>请选择商品类型</option>
+                                                <option value='RM'>RM--原材料</option>
+                                                <option value='HALB'>HALB--半成品</option>
+                                                <option value='FERT'>SF00--成品</option>
+                                                <option value='FREMD'>FG00--外部采购物料</option>
+                                                <option value='PROC'>MI00--加工物料</option>
+                                                <option value='HAWA'>RE00--贸易货物</option> 
+                                                <option value='HIBE'>RE00--经营供应</option>
+                                            </select>
+                                           
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">商品组： </div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select name='mGroup' id='mGroup3' class="form-control" required disabled>
+                                                <option value=''>请选择商品组</option>
+                                                <option value='AS'>AS--配件</option>
+                                                <option value='RAW'>RAW--原材料</option>
+                                                <option value='WASH'>WASH--洗衣机</option>
+                                                <option value='AIRC'>AIRC--空调</option>
+                                                <option value='FRIG'>MI00--冰箱</option>
+                                            </select>
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">单位：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select name="meaunit" id="meaunit3" class="form-control" required disabled> </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">净重：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <input class="form-control" name='netWeight' id='netWeight3' type="text" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">重量单位：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name='weightUnit' id='weightUnit3' required disabled>
+                                                <option value=''>请选择重量单位</option>
+                                                <option value='G'>G</option>
+                                                <option value='KG'>KG</option>
+                                                <option value='KT'>KT</option>
+                                                <option value='LB'>LB</option>
+                                                <option value='MG'>MG</option>
+                                                <option value='KT'>KT</option>
+                                                <option value='OZ'>OZ</option>
+                                                <option value='TO'>TO</option>
+                                                <option value='TON'>TON</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">工业部门：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name='industrySector' id='industrySector3' required disabled>
+                                                <option value=''>请选择工业部门</option>
+                                                <option value='C'>化学工业</option>
+                                                <option value='M'>机械工业</option>
+                                                <option value='W'>药剂工业</option>
+                                                <option value='F'>设备工程</option>
+                                                <option value='R'>零售</option>
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">装载组：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name='loadingGrp' id='loadingGrp3' disabled>
+                                                <option value=''>请选择装载组</option>
+                                                <option value='P'>托板</option>
+                                                <option value='C'>集装箱</option>
+                                                <option value='B'>盒装</option>
+                                            </select>
+                                        </div>
+                                    </div>
+        
+        
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">运输组：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name='transGrp' id='transGrp3' disabled>
+                                                <option value=''>请选择运输组</option>
+                                                <option value='C'>起重机</option>
+                                                <option value='L'>手动升降机</option>
+                                                <option value='F'>叉车</option>
+                                                <option value='M'>人手搬运</option>
+                                                <option value='T'>手推车</option>   
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">工厂：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name='plant' id='plant3' required></select>
+                                            
+                                        </div>
+                                    </div>
+                                    
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">公司编码：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name="company" id="company3" required disabled></select>
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">采购组织：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name="pOrg" id="pOrg3" required disabled></select>
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">采购组：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name="pgrp" id="pgrp3" required disabled></select>
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">存储位置：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name="sloc" id="sloc3" required>
+                                                <option value=''>请选择存储位置</option>
+                                                <option value='TG00'>TG00--贸易商品</option>
+                                                <option value='RM00'>RM00--原材料</option>
+                                                <option value='SF00'>SF00--半成品</option>
+                                                <option value='FG00'>FG00--产成品</option>
+                                                <option value='MI00'>MI00--混合产品</option>
+                                                <option value='RE00'>RE00--退货产品</option> 
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">销售组织：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name="sorg" id="sorg3"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">
+                                          <div class="pull-right">分销渠道：</div>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" name="distrchannel" id="distrchannel3">
+                                                <option value=''>请选择分销渠道</option>
+                                                <option value='I'>Internet</option>
+                                                <option value='W'>Wholesale</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                     
+                                </fieldset>
+                               
+                                <div class="col-sm-10"></div>
+                                <button class="btn btn-theme04" onclick='re()'>返回</button>
+                                <button class="btn btn-primary" type="submit" formmethod="post" onclick="return tip()">提交</button>
+                                
+            {% comment %} <textarea id="test"></textarea> {% endcomment %}    
+                            </form>               
+                        </div>
+                        </div><!-- col-lg-12-->      	
+                    </div><!-- /row -->
+
+
+                </div><!-- /row -->          
+          </section>
+        
+        
+          
+        
+           
+      </section><!-- /MAIN CONTENT -->
+        
+      <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">搜索商品</h4>
+            </div>
+            <div class="modal-body">
+              <!-- Hi there, I am a Modal Example for Dashgum Admin Panel. -->
+              <!-- 搜索条件 -->
+              <form  id="material2" class="form-horizontal style-form">
+                <div class="form-group">
+                    <label class="col-sm-4 col-sm-4 control-label">
+                      <div class="pull-right">商品名称： </div>
+                    </label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="mname" id="mname" >
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-4 col-sm-4 control-label">
+                      <div class="pull-right">商品类型：</div>
+                    </label>
+                    <div class="col-sm-5">
+                        <select name="mType" id="mType" class="form-control" >
+                            <!-- 默认为未选 -->
+                            <option value=''>请选择商品类型</option>
+                            <option value='RM'>RM--原材料</option>
+                            <option value='HALB'>HALB--半成品</option>
+                            <option value='FERT'>SF00--成品</option>
+                            <option value='FREMD'>FG00--外部采购物料</option>
+                            <option value='PROC'>MI00--加工物料</option>
+                            <option value='HAWA'>RE00--贸易货物</option> 
+                            <option value='HIBE'>RE00--经营供应</option>
+                        </select>
+                       
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-sm-4 control-label">
+                      <div class="pull-right">工业部门：</div>
+                    </label>
+                    <div class="col-sm-5">
+                        <select class="form-control" name='industrySector' id='industrySector' >
+                            <option value=''>请选择工业部门</option>
+                            <option value='C'>化学工业</option>
+                            <option value='M'>机械工业</option>
+                            <option value='W'>药剂工业</option>
+                            <option value='F'>设备工程</option>
+                            <option value='R'>零售</option>
+                        </select>
+                        
+                    </div>
+                </div>
+                
+
+                <div class="form-group">
+                    <label class="col-sm-4 col-sm-4 control-label">
+                      <div class="pull-right">工厂：</div>
+                    </label>
+                    <div class="col-sm-5">
+                        <select class="form-control" name='plant' id='plant' ></select>
+                        
+                    </div>
+                </div>
+                
+
+                <div class="form-group">
+                    <label class="col-sm-4 col-sm-4 control-label">
+                      <div class="pull-right">存储位置：</div>
+                    </label>
+                    <div class="col-sm-5">
+                        <select class="form-control" name="sloc" id="sloc" >
+                            <option value=''>请选择存储位置</option>
+                            <option value='TG00'>TG00--贸易商品</option>
+                            <option value='RM00'>RM00--原材料</option>
+                            <option value='SF00'>SF00--半成品</option>
+                            <option value='FG00'>FG00--产成品</option>
+                            <option value='MI00'>MI00--混合产品</option>
+                            <option value='RE00'>RE00--退货产品</option> 
+                        </select>
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <!-- <label class="col-sm-1 col-sm-1 control-label"></label> -->
+                    <label class="col-sm-4 col-sm-4 control-label">
+                        <div class="pull-right">创建者编号：</div>
+                        </label>
+                    <div class="col-sm-5">
+                        <input name="uid" id="uid" type="text" class="form-control">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="submit"  class="btn btn-theme02">
+                        </div>
+                </div>
+                
+
             </form>
-        </div>
-
-        <table>
-            <h4> 商品</h4>
-            <hr>
-            <thead>
-            <!-- 搜索编号返回的属性 -->
-            <tr>
-                <th> 商品ID</th>
+            {% comment %} <h4> 供应商</h4> {% endcomment %}
+            {% comment %} <hr> {% endcomment %}
+            <table  class="table table-bordered table-striped table-condensed">
+              *双击填入编号                                       
+              <thead>
+              <!-- 搜索编号返回的属性 style="width: 100px;"-->
+              <tr>
                 <th> 商品编号</th>
                 <th> 商品名称</th>
+                <th> 完整名称</th>
                 <th> 商品类型</th>
                 <th> 工业部门</th>
                 <th> 工厂</th>
                 <th> 存储位置</th>
                 <th> 创建者编号</th>
-            </tr>
-            </thead>
-            <tbody id="searchDiv"></tbody>
-        </table>
+              </tr>
+              </thead>
+              <tbody id="searchDiv"></tbody>
+          </table>
+            
 
-        <!-- 创建商品-->
-        <form id="material3">
-            {% csrf_token %}
-            <fieldset>
-                <!-- 本页面共三个表单，故需要三份不同的id。name统一命名，但三个表单属性的id需要各不相同-->
-                {% comment %} 商品编号：<input type="text" name="pk" id="pk2" value=""  disabled> {% endcomment %}
-                商品名称: <input type="text" name="mname" id="mname2">
-                {% comment %} 创建人编号：<input type="text"> {% endcomment %}
-                -------------------------
-                商品类型:<select name="mType" id="mType2">
-                    <option value=''>请选择商品类型</option>
-                    <option value='RM'>RM--原材料</option>
-                    <option value='HALB'>HALB--半成品</option>
-                    <option value='FERT'>SF00--成品</option>
-                    <option value='FREMD'>FG00--外部采购物料</option>
-                    <option value='PROC'>MI00--加工物料</option>
-                    <option value='HAWA'>RE00--贸易货物</option> 
-                    <option value='HIBE'>RE00--经营供应</option>
-                </select>
-                商品组:<select name='mGroup' id='mGroup2'>
-                    <option value=''>请选择商品组</option>
-                    <option value='AS'>AS--配件</option>
-                    <option value='RAW'>RAW--原材料</option>
-                    <option value='WASH'>WASH--洗衣机</option>
-                    <option value='AIRC'>AIRC--空调</option>
-                    <option value='FRIG'>MI00--冰箱</option>
-                </select>
-                单位:<select name="meaunit" id="meaunit2"> </select>
-                净重：<input name='netWeight' id='netWeight2' type="text" >
-                重量单位:<select name='weightUnit' id='weightUnit2'>
-                    <option value=''>请选择重量单位</option>
-                    <option value='G'>G</option>
-                    <option value='KG'>KG</option>
-                    <option value='KT'>KT</option>
-                    <option value='LB'>LB</option>
-                    <option value='MG'>MG</option>
-                    <option value='KT'>KT</option>
-                    <option value='OZ'>OZ</option>
-                    <option value='TO'>TO</option>
-                    <option value='TON'>TON</option>
-                </select>
-                工业部门：<select name='industrySector' id='industrySector2'>
-                    <option value=''>请选择工业部门</option>
-                    <option value='C'>化学工业</option>
-                    <option value='M'>机械工业</option>
-                    <option value='W'>药剂工业</option>
-                    <option value='F'>设备工程</option>
-                    <option value='R'>零售</option>
-                </select>
-                运输组：<select name='transGrp' id='transGrp2'>
-                    <option value=''>请选择运输组</option>
-                    <option value='C'>起重机</option>
-                    <option value='L'>手动升降机</option>
-                    <option value='F'>叉车</option>
-                    <option value='M'>人手搬运</option>
-                    <option value='T'>手推车</option>   
-                </select>
-                装载组：<select name='loadingGrp' id='loadingGrp2'>
-                    <option value=''>请选择装载组</option>
-                    <option value='P'>托板</option>
-                    <option value='C'>集装箱</option>
-                    <option value='B'>盒装</option>
-                </select>
-                ---------------------
-                工厂:<select name='plant' id='plant2' ></select>
-                公司编码：<select name="company" id="company2" disabled></select>
-                采购组织：<select name="porg" id="porg2" disabled></select>
-                采购组：<select name="pgrp" id="pgrp2" disabled></select>
-                存储位置:<select name="sloc" id="sloc2" >
-                    <option value=''>请选择存储位置</option>
-                    <option value='TG00'>TG00--贸易商品</option>
-                    <option value='RM00'>RM00--原材料</option>
-                    <option value='SF00'>SF00--半成品</option>
-                    <option value='FG00'>FG00--产成品</option>
-                    <option value='MI00'>MI00--混合产品</option>
-                    <option value='RE00'>RE00--退货产品</option> 
-                </select>
-                销售组织：<select name="sorg" id="sorg2"></select>
-                分销渠道：<select  name="distrchannel" id="distrchannel2">
-                    <option value=''>请选择分销渠道</option>
-                    <option value='I'>Internet</option>
-                    <option value='W'>Wholesale</option>
-                </select>
-                完整名称：<input type="text" name="shortText" id="shortText2">
+            </div>
+            
+            <div class="modal-footer">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <!--main content end-->
+        <!--footer start-->
+        <footer class="site-footer">
+            <div class="text-center">
+                2014 - Alvarez.is
+                <a href="responsive_table.html#" class="go-top">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+            </div>
+        </footer>
+        <!--footer end-->
+    </section>
+      
+    <script>
+        //custom select box
+  
+        $(function(){
+            $('select.styled').customSelect();
+        });
+  
+    </script>
+
+
+    <script>
+        $('#material3').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax(
+            {
+                type: "POST",
+                url: "{% url 'MM:ajax_create_item' %}",
+                data:{
+                    dataType: "json",
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    //material_id: $("#pk2").val(),
+                    mname: $("#mname2").val(),
+                    mType: $("#mType2").val(),
+                    meaunit: $("#meaunit2").val(),
+                    netWeight: $("#netWeight2").val(),
+                    weightUnit: $("#weightUnit2").val(),
+                    transGrp: $("#transGrp2").val(),
+                    loadingGrp: $("#loadingGrp2").val(),
+                    industrySector: $("#industrySector2").val(),
+                    mGroup: $("#mGroup2").val(),
+                    sloc: $("#sloc2").val(),
+                    sOrg: $("#sorg2").val(),
+                    distrChannel: $("#distrchannel2").val(),
+                    companyCode: $("#company2").val(),
+                    pOrg: $("#pOrg2").val(),
+                    pGrp: $("#pgrp2").val(),
+                    name: $("#plant2").val(),
+                    shortText: $("#shortText2").val(),
+                },
+                success: function(data) {
+                    $('#item_result').text(data);
+                    var dataObj = eval("("+data+")");
+                    if(dataObj.status==1){
+                        showMessage({text: dataObj.message ,type: 'success'});
+                    }else{
+                        showMessage({text: dataObj.message ,type: 'error'});
+                    }
+                    //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
+                    //根据status写。。。
+                },
+                failure: function() {
+
+                }
+            })
+        });
+
+        {% comment %} $('#material4').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax(
+            {
+                type: "POST",
+                url: "{% url 'MM:ajax_create_item' %}",
+                data:{
+                    dataType: "json",
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    material_id: $("#pk3").val(),
+                    mname: $("#mname2").val(),
+                    mType: $("#mType2").val(),
+                    meaunit: $("#meaunit2").val(),
+                    netWeight: $("#netWeight2").val(),
+                    weightUnit: $("#weightUnit2").val(),
+                    transGrp: $("#transGrp2").val(),
+                    loadingGrp: $("#loadingGrp2").val(),
+                    industrySector: $("#industrySector2").val(),
+                    mGroup: $("#mGroup2").val(),
+                    sloc: $("#sloc2").val(),
+                    sOrg: $("#sorg2").val(),
+                    distrChannel: $("#distrchannel2").val(),
+                    companyCode: $("#company2").val(),
+                    pOrg: $("#pOrg2").val(),
+                    pGrp: $("#pgrp2").val(),
+                    name: $("#plant2").val(),
+                    shortText: $("#shortText2").val(),
+                },
+                success: function(data) {
+                    $('#item_result').text(data);
+                    var dataObj = eval("("+data+")");
+                    if(dataObj.status==1){
+                        showMessage({text: dataObj.message ,type: 'success'});
+                    }else{
+                        showMessage({text: dataObj.message ,type: 'error'});
+                    }
+                    //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
+                    //根据status写。。。
+                },
+                failure: function() {
+
+                }
+            })
+        }); {% endcomment %}
+
+        //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
+        $('#material2').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax(
+            {
+                type: "POST",
+                url: "{% url 'MM:ajax_search_item' %}",
+                data:{
+                    dataType: "json",
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    mid: '',
+                    mname: $("#mname").val(),
+                    mType: $("#mType").val(),
+                    industrySector: $("#industrySector").val(),
+                    sloc: $("#sloc").val(),
+                    plant: $("#plant").val(),
+                    uid: $('#uid').val(),
+                },
+                success: function(data) {
+
+                    $('#item_result').text(data);
                 
-            </fieldset>
-
-            <!-- 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项）。必填项见word/微信发的图-->
-            <button type="reset" >重置</button>
-            <!-- 提交修改后的商品，数据库更新-->
-            <button type="submit" formmethod="post" onclick="return tip()">Submit</button>
-        </form>
-
-        <textarea id="item_result"></textarea>
-
-        <script>
-            //plant改变
-            $(document).ready(function() {
-                $("#plant2").change(function(){ 
+                    var dataObj = eval("("+data+")");
+                    var out = "";
+                    var i;
                     
-                    $.ajax({
-                        type: "post",
-                        url: "{% url 'MM:ajax_getStockByName' %}",
-                        data:{
-                            csrfmiddlewaretoken: '{{ csrf_token }}',
-                            //plant值
-                            name:$("#plant2").val(),
-                        },
-                        success: function(data) {
-                            $('#test').text(data);
-                            //add：如果没有该工厂，回传回来一个message提示
-                            //[{'message': '暂无该工厂相关数据，请重新确认！', 'fields': init}]
-                            var dataObj = eval("("+data+")");
-                            //注意：plant选择空的时候，这三项也返回空
-                            fields = dataObj[0].fields
-                            $("#pgrp2").val(fields.pGrp);
-                            $("#porg2").val(fields.pOrg);
-                            $("#company2").val(fields.companyCode);
-                        },
-                        failure: function() {
-    
-                        }
-                    });
-                
-                }); 
-                
-            });
+                    for(i = 0; i < dataObj.length; i++) {
+                        //dataObj[i].fields.xx
+                        fields = dataObj[i].fields
+                        material = dataObj[i].material
+                        stock = dataObj[i].stock
+                        user = dataObj[i].user
+                        out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.shortText+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
+                    }
+                    document.getElementById("searchDiv").innerHTML=out;
+                },
+                failure: function() {
 
-            //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
-            $('#material2').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax(
+                }
+            })
+        });
+
+        //复制商品
+        $("table").on("dblclick","tr",function(e){
+            e.preventDefault();
+            document.getElementById("yuan").style.display="none";
+            document.getElementById("fu").style.display="";
+            $.ajax(
                 {
                     type: "POST",
                     url: "{% url 'MM:ajax_search_item' %}",
                     data:{
                         dataType: "json",
                         csrfmiddlewaretoken: '{{ csrf_token }}',
+                        //输入三个搜索框的值
                         mid: '',
-                        mname: $("#mname").val(),
-                        mType: $("#mType").val(),
-                        industrySector: $("#industrySector").val(),
-                        sloc: $("#sloc").val(),
-                        plant: $("#plant").val(),
-                        uid: $('#uid').val(),
+                        mname: $(this).find('td').eq(1).text(),
+                        plant: $(this).find('td').eq(5).text(),
+                        sloc: $(this).find('td').eq(6).text(),
                     },
                     success: function(data) {
-
                         $('#item_result').text(data);
-                    
                         var dataObj = eval("("+data+")");
-                        var out = "";
-                        var i;
-                        
-                        for(i = 0; i < dataObj.length; i++) {
-                            //dataObj[i].fields.xx
-                            fields = dataObj[i].fields
-                            material = dataObj[i].material
-                            stock = dataObj[i].stock
-                            user = dataObj[i].user
-                            out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.shortText+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
-                        }
-                        document.getElementById("searchDiv").innerHTML=out;
+                        fields = dataObj[0].fields;
+                        material = dataObj[0].material;
+                        stock = dataObj[0].stock;
+                        user = dataObj[0].user;
+                        //输入表单material3的属性的id
+                        //$("#pk3").val(material.id);
+                        $("#mname3").val(material.mname); 
+                        $("#mType3").val(material.mType);
+                        $("#meaunit3").val(material.meaunit);
+                        $("#netWeight3").val(material.netWeight);
+                        $("#weightUnit3").val(material.weightUnit);
+                        $("#transGrp3").val(material.transGrp);
+                        $("#loadingGrp3").val(material.loadingGrp);
+                        $("#industrySector3").val(material.industrySector);
+                        $("#mGroup3").val(material.mGroup);
+                        $("#sloc3").val(fields.sloc);
+                        $("#sorg3").val(fields.sOrg);
+                        $("#distrchannel3").val(fields.distrChannel);
+                        $("#company3").val(stock.companyCode);
+                        $("#porg3").val(stock.pOrg);
+                        $("#pgrp3").val(stock.pGrp);
+                        $("#plant3").val(stock.name);
+                        $("#shortText3").val(material.shortText);
+                        //document.getElementById("material3").style.visibility="visible";
                     },
                     failure: function() {
 
                     }
                 })
-            });
-
-            //复制商品
-            $("table").on("dblclick","tr",function(e){
-                e.preventDefault();
-                $.ajax(
-                    {
-                        type: "POST",
-                        url: "{% url 'MM:ajax_search_item' %}",
-                        data:{
-                            dataType: "json",
-                            csrfmiddlewaretoken: '{{ csrf_token }}',
-                            //输入三个搜索框的值
-                            mid: '',
-                            mname: $(this).find('td').eq(1).text(),
-                            plant: $(this).find('td').eq(5).text(),
-                            sloc: $(this).find('td').eq(6).text(),
-                        },
-                        success: function(data) {
-                            $('#item_result').text(data);
-                            var dataObj = eval("("+data+")");
-                            fields = dataObj[0].fields;
-                            material = dataObj[0].material;
-                            stock = dataObj[0].stock;
-                            user = dataObj[0].user;
-                            //输入表单material3的属性的id
-                            //$("#pk2").val(material.id);
-                            $("#mname2").val(material.mname); 
-                            $("#mType2").val(material.mType);
-                            $("#meaunit2").val(material.meaunit);
-                            $("#netWeight2").val(material.netWeight);
-                            $("#weightUnit2").val(material.weightUnit);
-                            $("#transGrp2").val(material.transGrp);
-                            $("#loadingGrp2").val(material.loadingGrp);
-                            $("#industrySector2").val(material.industrySector);
-                            $("#mGroup2").val(material.mGroup);
-                            $("#sloc2").val(fields.sloc);
-                            $("#sorg2").val(fields.sOrg);
-                            $("#distrchannel2").val(fields.distrChannel);
-                            $("#company2").val(stock.companyCode);
-                            $("#porg2").val(stock.pOrg);
-                            $("#pgrp2").val(stock.pGrp);
-                            $("#plant2").val(stock.name);
-                            $("#shortText2").val(material.shortText);
-                            //document.getElementById("material3").style.visibility="visible";
-                        },
-                        failure: function() {
-    
-                        }
-                    })
-                $('#myModal1').modal('hide');
-            });
-
-            //提交创建信息，返回商品编号，商品编号和创建人编号进入数据库
-            //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
-            $('#material3').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "{% url 'MM:ajax_create_item' %}",
-                    data:{
-                        dataType: "json",
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        //material_id: $("#pk2").val(),
-                        mname: $("#mname2").val(),
-                        mType: $("#mType2").val(),
-                        meaunit: $("#meaunit2").val(),
-                        netWeight: $("#netWeight2").val(),
-                        weightUnit: $("#weightUnit2").val(),
-                        transGrp: $("#transGrp2").val(),
-                        loadingGrp: $("#loadingGrp2").val(),
-                        industrySector: $("#industrySector2").val(),
-                        mGroup: $("#mGroup2").val(),
-                        sloc: $("#sloc2").val(),
-                        sOrg: $("#sorg2").val(),
-                        distrChannel: $("#distrchannel2").val(),
-                        companyCode: $("#company2").val(),
-                        pOrg: $("#porg2").val(),
-                        pGrp: $("#pgrp2").val(),
-                        name: $("#plant2").val(),
-                        shortText: $("#shortText2").val(),
-                        //输入修改信息
-                    },
-                    success: function(data) {
-                        $('#item_result').text(data);
-                        var dataObj = eval("("+data+")");
-                        //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
-                        //根据status写。。。
-                    },
-                    failure: function() {
-
-                    }
-                })
-            });
-        </script>
-
-        <!-- 确认提示 -->
-        <script>
-            function tip(){
-                if(confirm("您确认修改吗？")){
-                return true;
-                }
-                else{
-                return false;
-                }
-            } 
-        </script>
-
-        <!-- 下拉框ajax -->
-        <script>
-            $(document).ready(function () {
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_plant' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择工厂</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
-                    var items=document.getElementsByName("plant");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }
-                },
-                failure: function() {
-
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_meaunit' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >meaunit</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Meaunit+'>'+ dataObj[i].Meaunit + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("meaunit");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }                
-                },
-                failure: function() {
-
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_pgrp' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >pgrp</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("pgrp");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }  
-                },
-                failure: function() {
-
-                }
-            });
-            
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_porg' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >porg</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("porg");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_sorg' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >sorg</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Sorg+'>'+ dataObj[i].Sorg + '--' + dataObj[i].Name1 + '</option>' ;
-                    }
-                    var items=document.getElementsByName("sorg");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_company' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >company</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("company");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-
-                }
-            });
+            $('#myModal1').modal('hide');
         });
-        </script>
-    </body>
+
+    </script>
+
+    <!-- 确认提示 -->
+    <script>
+        function tip(){
+            if(confirm("您确认修改吗？")){
+            return true;
+            }
+            else{
+            return false;
+            }
+        } ;
+        
+
+    </script>
+
+    <!-- 下拉框ajax -->
+    
+
+    
+  
+  </body>
 </html>
+
