@@ -84,59 +84,36 @@ def search_invoice(request: HttpRequest):
             return HttpResponse(json.dumps({'status':1, 'message':"发票收据检索成功！", 'gr':results_list}, default=str))
 
 @login_required
-def create_receipt(request: HttpRequest):
+def create_invoice(request: HttpRequest):
     post = request.POST
     po_id = getPkExact(post.get('po_id'), 'PO')
-    oi_itemId = getPkExact(post.get('oi_id'), 'OI')
-    actualQnty = int(post.get('actualQnty'))
-    sType = post.get('sType')
-    qualityScore = post.get('qualityScore')
-    serviceScore = post.get('serviceScore')
-    postTime = getDate(post.get('postTime'))
-    time = getDate(post.get('time'))
+    oi_itemId = post.get('oi_id')
+    sumAmount = int(post.get('sumAmount'))
+    fiscal = post.get('fiscal')
+    currency = post.get('currency')
+    text = post.get('text')
+    postDate = getDate(post.get('postDate'))
+    invoiceDate = getDate(post.get('invoiceDate'))
     
     orderItem: OrderItem = OrderItem.objects.get(po__id__exact=po_id, itemId=oi_itemId)
     euser = EUser.objects.get(pk__exact=request.user.id)
-    new_gr = GoodReceipt(
-        actualQnty=actualQnty, sType=sType, time=time, postTime=postTime, orderItem=orderItem, euser=euser
+    goodReceipt: GoodReceipt = GoodReceipt.objects.get(orderItem__id=orderItem.id)
+    actualAmount = goodReceipt.actualQnty * orderItem.price
+    if sumAmount != actualAmount:
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':['sumAmount']}))
+    new_invoice = Invoice(
+        fiscal=fiscal, sumAmount=sumAmount, currency=currency, text=text, invoiceDate=invoiceDate, postDate=postDate, orderItem=orderItem, euser=euser
     )
     try:
-        new_gr.full_clean()
+        new_invoice.full_clean()
     except ValidationError as e:
         error_fields = list(e.error_dict.keys())
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
-    new_gr.save()
-    orderItem.status = '1'
-    orderItem.qualityScore = qualityScore
-    orderItem.serviceScore = serviceScore
-    orderItem.quantityScore = actualQnty / orderItem.quantity * 100
-    dif = (time - orderItem.deliveryDate).days
-    score = 0
-    if dif <= 0: score=100
-    elif 0 < dif < 7: score=80
-    elif 7 <= dif < 15: score=60
-    elif 15 <= dif < 30: score=40
-    else: score= 20
-    orderItem.ontimeScore = score
+    new_invoice.save()
+    orderItem.status = '2'
     orderItem.save()
-    materialItem: MaterialItem = MaterialItem.objects.get(pk__exact=orderItem.meterialItem.id)
-
-    new_stockHistory = StockHistory(
-        item=materialItem, type='1', unrestrictUse=materialItem.unrestrictUse,
-        blocked=materialItem.blocked, qltyInspection=materialItem.qltyInspection,
-        time=time, 
-    )
-    try:
-        new_stockHistory.full_clean()
-    except ValidationError as e:
-        error_fields = list(e.error_dict.keys())
-        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
-    if sType=='1': materialItem.blocked += actualQnty
-    elif sType=='2': materialItem.qltyInspection += actualQnty
-    elif sType=='3': materialItem.unrestrictUse += actualQnty
-    materialItem.save()
     new_account = Account(
-        sumAmount=orderItem.price * actualQnty, JEType='WE', postDate=postTime
+        sumAmount=sumAmount, JEType='KR', postDate=postDate
     )
     try:
         new_account.full_clean()
@@ -145,11 +122,10 @@ def create_receipt(request: HttpRequest):
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
     new_account.save()
     accountDetail1 = AccountDetail(
-        glAccount='200200', type='0', amount=orderItem.price * actualQnty, je=new_account
+        glAccount='300000', type='1', amount=sumAmount, je=new_account
     )
     accountDetail2 = AccountDetail(
-        glAccount='310000', type='1', amount=orderItem.price * actualQnty,
-        gr=new_gr, je=new_account
+        glAccount='310000', type='0', amount=sumAmount, invoice=new_invoice, je=new_account
     )
     try:
         accountDetail1.full_clean()
@@ -160,3 +136,23 @@ def create_receipt(request: HttpRequest):
     accountDetail1.save()
     accountDetail2.save()
     return HttpResponse(json.dumps({'status':1, 'message':"Succeed!"}))
+
+@login_required
+def search_unpaied_invoice(request: HttpRequest):
+    post = request.POST
+    vid = getPkExact(post.get('vid'), 'V')
+    status = post.get('status')
+    invoices: QuerySet = Invoice.objects.filter(orderItem__status=status, orderItem__po__id=vid)
+    results_list = json.loads(serializers.serialize('json', list(invoices)))
+    for i, r in enumerate(invoices):
+        r: Invoice
+        user: EUser = EUser.objects.get(pk__exact=r.euser.pk)
+        orderItem: OrderItem = OrderItem.objects.get(pk__exact=r.orderItem.id)
+        po: PurchaseOrder = PurchaseOrder.objects.get(pk__exact=orderItem.po.id)
+        vendor: Vendor = get_object_or_404(Vendor, id__exact=orderItem.po.vendor.id)
+        results_list[i]['user'] = model_to_dict(user)
+        results_list[i]['orderItem'] = model_to_dict(orderItem)
+        results_list[i]['po'] = model_to_dict(po)
+        results_list[i]['vendor'] = model_to_dict(vendor)
+    return HttpResponse(json.dumps({'status':1, 'message':"商品收据检索成功！", 'gr':results_list}, default=str))
+
