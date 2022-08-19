@@ -27,6 +27,7 @@ urlpatterns = [
     path('invoice/create2/', invoice.load_order_item, name='load_order_item_invoice'),
     path('invoice/search/', invoice.search_invoice, name='search_invoice'),
     path('invoice/display/', invoice.display_invoice, name='display_invoice'),
+    path('invoice/payment/', invoice.payment, name='pay_invoice'),
 
     # ajax
     ## user
@@ -43,10 +44,10 @@ urlpatterns = [
     path('api/material/item/stockHistory/', material_api.update_item, name='ajax_update_item'),
     path('api/material/stock/search/', material_api.search_stock_history, name='ajax_search_stock_history'),
     path('api/material/stock/getByName/', stock_api.getByName, name='ajax_getStockByName'),
-
     path('api/receipt/create/', receipt_api.create_receipt, name='ajax_create_receipt'),
     path('api/receipt/search/', receipt_api.search_receipt, name='ajax_search_receipt'),
     path('api/invoice/search/', invoice_api.search_invoice, name='ajax_search_invoice'),
+    path('api/invoice/searchUnpaid/', invoice_api.search_unpaied_invoice, name='ajax_search_unpaied_invoice'),
 
 
     # pre-determined data
