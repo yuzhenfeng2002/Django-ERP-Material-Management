@@ -1,313 +1,603 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>DASHGUM - Bootstrap Admin Template</title>
+    {% load static %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/js/bootstrap-datepicker/css/datepicker.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/js/bootstrap-daterangepicker/daterangepicker.css' %}" />
+        
+    <!-- Custom styles for this template -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <head>Material Search</head>
-    <body>
-        <!-- 创建供应商 -->
-        <form id="material3">
-            {% csrf_token %}
-            <fieldset>
+    
+  </head>
+
+  <body>
+
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <section id="container" >
+        <!-- **********************************************************************************************************************************************************
+        TOP BAR CONTENT & NOTIFICATIONS
+        *********************************************************************************************************************************************************** -->
+        <!--header start-->
+        <header class="header black-bg">
+                <div class="sidebar-toggle-box">
+                    <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+                </div>
+              <!--logo start-->
+              <a href="index.html" class="logo"><b>DASHGUM FREE</b></a>
+              <!--logo end-->
+              <div class="nav notify-row" id="top_menu">
+                  <!--  notification start -->
+                  <ul class="nav top-menu">
+                      <!-- settings start -->
+                      <li class="dropdown">
+                          <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                              <i class="fa fa-tasks"></i>
+                              <span class="badge bg-theme">4</span>
+                          </a>
+                          <ul class="dropdown-menu extended tasks-bar">
+                              <div class="notify-arrow notify-arrow-green"></div>
+                              <li>
+                                  <p class="green">You have 4 pending tasks</p>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <div class="task-info">
+                                          <div class="desc">DashGum Admin Panel</div>
+                                          <div class="percent">40%</div>
+                                      </div>
+                                      <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                              <span class="sr-only">40% Complete (success)</span>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <div class="task-info">
+                                          <div class="desc">Database Update</div>
+                                          <div class="percent">60%</div>
+                                      </div>
+                                      <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                              <span class="sr-only">60% Complete (warning)</span>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <div class="task-info">
+                                          <div class="desc">Product Development</div>
+                                          <div class="percent">80%</div>
+                                      </div>
+                                      <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                              <span class="sr-only">80% Complete</span>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <div class="task-info">
+                                          <div class="desc">Payments Sent</div>
+                                          <div class="percent">70%</div>
+                                      </div>
+                                      <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                                              <span class="sr-only">70% Complete (Important)</span>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </li>
+                              <li class="external">
+                                  <a href="#">See All Tasks</a>
+                              </li>
+                          </ul>
+                      </li>
+                      <!-- settings end -->
+                      <!-- inbox dropdown start-->
+                      <li id="header_inbox_bar" class="dropdown">
+                          <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                              <i class="fa fa-envelope-o"></i>
+                              <span class="badge bg-theme">5</span>
+                          </a>
+                          <ul class="dropdown-menu extended inbox">
+                              <div class="notify-arrow notify-arrow-green"></div>
+                              <li>
+                                  <p class="green">You have 5 new messages</p>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <span class="photo"><img alt="avatar" src="D:/小学期/Django-ERP-Material-Management-main/ERP/MM/templates/assets/img/ui-zac.jpg"></span>
+                                      <span class="subject">
+                                      <span class="from">Zac Snider</span>
+                                      <span class="time">Just now</span>
+                                      </span>
+                                      <span class="message">
+                                          Hi mate, how is everything?
+                                      </span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <span class="photo"><img alt="avatar" src="assets/img/ui-divya.jpg"></span>
+                                      <span class="subject">
+                                      <span class="from">Divya Manian</span>
+                                      <span class="time">40 mins.</span>
+                                      </span>
+                                      <span class="message">
+                                       Hi, I need your help with this.
+                                      </span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <span class="photo"><img alt="avatar" src="assets/img/ui-danro.jpg"></span>
+                                      <span class="subject">
+                                      <span class="from">Dan Rogers</span>
+                                      <span class="time">2 hrs.</span>
+                                      </span>
+                                      <span class="message">
+                                          Love your new Dashboard.
+                                      </span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">
+                                      <span class="photo"><img alt="avatar" src="assets/img/ui-sherman.jpg"></span>
+                                      <span class="subject">
+                                      <span class="from">Dj Sherman</span>
+                                      <span class="time">4 hrs.</span>
+                                      </span>
+                                      <span class="message">
+                                          Please, answer asap.
+                                      </span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="index.html#">See all messages</a>
+                              </li>
+                          </ul>
+                      </li>
+                      <!-- inbox dropdown end -->
+                  </ul>
+                  <!--  notification end -->
+              </div>
+              <div class="top-menu">
+                  <ul class="nav pull-right top-menu">
+                      <li><a class="logout" href="login.html">Logout</a></li>
+                  </ul>
+              </div>
+          </header>
+        <!--header end-->
+        
+        <!-- **********************************************************************************************************************************************************
+        MAIN SIDEBAR MENU
+        *********************************************************************************************************************************************************** -->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar"  class="nav-collapse ">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu" id="nav-accordion">
                 
-                供应商名称: <input type="text" name="vname" id="vname2">
-                语言:<select name="language" id='language2'></select>
-                电话: <input type="text" id='phone2'>
-                传真:<input type="text" id='fax2'>
-                国家:<select name="country" id="country2"></select>
+                      <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                      <h5 class="centered">Marcel Newman</h5>
+                          
+                    <li class="mt">
+                        <a href="index.html">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+  
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-desktop"></i>
+                            <span>UI Elements</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="general.html">General</a></li>
+                            <li><a  href="buttons.html">Buttons</a></li>
+                            <li><a  href="panels.html">Panels</a></li>
+                        </ul>
+                    </li>
+  
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-cogs"></i>
+                            <span>Components</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="calendar.html">Calendar</a></li>
+                            <li><a  href="gallery.html">Gallery</a></li>
+                            <li><a  href="todo_list.html">Todo List</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-book"></i>
+                            <span>Extra Pages</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="blank.html">Blank Page</a></li>
+                            <li><a  href="login.html">Login</a></li>
+                            <li><a  href="lock_screen.html">Lock Screen</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a class="active" href="javascript:;" >
+                            <i class="fa fa-tasks"></i>
+                            <span>Forms</span>
+                        </a>
+                        <ul class="sub">
+                            <li class="active"><a  href="form_component.html">Form Components</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-th"></i>
+                            <span>Data Tables</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="basic_table.html">Basic Table</a></li>
+                            <li><a  href="responsive_table.html">Responsive Table</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class=" fa fa-bar-chart-o"></i>
+                            <span>Charts</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="morris.html">Morris</a></li>
+                            <li><a  href="chartjs.html">Chartjs</a></li>
+                        </ul>
+                    </li>
+  
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        
+        <!-- **********************************************************************************************************************************************************
+        MAIN CONTENT
+        *********************************************************************************************************************************************************** -->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+              <div class="no-print">
+                <h3><i class="fa fa-angle-right"></i> 创建新供应商</h3>
+                <div class="col-lg-12">
+                <div class="pull-right">
+                  <button type="button" class="btn btn-theme03" data-toggle="modal" data-target="#myModal">自定义评分权重</button>
+                </div>
                 
-                公司编码：<select name="company" id="company2"></select>
-                采购组织：<select name="pOrg" id="pOrg2"></select>
-                支付类型：<select name="tpType" id="tpType2"></select>
-                currency：<select name="currency" id="currency2"></select>
-                city<input name="city" id="city2" type="text">
-                address<input name="address" id="address2" type="text">
-                postcode<input name="postcode" id="postcode2" type="text">
-                glAcount<input name="glAcount" id="glAcount2" type="text">
-                <!-- 交易货币:<input type="text" class="form-control po-text-modify" onclick="currency()" id="currency2"> -->
-                    <table >
-                        <thead>
-                            <!-- tr 指定表行标签-->
-                            <tr>
-                                <!-- th 设置表头内容，默认加粗-->
-                                <th style="width: 100px;">序号</th>
-                                <th style="width: 120px;">货币</th>
-                                <th>名称</th>
-                            </tr>
-                        </thead>
-                        <tbody id="currDiv">
+                                      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">自定义评分权重</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                               
+                                                <form class="form-horizontal style-form" method="get">
+                                                  <div id="app">
+                                                      <template>
+                                                          <div class="form-group">
+                                                              <label class="col-sm-2 col-sm-2 control-label">
+                                                                  <div class="pull-right">质量</div>
+                                                                  </label>
+                                                              <div class="col-sm-10">
+                                                                          <div class="block">
+                                                                              <!-- <span class="demonstration">自定义初始值</span> -->
+                                                                              <el-slider v-on:input="changeSlider1()" v-model="value1"
+                                                                              show-input></el-slider>
+                                                                            </div>
+                                                              </div>
+                                                          </div>
+  
+                                                          <div class="form-group">
+                                                              <label class="col-sm-2 col-sm-2 control-label">
+                                                                  <div class="pull-right">数量</div>
+                                                                  </label>
+                                                              <div class="col-sm-10">
+                                                                  
+                                                                          <div class="block">
+                                                                              <!-- <span class="demonstration">自定义初始值</span> -->
+                                                                              <el-slider v-on:input="changeSlider2()" v-model="value2" show-input></el-slider>
+                                                                            </div>
+                                                                      
+                                                              </div>
+                                                          </div>
+  
+                                                          <div class="form-group">
+                                                              <label class="col-sm-2 col-sm-2 control-label">
+                                                                  <div class="pull-right">服务态度</div>
+                                                                  </label>
+                                                              <div class="col-sm-10">
+                                                                  
+                                                                          <div class="block">
+                                                                              <!-- <span class="demonstration">自定义初始值</span> -->
+                                                                              <el-slider v-on:input="changeSlider3()" v-model="value3" show-input></el-slider>
+                                                                            </div>
+                                                                      
+                                                              </div>
+                                                          </div>
+  
+                                                          <div class="form-group">
+                                                              <label class="col-sm-2 col-sm-2 control-label">
+                                                                  <div class="pull-right">如期交货</div>
+                                                                  </label>
+                                                              <div class="col-sm-10">
+                                                                  
+                                                                          <div class="block">
+                                                                              <!-- <span class="demonstration">自定义初始值</span> -->
+                                                                              <el-slider v-on:input="changeSlider4()" v-model="value4" show-input></el-slider>
+                                                                            </div>
+                                                                      
+                                                              </div>
+                                                          </div>
+  
+  
+                                                      </template>
+  
+  
+                                                  </div>
+                                                  
+  
+                                                  
+                                                  
+                                              </form>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="reset" class="btn btn-default" >重置</button>
+                                                <button type="button" class="btn btn-primary">保存修改</button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      
+                <br>
+  
+                    <div class="row mt">
+                      
+                        <div class="col-lg-12">
+                      </div>
+                      <tr class="noPrint">
+                          <td colspan="2" align="center">
+                            <button type="button" onclick="toPrint()">打印</button>
+                          </td>
+                        </tr>
+                        <div id='pdf' class="content-panel">
+                        <h4><i class="fa fa-angle-right"></i> 供应商详情</h4>
+                            <section id="unseen">
+                              <table class="table">
+                                  <thead>
+                                      <tr>
+                                          <th>基本信息</th>
+                                         
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr>
+                                          <td>供应商名称：小组6</td>
+                                          
+                                          <td>当前评分：98</td>
+  
+                                      </tr>
+                          
+                                  </thead>
+                      
+                              </table>
+                              <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>所在地</th>
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>区域：亚洲</td>
+                                        
+                                        <td>国家：中国</td>
+                                        
+                                        <td>语言：汉语</td>
+                                    </tr>
+                                    <tr>
+                                      <td>城市：上海</td>
+                                      
+                                      <td>邮政编码：10010</td>
+                                      
+                                  </tr>
+                                  <tr>
+                                      <td>街区地址：嘉定区曹安公路4800号</td>
+                                      
+                                  </tr>
+                                    
+                                    </tbody>
+                                </table>
+  
+                                <table class="table">
+                                  <thead>
+                                  <tr>
+                                      <th>交易</th>
+                                      
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  <tr>
+                                      <td>区域：亚洲</td>
+                                      
+                                      <td>国家：中国</td>
+                                      
+                                      <td>语言：汉语</td>
+                                  </tr>
+                                  <tr>
+                                    <td>城市：上海</td>
+                                    
+                                    <td>邮政编码：10010</td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>街区地址：嘉定区曹安公路4800号</td>
+                                    
+                                </tr>
+                                  
+                                  </tbody>
+                              </table>
+                              <hr>
+                              <table class="table table-bordered table-striped table-condensed">
+                                <thead>
+                                <tr>
+                                    <th>采购订单</th>
+                                    <th>商品收据</th>
+                                    <th>发票收据</th>
+                                   
+                                    <!-- <th class="numeric">Price</th> -->
+                                    
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>00001</td>
+                                    <td>00001</td>
+                                    <td><button class="btn btn-success btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></td>
+                      
+                                    <!-- <td class="numeric">$1.38</td> -->
+                                    
+                                </tr>
+                                <tr>
+                                  <td>00002</td>
+                                  <td>小组6</td>
+                                  <td>上海</td>
+                                  
+                                  <!-- <td class="numeric">$1.38</td> -->
+                                  
+                              </tr>
+                                </tbody>
+                            </table>
+                            </section>
+                      </div><!-- /content-panel -->
+                      <script src="print.js"></script>
+  <script type="text/javascript">
+    function toPrint() {
+      Print('#pdf', {
+        noPrint: '.noPrint'
+      });
+    }
+  </script>
+                  </div><!-- /col-lg-4 -->			
+                </div><!-- /r ow -->
+                
+                
+  
+          </section><! --/wrapper -->
+        </section><!-- /MAIN CONTENT -->
+  
+        <!--main content end-->
+        <!--footer start-->
+        <footer class="site-footer">
+            <div class="text-center">
+                2014 - Alvarez.is
+                <a href="responsive_table.html#" class="go-top">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+            </div>
+        </footer>
+        <!--footer end-->
+    </section>
+      
+    <script>
+        //custom select box
+  
+        $(function(){
+            $('select.styled').customSelect();
+        });
+  
+    </script>
 
-                        </tbody>
-                    </table>
-            </fieldset>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	{% comment %} <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> {% endcomment %}
+    <script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
 
-            <!-- 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项）。必填项见word/微信发的图-->
-            <button type="reset" >重置</button>
-            <!-- 提交修改后的商品，数据库更新-->
-            <button type="submit" formmethod="post" onclick="return tip()">Submit</button>
-        </form>
 
-        <textarea id="item_result"></textarea>
+    <!--common script for all pages-->
+    <script src="{% static 'assets/js/common-scripts.js' %}"></script>
 
-        <script>
-            
+    <!--script for this page-->
+    <script src="{% static 'assets/js/jquery-ui-1.9.2.custom.min.js' %}"></script>
 
-            //提交修改信息 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项），必填项见word/微信发的图；提交成功后，返回提示：商品信息已更新
-            //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
-            $('#material3').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "{% url 'MM:ajax_create_vendor' %}",
-                    data:{
-                        dataType: "json",
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        vname: $("#vname2").val(),
-                        city: $("#city2").val(),
-                        address: $("#address2").val(),
-                        postcode: $("#postcode2").val(),
-                        country: $("#country2").val(),
-                        language: $("#language2").val(),
-                        glAcount: $("#glAcount2").val(),
-                        phone: $("#phone2").val(),
-                        fax: $("#fax2").val(),
-                        tpType: $("#tpType2").val(),
-                        companyCode: $("#company2").val(),
-                        pOrg: $("#pOrg2").val(),
-                        currency: $("#currency2").val(),
-                        //输入创建信息
-                    },
-                    success: function(data) {
-                        $('#item_result').text(data);
-                        var dataObj = eval("("+data+")");
-                        //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
-                        //根据status写。。。
-                    },
-                    failure: function() {
+	<!--custom switch-->
+	<script src="{% static 'assets/js/bootstrap-switch.js' %}"></script>
+	
+	<!--custom tagsinput-->
+	<script src="{% static 'assets/js/jquery.tagsinput.js' %}"></script>
+	
+	<!--custom checkbox & radio-->
+	
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap-daterangepicker/date.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+	
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap-inputmask/bootstrap-inputmask.min.js' %}"></script>
+	
+	
+	<script src="{% static 'assets/js/form-component.js' %}"></script>
 
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "get",
+                url: "{% url 'MM:ajax_load_language' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >language</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Language+'>'+ dataObj[i].Language + '--' + dataObj[i].Name + '</option>' ;
                     }
-                })
-            });
-        </script>
+                    var items=document.getElementsByName("language");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
 
-        <!-- 确认提示 -->
-        <script>
-            function tip(){
-                if(confirm("您确认修改吗？")){
-                return true;
                 }
-                else{
-                return false;
-                }
-            } 
-        </script>
-
-        <!-- 下拉框ajax -->
-        <script>
-            $(document).ready(function () {
-                $.ajax({
-                    type: "get",
-                    url: "{% url 'MM:ajax_load_language' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success: function(data) {
-                        var dataObj = eval("("+data+")");
-                        var out = "<option value='' >language</option>";
-                        var i;
-                        for(i = 0; i < dataObj.length; i++) {
-                            out += '<option value=' + dataObj[i].Language+'>'+ dataObj[i].Language + '--' + dataObj[i].Name + '</option>' ;
-                        }
-                        var items=document.getElementsByName("language");
-                        for(i = 0; i < items.length; i++) {
-                            items[i].innerHTML=out;
-                        }
-                    },
-                    failure: function() {
-
-                    }
-                });
-                $.ajax({
-                    type: "post",
-                    url: "{% url 'MM:ajax_load_tptype' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success: function(data) {
-                        var dataObj = eval("("+data+")");
-                        var out = "<option value='' >Tptype</option>";
-                        var i;
-                        for(i = 0; i < dataObj.length; i++) {
-                            out += '<option value=' + dataObj[i].Tptype+'>'+ dataObj[i].Tptype + '--' + dataObj[i].Description + '</option>' ;
-                        }
-                        var items=document.getElementsByName("tpType");
-                        for(i = 0; i < items.length; i++) {
-                            items[i].innerHTML=out;
-                        }
-                    },
-                    failure: function() {
-
-                    }
-                });
-                $.ajax({
-                    type: "post",
-                    url: "{% url 'MM:ajax_load_currency' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success: function(data) {
-                        var dataObj = eval("("+data+")");
-                        var out = "<option value='' >currency</option>";
-                        var i;
-                        for(i = 0; i < dataObj.length; i++) {
-                            out += '<option value=' + dataObj[i].Currency+'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
-                        }
-                        var items=document.getElementsByName("currency");
-                        for(i = 0; i < items.length; i++) {
-                            items[i].innerHTML=out;
-                        }
-                    },
-                    failure: function() {
-
-                    }
-                });
-                $.ajax({
-                    type: "post",
-                    url: "{% url 'MM:ajax_load_country' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success: function(data) {
-                        var dataObj = eval("("+data+")");
-                        var out = "<option value='' >country</option>";
-                        var i;
-                        for(i = 0; i < dataObj.length; i++) {
-                            out += '<option value=' + dataObj[i].Country+'>'+ dataObj[i].ChineseName + '--' + dataObj[i].EnglishName + '</option>' ;
-                        }
-                        var items=document.getElementsByName("country");
-                        for(i = 0; i < items.length; i++) {
-                            items[i].innerHTML=out;
-                        }
-                            
-                        },
-                    failure: function() {
-
-                    }
-                });
-                $.ajax({
-                    type: "post",
-                    url: "{% url 'MM:ajax_load_plant' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success: function(data) {
-                        var dataObj = eval("("+data+")");
-                        var out = "<option value='' >请选择工厂</option>";
-                        var i;
-                        for(i = 0; i < dataObj.length; i++) {
-                            out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
-                        }
-                        //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
-                        var items=document.getElementsByName("plant");
-                        for(i = 0; i < items.length; i++) {
-                            items[i].innerHTML=out;
-                        }
-                    },
-                    failure: function() {
-
-                    }
-                });
-                $.ajax({
-                    type: "post",
-                    url: "{% url 'MM:ajax_load_porg' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success: function(data) {
-                        var dataObj = eval("("+data+")");
-                        var out = "<option value='' >porg</option>";
-                        var i;
-                        for(i = 0; i < dataObj.length; i++) {
-                            out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
-                        }
-                        var items=document.getElementsByName("pOrg");
-                        for(i = 0; i < items.length; i++) {
-                            items[i].innerHTML=out;
-                        } 
-                    },
-                    failure: function() {
-
-                    }
-                });
-                $.ajax({
-                    type: "post",
-                    url: "{% url 'MM:ajax_load_company' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success: function(data) {
-                        var dataObj = eval("("+data+")");
-                        var out = "<option value='' >company</option>";
-                        var i;
-                        for(i = 0; i < dataObj.length; i++) {
-                            out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
-                        }
-                        var items=document.getElementsByName("company");
-                        for(i = 0; i < items.length; i++) {
-                            items[i].innerHTML=out;
-                        } 
-                    },
-                    failure: function() {
-
-                    }
-                });
             });
-        </script>
-
-        <!-- 不懂 -->
-        <!-- <script>   //不需要提交表单，点击input框加载modal直接列出
-            $('').on('', function(e) {
-                e.preventDefault();
-                 
-                $.ajax(
-                {
-                    type: "post",
-                    url: "{% url 'MM:ajax_load_currency' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success: function(data) {
-                        var i=0 //序号
-                        for() {
-                            i++
-                            out += '<tr><td>'+ i + '</td><td>' + /* 货币 */ + '</td><td>' + /* 名称 */ +'</td><tr>';
-                        }
-                        document.getElementById("currDiv").innerHTML=out;
-                    },
-                    failure: function() {
-        
-                    }
-                    
-                })
-            });
-            $("table").on("dblclick","tr",function(e){
-                
-                document.getElementById("curr1").value=$(this).find('td').eq(0).text();
-                //$('#myModalcurr').modal('hide')
-                
-            })
-        
-            function currency() {
-        
-                //弹出模态框
-                
-                //$("#myModalcurr").modal("show")
-                
-                }
-                
-            
-        </script> -->
-        
-        
-    </body>
+        });
+    </script>
+  
+  </body>
 </html>
 

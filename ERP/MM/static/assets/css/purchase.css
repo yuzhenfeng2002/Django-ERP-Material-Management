@@ -1,0 +1,448 @@
+#search {
+    width: 100%;
+}
+
+#pur-tag1 {
+    width: 10%;
+}
+
+#pur-tag2 {
+    width: 9%;
+}
+
+#pur-tag4 {
+    width: 8%;
+}
+
+#pur-tag3 {
+    width: 8%;
+}
+
+#pur-search1 {
+    width: 15%;
+}
+
+#pur-search2 {
+    width: 15%;
+}
+
+#pur-search4 {
+    width: 13%;
+}
+
+#pur-search3 {
+    width: 15%;
+}
+
+.beizhu {
+    display: inline-block;
+    width: 100px;
+    /* 设置文本不进行换行 */
+    white-space: nowrap;
+    /* 让超出部分省略 */
+    overflow: hidden;
+    /* 超出部分使用省略号 */
+    text-overflow: ellipsis;
+}
+
+.beizhu:hover {
+    white-space: normal;
+    text-overflow: clip;
+}
+
+
+#btn-addgood {
+    margin-left: 92%;
+}
+
+#danwei {
+    width: 50%;
+    margin-left: 6px;
+}
+
+#rfq-search {
+    width: 100%;
+}
+
+
+#rfq-search-row1 {
+    width: 100%;
+    display: inline-block;
+}
+
+#rfq-1 {
+    width: 11%;
+}
+
+#rfq-2 {
+    width: 11%;
+}
+
+#rfq-3 {
+    width: 11%;
+}
+
+#rfq-4 {
+    width: 11%;
+}
+
+#rfq-5 {
+    width: 11%;
+}
+
+#rfq-6 {
+    width: 11%;
+}
+
+#rfq-7 {
+    width: 11%;
+}
+
+#rfq-blank {
+    width: 5%;
+}
+
+#rfq-search {
+    width: 100%;
+}
+
+
+
+
+#rfq-search-row2 {
+    width: 100%;
+    display: inline-block;
+}
+
+
+#rfq-search-row3 {
+    width: 100%;
+    display: inline-block;
+}
+
+#rfq-tag1 {
+    width: 11%;
+}
+
+#rfq-tag2 {
+    width: 9%;
+}
+
+#rfq-tag4 {
+    width: 9%;
+}
+
+#rfq-tag3 {
+    width: 8%;
+}
+
+#rfq-tag5 {
+    width: 11%;
+}
+
+#rfq-search1 {
+    width: 16%;
+}
+
+#rfq-search2 {
+    width: 16%;
+}
+
+#rfq-search4 {
+    width: 16%;
+}
+
+#rfq-search3 {
+    width: 16%;
+}
+
+#rfq-search5 {
+    width: 16%;
+}
+
+#rfq-create-search1 {
+    width: 25%;
+}
+
+.rfq-td-modify {
+    width: 100px;
+    height: 21px;
+    border: none;
+}
+
+.rfq-td-modify-2 {
+    width: 100px;
+    height: 21px;
+    border: none;
+}
+
+
+.rfq-td {
+    display: flex;
+    width: 250px;
+}
+
+.rfq-td-daoru {
+    width: 120px;
+}
+
+.rfq-td-create {
+    border: none;
+    width: 90px;
+}
+
+#vqm-search {
+    width: 100%;
+}
+
+#vqm-search-row1 {
+    width: 100%;
+}
+
+#vqm-search-row1 {
+    width: 100%;
+    display: inline-block;
+}
+
+#vqm-tag1 {
+    width: 11%;
+}
+
+#vqm-tag2 {
+    width: 9%;
+}
+
+#vqm-tag4 {
+    width: 9%;
+}
+
+#vqm-tag3 {
+    width: 8%;
+}
+
+#vqm-tag5 {
+    width: 11%;
+}
+
+#vqm-search1 {
+    width: 16%;
+}
+
+#vqm-search2 {
+    width: 16%;
+}
+
+#vqm-search4 {
+    width: 16%;
+}
+
+#vqm-search3 {
+    width: 16%;
+}
+
+#vqm-search5 {
+    width: 16%;
+}
+
+.vq-modify-td {
+    display: flex;
+}
+
+.td-text {
+    width: 9%;
+}
+
+.td-text-modify {
+    border: none;
+}
+
+.vqm-text {
+    width: 100px;
+    border: none;
+}
+
+#heji {
+    width: 65%;
+    border: none;
+}
+
+#hjdanwei {
+    border: none;
+    width: 75%;
+}
+
+#table-pr-head {
+    width: 98%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#btn-pr-create {
+    margin-left: 30%;
+    width: 40%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#btn-rfq-create {
+    margin-left: 30%;
+    width: 40%;
+}
+
+#btn-rfq-search {
+    margin-left: 1%;
+}
+
+#btn-vq-create {
+    margin-left: 30%;
+    width: 40%;
+}
+
+.p-vq-modify {
+    display: inline;
+    margin-left: 25%;
+}
+
+#btn-vqm {
+    margin-left: 30%;
+    width: 40%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.vq-value-tr {
+    height: 60px;
+}
+.score {
+    display: inline-block;
+    width: 100px;
+    /* 设置文本不进行换行 */
+    white-space: nowrap;
+    /* 让超出部分省略 */
+    overflow: hidden;
+    /* 超出部分使用省略号 */
+    text-overflow: ellipsis;
+}
+
+.score:hover {
+    white-space: normal;
+    text-overflow: clip;
+}
+
+#btn-vq-deny {
+    background-color: #da4453;
+    border-color: #da4453;
+}
+#btn-po-search{
+    margin-left: 80px;
+}
+#po-vq {
+    width: 27%;
+    height: 60%;
+}
+
+#po-vq-info {
+    width: 90%;
+}
+
+.text-po-create {
+    width: 14%;
+}
+
+.po-create-td{
+    border: none;
+    width: 90px;
+}
+
+#po-create-enter{
+    display: flex;
+    margin: 130px;
+}
+#poc-enter1{
+    margin-left: 80px;
+}
+.poc-text{
+    width: 200px;
+    height: 30px;
+    border: none;
+}
+.tab-text{
+    display: flex;
+}
+
+.pom-text{
+    width: 200px;
+    border: none;
+}
+
+.po-text-modify{
+    width: 90px;
+    border: none;
+}
+
+#btn-pom-save1{
+    margin-left: 92%;
+    margin-bottom: 4px;
+    width: 80px;
+}
+
+#pom-save2-wrap{
+    justify-content: space-around;
+}
+
+.bench-schedule .datepicker-inline .table-condensed tr {
+    background: transparent;
+}
+
+.bench-schedule .datepicker-inline {
+    width: 100%;
+}
+
+.bench-schedule .datepicker table {
+    border: none;
+}
+
+.table-condensed th.dow {
+    background: #E7ECF6;
+}
+
+.bench-schedule .datepicker th,
+.datepicker td {
+    border-radius: 0;
+}
+
+.bench-schedule .datepicker-inline .table-condensed tr:nth-child(odd) th {
+    background: #0C69BC;
+    font-size: 16px;
+    color: #FFFFFF;
+    letter-spacing: 0.11px;
+}
+
+.bench-schedule table tr:first-child th:first-child {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.bench-schedule table tr:first-child th:last-child {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.table-condensed th.dow:first-child {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.table-condensed th.dow:last-child {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.bench-schedule .datepicker .active {
+    background-color: #BF1629;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    background-image: none;
+    filter: none;
+}
