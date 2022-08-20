@@ -164,8 +164,9 @@ def search_unpaied_invoice(request: HttpRequest):
 def pay(request: HttpRequest):
     post = request.POST
     postDate = getDate(post.get('postDate'))
-    invoiceIDList = post.get('invoiceIDList')
-    invoiceIDList = json.loads(invoiceIDList)
+    invoiceIDList: str = post.get('invoiceIDList')
+    invoiceIDList = invoiceIDList.lstrip('[').rstrip(',]')
+    invoiceIDList = invoiceIDList.split(',')
     # return HttpResponse(str(invoiceIDList))
     account = Account(
         JEType='KZ', sumAmount=0, postDate=postDate
@@ -178,6 +179,7 @@ def pay(request: HttpRequest):
     account.save()
     sum = 0
     for id in invoiceIDList:
+        id = int(id)
         invoice: Invoice = Invoice.objects.get(id__exact=id)
         orderItem: OrderItem = OrderItem.objects.get(pk__exact=invoice.orderItem.id)
         orderItem.status = '3'
