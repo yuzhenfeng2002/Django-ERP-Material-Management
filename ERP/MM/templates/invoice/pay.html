@@ -6,46 +6,19 @@
         <!-- 搜索供应商 -->
         <form id="material1" method="post">
             <fieldset>
-                <input  type="text" id="materialInput2" placeholder="请输入状态">
                 <input id="materialInput1" name='pk' type="text"  placeholder="请输入供应商编号">
+                
             </fieldset>
             
             <button type="submit" formmethod="post">Submit</button>
         </form>
 
-        <div id="myModal1">
-            <!-- 搜索编号条件 -->
-            <!-- 可填任意个条件，一个也不填则返回全部 -->
-            <form id="material2" method="post">
-                {% csrf_token %}
-                <fieldset>
-                    Vname: <input type="text" name="vname" id="vname">
-                    Creater ID: <input type="text" name="uid" id="uid">
-                    City: <input type="text" name="city" id="city">
-                    国家:<select name="country" id="country"></select>
-                公司编码：<select name="company" id="company"></select>
-                </fieldset>
-                
-                <input type="submit" name="submit" value="submit">
-            </form>
-        </div>
+        <form id="material5" method="post">
+           
+                <input  type="text" id="materialInput2" placeholder="请输入付款过账日期">
+             
             
-        <table>
-            <h4> 供应商</h4>
-            <hr>
-            <thead>
-            <!-- 搜索编号返回的属性 -->
-            <tr>
-                <th> 供应商编号</th>
-                <th> 供应商名称</th>
-                <th> 所在城市</th>
-                <th> 公司编码</th>
-                <th> 创建者编号</th>
-            </tr>
-            </thead>
-            <tbody id="searchDiv"></tbody>
-        </table>
-
+           
         <table >
             <thead>
             <tr>
@@ -66,12 +39,13 @@
         </table>
         <label>本次结算总金额：</label>
         <label id=''></label>
-
+        <button type="submit" formmethod="post">Submit</button>
+    </form>
         
         <textarea id="item_result"></textarea>
 
         <script>
-            //搜索 两项内容必须都填
+            
             $('#material1').on('submit', function(e) {
                 e.preventDefault();
                 $.ajax(
@@ -81,8 +55,8 @@
                     data:{
                         dataType: "json",
                         csrfmiddlewaretoken: '{{ csrf_token }}',
-                        vid: $("#materialInput1").val(),
-                        status: $("#materialInput2").val(),
+                        : $("#materialInput1").val(),
+                        
                         //输入2个搜索框的值
                     },
                     success: function(data) {
