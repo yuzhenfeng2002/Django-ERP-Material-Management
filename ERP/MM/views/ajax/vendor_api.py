@@ -60,16 +60,17 @@ def search_vendor_history(request: HttpRequest):
     now = timezone.now()
     start = now + datetime.timedelta(days=-30 * range_list[range])
     history = OrderItem.objects.filter(
-        meterial__id=mid, po__time__range=[start, now]
+        meterialItem__material__id=mid, po__time__range=[start, now]
     )
     history_not_null = history.exclude(qualityScore__isnull=True
     ).exclude(serviceScore__isnull=True).exclude(quantityScore__isnull=True
     ).exclude(ontimeScore__isnull=True)
-    response = history_not_null.values_list('po__vendor').annotate(
+    response: QuerySet = history_not_null.values_list('po__vendor').annotate(
         quan=Sum(F('price') * F('quantity')), num=Count('id'), score=Sum(
             (F('quantityScore')*w1+F('qualityScore')*w2+F('serviceScore')*w3+F('ontimeScore')*w4) * (F('price') * F('quantity'))
         ) / Sum(F('price') * F('quantity'))
     )
+    response = response.order_by('-score')
     vendor_list = list(response)
     for i,x in enumerate(response):
         vendor: Vendor = Vendor.objects.get(pk__exact=x[0])
@@ -106,7 +107,7 @@ def search_vendor(request: HttpRequest):
         if len(vendors) != 1:
             return HttpResponse(json.dumps({'status':0, 'message':"物料相关信息错误！"}))
         else:
-            return HttpResponse(json.dumps({'status':1, 'message':"供应商创建成功！", 'vendor':model_to_dict(vendors.first())}))
+            return HttpResponse(json.dumps({'status':1, 'message':"查找成功！", 'vendor':model_to_dict(vendors.first())}))
 
 @login_required
 def update_vendor(request: HttpRequest):

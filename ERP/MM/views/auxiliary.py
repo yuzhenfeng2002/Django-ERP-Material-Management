@@ -22,6 +22,6 @@ def getPkExact(string, type='*'):
 def getDate(string):
     dateInfo = string.split('. ')
     string = datetime.date(
-        year=int(dateInfo[2]), month=int(dateInfo[0]), day=int(dateInfo[1])
+        year=int(dateInfo[2]), month=int(dateInfo[1]), day=int(dateInfo[0])
     )
     return string

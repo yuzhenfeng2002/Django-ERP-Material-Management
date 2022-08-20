@@ -103,8 +103,8 @@ def create_receipt(request: HttpRequest):
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
     new_gr.save()
     orderItem.status = '1'
-    orderItem.qualityScore = qualityScore
-    orderItem.serviceScore = serviceScore
+    orderItem.qualityScore = int(qualityScore) * 20
+    orderItem.serviceScore = int(serviceScore) * 20
     orderItem.quantityScore = actualQnty / orderItem.quantity * 100
     dif = (time - orderItem.deliveryDate).days
     score = 0
