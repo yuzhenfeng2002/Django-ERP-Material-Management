@@ -98,7 +98,8 @@ def create_invoice(request: HttpRequest):
     orderItems: QuerySet = OrderItem.objects.filter(po__id__exact=po_id, itemId__exact=oi_itemId)
     orderItem = orderItems.last()
     euser = EUser.objects.get(pk__exact=request.user.id)
-    goodReceipt: GoodReceipt = GoodReceipt.objects.get(orderItem__id=orderItem.id)
+    goodReceipts: QuerySet = GoodReceipt.objects.filter(orderItem__id=orderItem.id)
+    goodReceipt = goodReceipts.last()
     actualAmount = goodReceipt.actualQnty * orderItem.price
     if sumAmount != actualAmount:
         return HttpResponse(json.dumps({'status':0, 'message':"表单总价填写错误！"+str(actualAmount), 'fields':['sumAmount']}))
