@@ -65,7 +65,7 @@
                 document.getElementById("yuan").style.display="";
     }
 </script>
-    {{context}}
+    {% comment %} {{context}} {% endcomment %}
     <body>
         <section id="main-content">
             <section class="wrapper">
@@ -88,11 +88,11 @@
                                   <tr>
                                       <td>
                                           <label>采购订单编码：</label>
-                                          <label>1112</label>
+                                          <label>{{context.gr.id}}</label>
                                       </td>
                                       <td>
                                           <label>创建者编码：</label>
-                                          <label>1112</label>
+                                          <label>{{context.gr.euser}}</label>
                                       </td>
                                       
                                   </tr>
@@ -107,65 +107,55 @@
                               <tbody>
                                   <tr>
                                       <td>
-                                          <label>商品编号：</label>
-                                          <label></label>
+                                          <label>商品名称：</label>
+                                          <label>{{context.material.mname}}</label>
                                       </td>
                                       
                                       <td>
-                                          <label>商品名称：</label>
-                                          <label></label>
+                                          <label>完整名称：</label>
+                                          <label>{{context.material.shortText}}</label>
                                       </td>
                                   </tr>
                                   <tr>
                                       <td>
                                           <label>应收数量：</label>
-                                          <label></label>
+                                          <label>{{context.quantity}}</label>
                                       </td>
                                       
                                       <td>
                                           <label>实收数量：</label>
-                                          <label></label>
+                                          <label>{{context.gr.actualQnty}}</label>
                                       </td>
                                   </tr>
-                                  <tr>
-                                    <td>
-                                        <label>应收数量：</label>
-                                        <label></label>
-                                    </td>
-                                    
-                                    <td>
-                                        <label>实收数量：</label>
-                                        <label></label>
-                                    </td>
-                                </tr>
+                                  
                                 <tr>
                                     <td>
                                         <label>工厂：</label>
-                                        <label></label>
+                                        <label>{{context.stock.name}}</label>
                                     </td>
                                     
                                     <td>
                                         <label>存储位置：</label>
-                                        <label></label>
+                                        <label>{{context.materialItem.sloc}}</label>
                                     </td>
                                     <td>
                                         <label>库存类型：</label>
-                                        <label></label>
+                                        <label>{{context.gr.sType}}</label>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <label>预期送达时间：</label>
-                                        <label></label>
+                                        <label>{{context.deliveryDate}}</label>
                                     </td>
                                     
                                     <td>
                                         <label>收货时间：</label>
-                                        <label></label>
+                                        <label>{{context.gr.time}}</label>
                                     </td>
                                     <td>
                                         <label>过账时间：</label>
-                                        <label></label>
+                                        <label>{{context.gr.postTime}}</label>
                                     </td>
                                 </tr>
 
