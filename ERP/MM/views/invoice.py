@@ -52,11 +52,15 @@ def display_invoice(request: HttpRequest):
     material: Material = get_object_or_404(Material, id__exact=materialItem.material.id)
     stock: Stock = get_object_or_404(Stock, id__exact=materialItem.stock.id)
     po: PurchaseOrder = get_object_or_404(PurchaseOrder, id__exact=item.po.id)
+    vendor: Vendor = get_object_or_404(Vendor, vid__exact=po.vendor.vid)
+    gr: GoodReceipt = get_object_or_404(GoodReceipt, orderItem__id__exact=item.id)
     item_dict['po'] = model_to_dict(po)
     item_dict['materialItem'] = model_to_dict(materialItem)
     item_dict['material'] = model_to_dict(material)
     item_dict['stock'] = model_to_dict(stock)
     item_dict['invoice'] = model_to_dict(invoice)
+    item_dict['vendor'] = model_to_dict(vendor)
+    item_dict['gr'] = model_to_dict(gr)
     return render(
         request=request,
         template_name='../templates/invoice/display.html',

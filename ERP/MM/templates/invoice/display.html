@@ -65,7 +65,7 @@
                 document.getElementById("yuan").style.display="";
     }
 </script>
-    {% comment %} {{context}} {% endcomment %}
+    {{context}}
     <body>
         <section id="main-content">
             <section class="wrapper">
@@ -81,7 +81,7 @@
                           <div id='form'>
                       <div class="content-panel">
                         <h4 style="text-align:center">发票收据</h4>
-                        <h5 style="text-align:center">供应商：</h4>
+                        <h5 style="text-align:center">供应商：{{context.vendor.vname}}</h4>
                         <section id="unseen">
                           <table class="table">
                               
@@ -89,7 +89,7 @@
                                     <tr>
                                         <td  style="text-align:right;">
                                             <label>发票收据编号：</label>
-                                            <label></label>
+                                            <label>{{context.id}}</label>
                                         </td>
                                         
                                     </tr>
@@ -97,7 +97,7 @@
                                        
                                         <td style="text-align:right;">
                                             <label>开票日期：</label>
-                                            <label>{{context.gr.euser}}</label>
+                                            <label>{{context.invoice.invoiceDate}}</label>
                                         </td>
                                         
                                     </tr>
@@ -129,11 +129,11 @@
                                       </thead>
                                       <tbody>
                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
+                                          <td>{{context.material.mname}}</td>
+                                          <td>{{context.gr.actualQnty}}</td>
+                                          <td>{{context.price}} {{context.currency}}</td>
+                                          <td>{{context.invoice.sumAmount}} {{context.invoice.currency}}</td>
+                                          <td>{{context.invoice.text}}</td>
                                           
                                       </tr>
                                     
@@ -155,12 +155,12 @@
                                         </td>
                                         <td>
                                             <label>所属财年：</label>
-                                            <label>{{context.material.mname}}</label>
+                                            <label>{{context.invoice.fiscal}}</label>
                                         </td>
                                         
                                         <td>
                                             <label>支付类型：</label>
-                                            <label>{{context.material.shortText}}</label>
+                                            <label>{{context.vendor.tpType}}</label>
                                         </td>
                                     </tr>
                                     <tr>
@@ -183,17 +183,17 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <label>，</label>
-                                            <label>编号{{context.gr.postTime}}</label>
+                                            <label>编号: </label>
+                                            <label>{{context.invoice.id}}</label>
                                         </td>
                                         <td>
                                             <label>地址：</label>
-                                            <label>{{context.material.mname}} {{context.material.mname}} {{context.material.mname}}</label>
+                                            <label>{{context.vendor.address}}</label>
                                         </td>
                                         
                                         <td>
                                             <label>邮编：</label>
-                                            <label>{{context.material.shortText}}</label>
+                                            <label>{{context.vendor.postcode}}</label>
                                         </td>
                                     </tr>
                                     
@@ -207,12 +207,12 @@
                                         
                                         <td>
                                             <label>公司编码：</label>
-                                            <label></label>
+                                            <label>{{context.vendor.id}}</label>
                                         </td>
                                         
                                         <td>
                                             <label>工厂：</label>
-                                            <label>{{context.material.shortText}}</label>
+                                            <label>{{context.stock.name}}</label>
                                         </td>
                                     </tr>
                                     

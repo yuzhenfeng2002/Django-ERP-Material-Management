@@ -160,3 +160,47 @@ def search_unpaied_invoice(request: HttpRequest):
         results_list[i]['vendor'] = model_to_dict(vendor)
     return HttpResponse(json.dumps({'status':1, 'message':"商品收据检索成功！", 'gr':results_list}, default=str))
 
+@login_required
+def pay(request: HttpRequest):
+    post = request.POST
+    postDate = getDate(post.get('postDate'))
+    invoiceIDList = post.get('invoiceIDList')
+    invoiceIDList = json.loads(invoiceIDList)
+    return HttpResponse(json.dumps(invoiceIDList, default=str))
+    account = Account(
+        JEType='KZ', sumAmount=0, postDate=postDate
+    )
+    try:
+        account.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    account.save()
+    sum = 0
+    for id in invoiceIDList:
+        invoice: Invoice = Invoice.objects.get(id__exact=id)
+        orderItem: OrderItem = OrderItem.objects.get(pk__exact=invoice.orderItem.id)
+        orderItem.status = '3'
+        orderItem.save()
+        sum += invoice.sumAmount
+        accountDetail1 = AccountDetail(
+            glAccount='300000', type='0', amount=invoice.sumAmount, je=account, invoice=invoice
+        )
+        try:
+            accountDetail1.full_clean()
+        except ValidationError as e:
+            error_fields = list(e.error_dict.keys())
+            return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+        accountDetail1.save()
+    account.sumAmount = sum
+    account.save()
+    accountDetail2 = AccountDetail(
+        glAccount='100000', type='1', amount=sum
+    )
+    try:
+        accountDetail2.full_clean()
+    except ValidationError as e:
+        error_fields = list(e.error_dict.keys())
+        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
+    accountDetail2.save()
+    return HttpResponse(json.dumps({'status':1, 'message':"付款成功！"}, default=str))
