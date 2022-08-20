@@ -87,7 +87,7 @@ def search_invoice(request: HttpRequest):
 def create_invoice(request: HttpRequest):
     post = request.POST
     po_id = getPkExact(post.get('po_id'), 'PO')
-    oi_itemId = post.get('oi_id')
+    oi_itemId = int(post.get('oi_id'))
     sumAmount = int(post.get('sumAmount'))
     fiscal = post.get('fiscal')
     currency = post.get('currency')
@@ -95,12 +95,12 @@ def create_invoice(request: HttpRequest):
     postDate = getDate(post.get('postDate'))
     invoiceDate = getDate(post.get('invoiceDate'))
     
-    orderItem: OrderItem = OrderItem.objects.get(po__id__exact=po_id, itemId=oi_itemId)
+    orderItem: OrderItem = OrderItem.objects.get(po__id__exact=po_id, itemId__exact=oi_itemId)
     euser = EUser.objects.get(pk__exact=request.user.id)
     goodReceipt: GoodReceipt = GoodReceipt.objects.get(orderItem__id=orderItem.id)
     actualAmount = goodReceipt.actualQnty * orderItem.price
     if sumAmount != actualAmount:
-        return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':['sumAmount']}))
+        return HttpResponse(json.dumps({'status':0, 'message':"表单总价填写错误！"+str(actualAmount), 'fields':['sumAmount']}))
     new_invoice = Invoice(
         fiscal=fiscal, sumAmount=sumAmount, currency=currency, text=text, invoiceDate=invoiceDate, postDate=postDate, orderItem=orderItem, euser=euser
     )

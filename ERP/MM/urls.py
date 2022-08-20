@@ -47,6 +47,7 @@ urlpatterns = [
     path('api/receipt/create/', receipt_api.create_receipt, name='ajax_create_receipt'),
     path('api/receipt/search/', receipt_api.search_receipt, name='ajax_search_receipt'),
     path('api/invoice/search/', invoice_api.search_invoice, name='ajax_search_invoice'),
+    path('api/invoice/create/', invoice_api.create_invoice, name='ajax_create_invoice'),
     path('api/invoice/searchUnpaid/', invoice_api.search_unpaied_invoice, name='ajax_search_unpaied_invoice'),
 
 

@@ -78,9 +78,8 @@ def load_order_item(request: HttpRequest):
     item_dict['materialItem_'] = model_to_dict(materialItem)
     item_dict['material_'] = model_to_dict(material)
     item_dict['stock_'] = model_to_dict(stock)
-    return HttpResponse(json.dumps(item_dict, default=str))
-    # return render(
-    #     request=request,
-    #     template_name='../templates/receipt/create2.html',
-    #     context={'context': item_dict}
-    # )
+    return render(
+        request=request,
+        template_name='../templates/invoice/create2.html',
+        context={'context': item_dict}
+    )
