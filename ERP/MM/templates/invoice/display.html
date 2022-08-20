@@ -101,95 +101,30 @@
                                         </td>
                                         
                                     </tr>
-                                  <tr>
-                                      
-                                      <td style="text-align:right;">
-                                          <label>创建者编码：</label>
-                                          <label>{{context.gr.euser}}</label>
-                                      </td>
-                                      
-                                  </tr>
+                                  
                                   
                       
                               </thead>
                   
                           </table>
 
-                          <table class="table">
-                             
-                              <tbody>
-                                  <tr>
-                                      <td>
-                                          <label>商品名称：</label>
-                                          <label>{{context.material.mname}}</label>
-                                      </td>
-                                      
-                                      <td>
-                                          <label>完整名称：</label>
-                                          <label>{{context.material.shortText}}</label>
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td>
-                                          <label>应收数量：</label>
-                                          <label>{{context.quantity}}</label>
-                                      </td>
-                                      
-                                      <td>
-                                          <label>实收数量：</label>
-                                          <label>{{context.gr.actualQnty}}</label>
-                                      </td>
-                                  </tr>
-                                  
-                                <tr>
-                                    <td>
-                                        <label>工厂：</label>
-                                        <label>{{context.stock.name}}</label>
-                                    </td>
-                                    
-                                    <td>
-                                        <label>存储位置：</label>
-                                        <label>{{context.materialItem.sloc}}</label>
-                                    </td>
-                                    <td>
-                                        <label>库存类型：</label>
-                                        <label>{{context.gr.sType}}</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>预期送达时间：</label>
-                                        <label>{{context.deliveryDate}}</label>
-                                    </td>
-                                    
-                                    <td>
-                                        <label>收货时间：</label>
-                                        <label>{{context.gr.time}}</label>
-                                    </td>
-                                    <td>
-                                        <label>过账时间：</label>
-                                        <label>{{context.gr.postTime}}</label>
-                                    </td>
-                                </tr>
-
-                              </tbody>
-                          </table>
+                          
                           <div class="row mt">
                             <div class="col-md-12">
                               <div class="col-md-12">
                               <div class="content-panel">
                                   <!-- <div class="form-panel2"> -->
                                   <table class="table table-striped table-advance table-hover">
-                                          <h4><i class="fa fa-angle-right"></i> 商品信息</h4>
+                                          {% comment %} <h4><i class="fa fa-angle-right"></i> 商品信息</h4> {% endcomment %}
                                       <thead>
                                       <tr>
                                           
                                           {% comment %} <th><i class="fa fa-question-circle"></i> 商品编码</th> {% endcomment %}
-                                          <th><i class="fa fa-bookmark"></i> 商品名称</th>
-                                          <th><i class=" fa fa-edit"></i> 数量</th>
-                                          <th><i class=" fa fa-edit"></i> 单价</th><!--后面加上货币-->
-                                          <th><i class=" fa fa-edit"></i> 总价</th>
-                                          <th><i class="fa fa-bullhorn"></i> 备注</th>
+                                          <th> 商品名称</th>
+                                          <th> 数量</th>
+                                          <th> 单价</th><!--后面加上货币-->
+                                          <th> 总价</th>
+                                          <th> 备注</th>
                                       </tr>
                                       </thead>
                                       <tbody>
@@ -253,7 +188,7 @@
                                         </td>
                                         <td>
                                             <label>地址：</label>
-                                            <label>{{context.material.mname}}{{context.material.mname}}{{context.material.mname}}</label>
+                                            <label>{{context.material.mname}} {{context.material.mname}} {{context.material.mname}}</label>
                                         </td>
                                         
                                         <td>
@@ -261,7 +196,7 @@
                                             <label>{{context.material.shortText}}</label>
                                         </td>
                                     </tr>
-                                    =
+                                    
                                 </tbody>
                             </table>
 
@@ -280,7 +215,7 @@
                                             <label>{{context.material.shortText}}</label>
                                         </td>
                                     </tr>
-                                    =
+                                    
                                 </tbody>
                             </table>
 
