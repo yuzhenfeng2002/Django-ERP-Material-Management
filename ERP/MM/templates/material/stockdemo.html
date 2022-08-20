@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <!-- static 这样插 -->
+    {% load static %}
+    <script src="{% static 'assets/js/echarts.js' %}"></script>
+    <head>Material Search</head>
+    <body>
+        <!-- 搜索商品 -->
+        <form id="material1" method="post">
+            <fieldset>
+                    <!-- 三项内容都填才能发起搜索，否则返回提示:请填写xxx（第一个未填的项） -->
+                    <input id="materialInput1" name='pk' type="text"  placeholder="请输入商品编号">
+          
+                    <select id="materialInput2" name='plant'></select>
+
+                    <select id="materialInput3" name="sloc">
+                        <option value=''>请选择存储位置</option> 
+                        <option value='TG00'>TG00--贸易商品</option>
+                        <option value='RM00'>RM00--原材料</option>
+                        <option value='SF00'>SF00--半成品</option>
+                        <option value='FG00'>FG00--产成品</option>
+                        <option value='MI00'>MI00--混合产品</option>
+                        <option value='RE00'>RE00--退货产品</option> 
+                         
+                    </select>
+            </fieldset>
+            <!-- 搜索商品ajax -->     
+            <button type="submit" formmethod="post">Submit</button>
+        </form>
+
+        <div id="myModal1">
+            <!-- 搜索编号条件 -->
+            <!-- 可填任意个条件，一个也不填则返回全部 -->
+            <form id="material2" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <!-- id和name任取 -->
+                    商品名称:
+                    <input type="text" name="mname" id="mname">
+                    商品类型:
+                    <select name="mType" id="mType">
+                        <!-- 默认为未选 -->
+                        <option value=''>请选择商品类型</option>
+                        <option value='RM'>RM--原材料</option>
+                        <option value='HALB'>HALB--半成品</option>
+                        <option value='FERT'>SF00--成品</option>
+                        <option value='FREMD'>FG00--外部采购物料</option>
+                        <option value='PROC'>MI00--加工物料</option>
+                        <option value='HAWA'>RE00--贸易货物</option> 
+                        <option value='HIBE'>RE00--经营供应</option>
+                    </select>
+                    
+                    <!-- 他们数据库设计只允许一个字符作为值，我改一下 -->
+                    工业部门：<select name="industrySector" id="industrySector">
+                        <option value=''>请选择工业部门</option>
+                        <option value='C'>化学工业</option>
+                        <option value='M'>机械工业</option>
+                        <option value='E'>药剂工业</option>
+                        <option value='F'>设备工程</option>
+                        <option value='R'>零售</option>
+                    </select>
+                    
+                    存储位置:
+                    <select name="sloc" id="sloc">
+                    <option value=''>请选择存储位置</option> 
+                    <option value='TG00'>TG00--贸易商品</option>
+                    <option value='RM00'>RM00--原材料</option>
+                    <option value='SF00'>SF00--半成品</option>
+                    <option value='FG00'>FG00--产成品</option>
+                    <option value='MI00'>MI00--混合产品</option>
+                    <option value='RE00'>RE00--退货产品</option> 
+                    </select>
+                    
+                    工厂:
+                    <select name="plant" id="plant"></select>
+
+                    创建者编号:
+                    <input type="text" name="uid" id="uid">
+                    
+                </fieldset>
+                <input type="submit" name="submit" value="submit">
+            </form>
+        </div>
+
+        <table>
+            <h4> 商品</h4>
+            <hr>
+            <thead>
+            <!-- 搜索编号返回的属性 -->
+            <tr>
+                <th> 商品编号</th>
+                <th> 商品名称</th>
+                <th> 商品类型</th>
+                <th> 工业部门</th>
+                <th> 工厂</th>
+                <th> 存储位置</th>
+                <th> 创建者编号</th>
+            </tr>
+            </thead>
+            <tbody id="searchDiv"></tbody>
+        </table>
+
+
+        <table>
+            <h4> 商品库存</h4>
+            <hr>
+            <thead>
+            <tr>
+                <th> 库存类型</th>
+                <th> 当前库存数量</th>
+
+            </tr>
+            </thead>
+            <tbody >
+                <tr>
+                    <td>在途库存</td>
+                    <td id="stock0"></td>
+                </tr>
+                <tr>
+                    <td>无限制库存</td>
+                    <td id="stock1"></td>
+                </tr>
+                <tr>
+                    <td>冻结库存</td>
+                    <td id="stock2"></td>
+                </tr>
+                <tr>
+                    <td>质量检验库存</td>
+                    <td id="stock3"></td>
+                </tr>
+            </tbody>
+        </table>
+
+            <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+            <div id="main" style="width: 600px;height:400px;"></div>
+
+        
+
+        <textarea id="item_result"></textarea>
+
+        <script>
+
+            
+            //商品搜索 三项内容都填才能发起搜索，否则返回提示:请填写xxx（第一个未填的项）；如果搜不到，返回提示：没有符合条件的商品（这个也不返回了，可以判断是否为序列中只有一个元素）
+            $('#material1').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_stock_history' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        //输入三个搜索框的值
+                        material_id: $("#materialInput1").val(),
+                        plant: $("#materialInput2").val(),
+                        sloc: $("#materialInput3").val(),
+                    },
+                    success: function(data) {
+                        //data={"status": 1, "message": [[2022, 8, 0, 0, 0, 0], [2022, 7, 100, 0, 0], [2022, 6, -75, 0, 0], [2022, 5, -125, 0, 0], [2022, 4, -375, 0, 0], [2022, 3, 625, 0, 0], [2022, 2, 625, 300, 200]]}
+                        var dataObj = eval("("+data.message+")");
+                        $('#item_result').text(data);
+                        //var dataObj =([[2022,5,23,54,43,21],[2022,4,74,-56,3],[2022,3,46,12,90],[2022,2,74,-56,3],[2022,1,46,12,90],[2021,12,74,-56,3]]) ;
+                        document.getElementById("stock0").innerHTML=dataObj[0][2];
+                        document.getElementById("stock1").innerHTML=dataObj[0][3];
+                        document.getElementById("stock2").innerHTML=dataObj[0][4];
+                        document.getElementById("stock3").innerHTML=dataObj[0][5];
+                  
+                        // 基于准备好的dom，初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('main'));
+                  
+                        // 指定图表的配置项和数据
+                        var option = {
+                        xAxis: {
+                          type: 'category',
+                          data: [ dataObj[5][0]+'.'+dataObj[5][1],dataObj[4][0]+'.'+dataObj[4][1],dataObj[3][0]+'.'+dataObj[3][1],dataObj[2][0]+'.'+dataObj[2][1],dataObj[1][0]+'.'+dataObj[1][1], dataObj[0][0]+'.'+dataObj[0][1]]
+                        },
+                        yAxis: {
+                          type: 'value'
+                        },
+                        legend: {
+                          data: ['无限制库存', '冻结库存',"质量检验库存"], //图例的数据数组
+                        },
+                        series: [
+                        {
+                          itemStyle : { normal: {label : {show: true}}},
+                          name: "无限制库存",
+                          data: [dataObj[5][2],dataObj[4][2], dataObj[3][2], dataObj[2][2], dataObj[1][2], dataObj[0][3]],
+                          type: 'line'
+                        },
+                        {
+                          itemStyle : { normal: {label : {show: true}}},
+                          name: "冻结库存",
+                          data: [dataObj[5][3],dataObj[4][3], dataObj[3][3],dataObj[2][3], dataObj[1][3],dataObj[0][4]],
+                          type: 'line'
+                        },
+                        {
+                          itemStyle : { normal: {label : {show: true}}},
+                          name: "质量检验库存",
+                          data: [dataObj[5][4],dataObj[4][4], dataObj[3][4],dataObj[2][4], dataObj[1][4], dataObj[0][5]],
+                          type: 'line'
+                        }
+                        ]
+                    };
+                  
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                        
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+
+            //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
+            $('#material2').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_item' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        mid: '',
+                        mname: $("#mname").val(),
+                        mType: $("#mType").val(),
+                        industrySector: $("#industrySector").val(),
+                        sloc: $("#sloc").val(),
+                        plant: $("#plant").val(),
+                        uid: $('#uid').val(),
+                    },
+                    success: function(data) {
+
+                        $('#item_result').text(data);
+                    
+                        var dataObj = eval("("+data+")");
+                        var out = "";
+                        var i;
+                        
+                        for(i = 0; i < dataObj.length; i++) {
+                            //dataObj[i].fields.xx
+                            fields = dataObj[i].fields
+                            material = dataObj[i].material
+                            stock = dataObj[i].stock
+                            user = dataObj[i].user
+                            out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
+                        }
+                        document.getElementById("searchDiv").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+
+            //双击行 信息进入“搜索商品条件”三个框
+            $("table").on("dblclick","tr",function(e){
+                document.getElementById("materialInput1").value=$(this).find('td').eq(0).text();
+                document.getElementById("materialInput2").value=$(this).find('td').eq(4).text();
+                document.getElementById("materialInput3").value=$(this).find('td').eq(5).text();
+                $('#myModal1').modal('hide');
+            });
+
+            
+        </script>
+
+        <!-- 确认提示 -->
+        <script>
+            function tip(){
+                if(confirm("您确认修改吗？")){
+                return true;
+                }
+                else{
+                return false;
+                }
+            } 
+        </script>
+
+        <!-- 下拉框ajax -->
+        <script>
+            $(document).ready(function () {
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_plant' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择工厂</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
+                    var items=document.getElementsByName("plant");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_meaunit' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >meaunit</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Meaunit+'>'+ dataObj[i].Meaunit + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("meaunit");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }                
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_pgrp' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >pgrp</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("pgrp");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }  
+                },
+                failure: function() {
+
+                }
+            });
+            
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_porg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >porg</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("porg");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_sorg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >sorg</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Sorg+'>'+ dataObj[i].Sorg + '--' + dataObj[i].Name1 + '</option>' ;
+                    }
+                    var items=document.getElementsByName("sorg");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_company' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >company</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("company");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+
+                }
+            });
+        });
+        </script>
+    </body>
+</html>

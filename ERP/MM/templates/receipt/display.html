@@ -1,7 +1,404 @@
 <!DOCTYPE html>
 <html>
-    <head>Test</head>
+    {% load static %}
+<!-- import CSS -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Bootstrap core CSS -->
+<link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+<!--external css-->
+<link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    
+<!-- Custom styles for this template -->
+<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+
+
+<!--common script for all pages-->
+<script src="{% static 'assets/js/common-scripts.js' %}"></script>
+
+<!--script for this page-->
+
+<!-- 引入刚刚下载的 ECharts 文件 -->
+<script src="{% static 'assets/js/echarts.js' %}"></script>
+<script src="{% static 'assets/js/highlight.min.js' %}"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+
+    <script src="{% static 'assets/dist/notice.min.js' %}"></script>
+    <script>
+        const notice = new Notice();
+    </script>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/dist/notice.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/default.min.css' %}">
+    <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
+   <script src="{% static 'assets/js/print.js' %}"></script>
+
+    <script type="text/javascript">
+    function toPrint() {
+        Print('#form', {
+        noPrint: '.noPrint'
+        });
+    }
+    </script>
+    <script>
+       
+    function re(){
+        document.getElementById("fu").style.display="none";
+                document.getElementById("yuan").style.display="";
+    }
+</script>
+    {{context}}
     <body>
-        {{ context }}
+        <section id="main-content">
+            <section class="wrapper">
+                <h3><i class="fa fa-angle-right"></i> 查看商品收据
+                </h3>
+                
+              <div class="row mt">  
+                  <div class="col-lg-12">
+                    <div class="col-lg-12">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-theme03" onclick="toPrint()"><i class="fa fa-print" aria-hidden="true"></i> 打印</button>
+                          </div><br><br>
+                          <div id='form'>
+                      <div class="content-panel">
+                        <h4 style="text-align:center">采购订单详情</h4>
+                        <section id="unseen">
+                          <table class="table">
+                              
+                                  <tbody>
+                                  <tr>
+                                      <td>
+                                          <label>采购订单编码：</label>
+                                          <label>1112</label>
+                                      </td>
+                                      <td>
+                                          <label>创建者编码：</label>
+                                          <label>1112</label>
+                                      </td>
+                                      
+                                  </tr>
+                                  
+                      
+                              </thead>
+                  
+                          </table>
+
+                          <table class="table">
+                             
+                              <tbody>
+                                  <tr>
+                                      <td>
+                                          <label>商品编号：</label>
+                                          <label></label>
+                                      </td>
+                                      
+                                      <td>
+                                          <label>商品名称：</label>
+                                          <label></label>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          <label>应收数量：</label>
+                                          <label></label>
+                                      </td>
+                                      
+                                      <td>
+                                          <label>实收数量：</label>
+                                          <label></label>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                        <label>应收数量：</label>
+                                        <label></label>
+                                    </td>
+                                    
+                                    <td>
+                                        <label>实收数量：</label>
+                                        <label></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>工厂：</label>
+                                        <label></label>
+                                    </td>
+                                    
+                                    <td>
+                                        <label>存储位置：</label>
+                                        <label></label>
+                                    </td>
+                                    <td>
+                                        <label>库存类型：</label>
+                                        <label></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>预期送达时间：</label>
+                                        <label></label>
+                                    </td>
+                                    
+                                    <td>
+                                        <label>收货时间：</label>
+                                        <label></label>
+                                    </td>
+                                    <td>
+                                        <label>过账时间：</label>
+                                        <label></label>
+                                    </td>
+                                </tr>
+
+                              </tbody>
+                          </table>
+  
+                          </section>
+                    </div><!-- /content-panel -->
+                </div>
+                </div>
+                </div><!-- /col-md-12 -->
+                </div><!-- /row -->
+            </div>
+  
+          </section>
+        </section><!-- /MAIN CONTENT -->
+  
+        <!--main content end-->
+        <!--footer start-->
+        <footer class="site-footer">
+            <div class="text-center">
+                2014 - Alvarez.is
+                <a href="basic_table.html#" class="go-top">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+            </div>
+        </footer>
+        <!--footer end-->
+    </section>
+
+        {% comment %} <textarea id="item_result"></textarea> {% endcomment %}
+
+        <script>
+            //库存类型下拉框 此处搬了plant的
+        //就四个，上次没写
+
+        //提交
+        $('#material3').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax(
+            {
+                type: "POST",
+                url: "{% url 'MM:ajax_create_receipt' %}",
+                data:{
+                    dataType: "json",
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    //$("#id").html() 这样取label内的值
+                    po_id: $("#po_id").html(),
+                    oi_id: $("#oi_id").html(),
+                    actualQnty: $("#actualQnty").val(),
+                    sType: $("#sType").val(),
+                    postTime:  $("#my-input").val(), //过帐
+                    time:  $("#my-input2").val(),// 收货
+                    qualityScore: $("#startP").val(),
+                    serviceScore: $("#startP2").val(),
+                    //两个评分的id是startP、startP2；两个日期的id是my-input、my-input2；
+                },
+                success: function(data) {
+                    $('#item_result').text(data);
+                    var dataObj = eval("("+data+")");
+                    if(dataObj.status==1){
+                        showMessage({text: dataObj.message ,type: 'success'});
+                    }else{
+                        showMessage({text: dataObj.message ,type: 'error'});
+                    }
+                },
+                failure: function() {
+
+                }
+            })
+        });
+        </script>
+
+
+        <!-- 确认提示 -->
+        <script>
+            function tip(){
+                if(confirm("您确认修改吗？")){
+                return true;
+                }
+                else{
+                return false;
+                }
+            } 
+        </script>
+
+        <script>
+            //商品搜索 三项内容都填才能发起搜索，否则返回提示:请填写xxx（第一个未填的项）；如果搜不到，返回提示：没有符合条件的商品（这个也不返回了，可以判断是否为序列中只有一个元素）
+            $('#material1').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_item' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        //输入三个搜索框的值
+                        mid: $("#materialInput1").val(),
+                        plant: $("#materialInput2").val(),
+                        sloc: $("#materialInput3").val(),
+                    },
+                    success: function(data) {
+                        document.getElementById("fu").style.display="";
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                        fields = dataObj[0].fields;
+                        material = dataObj[0].material;
+                        stock = dataObj[0].stock;
+                        user = dataObj[0].user;
+                        //输入表单material3的属性的id
+                        $("#pk2").val(material.id);
+                        $("#mname2").val(material.mname); 
+                        $("#mType2").val(material.mType);
+                        $("#meaunit2").val(material.meaunit);
+                        $("#netWeight2").val(material.netWeight);
+                        $("#weightUnit2").val(material.weightUnit);
+                        $("#transGrp2").val(material.transGrp);
+                        $("#loadingGrp2").val(material.loadingGrp);
+                        $("#industrySector2").val(material.industrySector);
+                        $("#mGroup2").val(material.mGroup);
+                        $("#sloc2").val(fields.sloc);
+                        $("#sorg2").val(fields.sOrg);
+                        $("#distrchannel2").val(fields.distrChannel);
+                        $("#company2").val(stock.companyCode);
+                        $("#porg2").val(stock.pOrg);
+                        $("#pgrp2").val(stock.pGrp);
+                        $("#plant2").val(stock.name);
+                        //document.getElementById("material3").style.visibility="visible";
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+
+            //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
+            $('#material2').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_item' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        mid: '',
+                        mname: $("#mname").val(),
+                        mType: $("#mType").val(),
+                        industrySector: $("#industrySector").val(),
+                        sloc: $("#sloc").val(),
+                        plant: $("#plant").val(),
+                        uid: $('#uid').val(),
+                    },
+                    success: function(data) {
+
+                        $('#item_result').text(data);
+                    
+                        var dataObj = eval("("+data+")");
+                        var out = "";
+                        var i;
+                        
+                        for(i = 0; i < dataObj.length; i++) {
+                            //dataObj[i].fields.xx
+                            fields = dataObj[i].fields
+                            material = dataObj[i].material
+                            stock = dataObj[i].stock
+                            user = dataObj[i].user
+                            out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
+                        }
+                        document.getElementById("searchDiv").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+
+            //双击行 信息进入“搜索商品条件”三个框
+            $("table").on("dblclick","tr",function(e){
+                document.getElementById("materialInput1").value=$(this).find('td').eq(0).text();
+                document.getElementById("materialInput2").value=$(this).find('td').eq(4).text();
+                document.getElementById("materialInput3").value=$(this).find('td').eq(5).text();
+                $('#myModal1').modal('hide');
+            });
+
+            //提交修改信息 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项），必填项见word/微信发的图；提交成功后，返回提示：商品信息已更新
+            //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
+            $('#material3').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_update_item' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        material_id: $("#pk2").val(),
+                        mname: $("#mname2").val(),
+                        mType: $("#mType2").val(),
+                        meaunit: $("#meaunit2").val(),
+                        netWeight: $("#netWeight2").val(),
+                        weightUnit: $("#weightUnit2").val(),
+                        transGrp: $("#transGrp2").val(),
+                        loadingGrp: $("#loadingGrp2").val(),
+                        industrySector: $("#industrySector2").val(),
+                        mGroup: $("#mGroup2").val(),
+                        sloc: $("#sloc2").val(),
+                        sOrg: $("#sorg2").val(),
+                        distrChannel: $("#distrchannel2").val(),
+                        companyCode: $("#company2").val(),
+                        pOrg: $("#porg2").val(),
+                        pGrp: $("#pgrp2").val(),
+                        name: $("#plant2").val(),
+                        //输入修改信息
+                    },
+                    success: function(data) {
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                    if(dataObj.status==1){
+                        showMessage({text: dataObj.message ,type: 'success'});
+                    }else{
+                        showMessage({text: dataObj.message ,type: 'error'});
+                    }
+                    //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
+                    //根据status写。。。
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+        </script>
+
     </body>
 </html>

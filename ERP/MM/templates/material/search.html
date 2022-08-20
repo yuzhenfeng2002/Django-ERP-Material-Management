@@ -1,201 +1,662 @@
 <!DOCTYPE html>
 <html>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <head>Material Search</head>
-    <body>
-        <!-- 搜索商品 -->
-        <form id="material1" method="post">
-            <fieldset>
-                    <!-- 三项内容都填才能发起搜索，否则返回提示:请填写xxx（第一个未填的项） -->
-                    <input id="materialInput1" name='pk' type="text"  placeholder="请输入商品编号">
-          
-                    <select id="materialInput2" name='plant'></select>
+    {% load static %}
+<!-- import CSS -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
-                    <select id="materialInput3" name="sloc">
-                        <option value=''>请选择存储位置</option> 
-                        <option value='TG00'>TG00--贸易商品</option>
-                        <option value='RM00'>RM00--原材料</option>
-                        <option value='SF00'>SF00--半成品</option>
-                        <option value='FG00'>FG00--产成品</option>
-                        <option value='MI00'>MI00--混合产品</option>
-                        <option value='RE00'>RE00--退货产品</option> 
-                         
-                    </select>
-            </fieldset>
-            <!-- 搜索商品ajax -->     
-            <button type="submit" formmethod="post">Submit</button>
-        </form>
+<!-- Bootstrap core CSS -->
+<link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+<!--external css-->
+<link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    
+<!-- Custom styles for this template -->
+<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
 
-        <div id="myModal1">
-            <!-- 搜索编号条件 -->
-            <!-- 可填任意个条件，一个也不填则返回全部 -->
-            <form id="material2" method="post">
-                {% csrf_token %}
-                <fieldset>
-                    <!-- id和name任取 -->
-                    商品名称:
-                    <input type="text" name="mname" id="mname">
-                    商品类型:
-                    <select name="mType" id="mType">
-                        <!-- 默认为未选 -->
-                        <option value=''>请选择商品类型</option>
-                        <option value='RM'>RM--原材料</option>
-                        <option value='HALB'>HALB--半成品</option>
-                        <option value='FERT'>SF00--成品</option>
-                        <option value='FREMD'>FG00--外部采购物料</option>
-                        <option value='PROC'>MI00--加工物料</option>
-                        <option value='HAWA'>RE00--贸易货物</option> 
-                        <option value='HIBE'>RE00--经营供应</option>
-                    </select>
-                    
-                    <!-- 他们数据库设计只允许一个字符作为值，我改一下 -->
-                    工业部门：<select name="industrySector" id="industrySector">
-                        <option value=''>请选择工业部门</option>
-                        <option value='C'>化学工业</option>
-                        <option value='M'>机械工业</option>
-                        <option value='E'>药剂工业</option>
-                        <option value='F'>设备工程</option>
-                        <option value='R'>零售</option>
-                    </select>
-                    
-                    存储位置:
-                    <select name="sloc" id="sloc">
-                    <option value=''>请选择存储位置</option> 
-                    <option value='TG00'>TG00--贸易商品</option>
-                    <option value='RM00'>RM00--原材料</option>
-                    <option value='SF00'>SF00--半成品</option>
-                    <option value='FG00'>FG00--产成品</option>
-                    <option value='MI00'>MI00--混合产品</option>
-                    <option value='RE00'>RE00--退货产品</option> 
-                    </select>
-                    
-                    工厂:
-                    <select name="plant" id="plant"></select>
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
 
-                    创建者编号:
-                    <input type="text" name="uid" id="uid">
-                    
-                    {% comment %} 物料名称:<input type="text" name="mname" id="mname">
-                    工业部门:<input type="text" name="industrySector" id="industrySector">
-                    存储位置:<input type="text" name="mType" id="mType">
-                    工厂:<input type="text" name="plant" id="plant">
-                    存储位置:<input type="text" name="sloc" id="sloc"> {% endcomment %}
-                </fieldset>
-                <input type="submit" name="submit" value="submit">
-            </form>
-        </div>
 
-        <table>
-            <h4> 商品</h4>
-            <hr>
-            <thead>
-            <!-- 搜索编号返回的属性 -->
-            <tr>
-                <th> 商品编号</th>
-                <th> 商品名称</th>
-                <th> 商品类型</th>
-                <th> 工业部门</th>
-                <th> 工厂</th>
-                <th> 存储位置</th>
-                <th> 创建者编号</th>
-            </tr>
-            </thead>
-            <tbody id="searchDiv"></tbody>
-        </table>
+<!--common script for all pages-->
+<script src="{% static 'assets/js/common-scripts.js' %}"></script>
 
-        <!-- 修改商品-->
-        <form id="material3">
-            {% csrf_token %}
-            <fieldset>
-                <!-- 本页面共三个表单，故需要三份不同的id。name统一命名，但三个表单属性的id需要各不相同-->
-                商品编号：<input type="text" name="pk" id="pk2" value=""  disabled>
-                商品名称: <input type="text" name="mname" id="mname2">
-                {% comment %} 创建人编号：<input type="text"> {% endcomment %}
-                -------------------------
-                商品类型:<select name="mType" id="mType2">
-                    <option value=''>请选择商品类型</option>
-                    <option value='RM'>RM--原材料</option>
-                    <option value='HALB'>HALB--半成品</option>
-                    <option value='FERT'>SF00--成品</option>
-                    <option value='FREMD'>FG00--外部采购物料</option>
-                    <option value='PROC'>MI00--加工物料</option>
-                    <option value='HAWA'>RE00--贸易货物</option> 
-                    <option value='HIBE'>RE00--经营供应</option>
-                </select>
-                商品组:<select name='mGroup' id='mGroup2'>
-                    <option value=''>请选择商品组</option>
-                    <option value='AS'>AS--配件</option>
-                    <option value='RAW'>RAW--原材料</option>
-                    <option value='WASH'>WASH--洗衣机</option>
-                    <option value='AIRC'>AIRC--空调</option>
-                    <option value='FRIG'>MI00--冰箱</option>
-                </select>
-                单位:<select name="meaunit" id="meaunit2"> </select>
-                净重：<input name='netWeight' id='netWeight2' type="text" >
-                重量单位:<select name='weightUnit' id='weightUnit2'>
-                    <option value=''>请选择重量单位</option>
-                    <option value='G'>G</option>
-                    <option value='KG'>KG</option>
-                    <option value='KT'>KT</option>
-                    <option value='LB'>LB</option>
-                    <option value='MG'>MG</option>
-                    <option value='KT'>KT</option>
-                    <option value='OZ'>OZ</option>
-                    <option value='TO'>TO</option>
-                    <option value='TON'>TON</option>
-                </select>
-                工业部门：<select name='industrySector' id='industrySector2'>
-                    <option value=''>请选择工业部门</option>
-                    <option value='C'>化学工业</option>
-                    <option value='M'>机械工业</option>
-                    <option value='W'>药剂工业</option>
-                    <option value='F'>设备工程</option>
-                    <option value='R'>零售</option>
-                </select>
-                运输组：<select name='transGrp' id='transGrp2'>
-                    <option value=''>请选择运输组</option>
-                    <option value='C'>起重机</option>
-                    <option value='L'>手动升降机</option>
-                    <option value='F'>叉车</option>
-                    <option value='M'>人手搬运</option>
-                    <option value='T'>手推车</option>   
-                </select>
-                装载组：<select name='loadingGrp' id='loadingGrp2'>
-                    <option value=''>请选择装载组</option>
-                    <option value='P'>托板</option>
-                    <option value='C'>集装箱</option>
-                    <option value='B'>盒装</option>
-                </select>
-                ---------------------
-                工厂:<select name='plant' id='plant2' disabled></select>
-                公司编码：<select name="company" id="company2" disabled></select>
-                采购组织：<select name="porg" id="porg2" disabled></select>
-                采购组：<select name="pgrp" id="pgrp2" disabled></select>
-                存储位置:<select name="sloc" id="sloc2" disabled>
-                    <option value=''>请选择存储位置</option>
-                    <option value='TG00'>TG00--贸易商品</option>
-                    <option value='RM00'>RM00--原材料</option>
-                    <option value='SF00'>SF00--半成品</option>
-                    <option value='FG00'>FG00--产成品</option>
-                    <option value='MI00'>MI00--混合产品</option>
-                    <option value='RE00'>RE00--退货产品</option> 
-                </select>
-                销售组织：<select name="sorg" id="sorg2"></select>
-                分销渠道：<select  name="distrchannel" id="distrchannel2">
-                    <option value=''>请选择分销渠道</option>
-                    <option value='I'>Internet</option>
-                    <option value='W'>Wholesale</option>
-                </select>
+<!--script for this page-->
+
+<!-- 引入刚刚下载的 ECharts 文件 -->
+<script src="{% static 'assets/js/echarts.js' %}"></script>
+<script src="{% static 'assets/js/highlight.min.js' %}"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+
+    <script src="{% static 'assets/dist/notice.min.js' %}"></script>
+    <script>
+        const notice = new Notice();
+    </script>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/dist/notice.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/default.min.css' %}">
+
+    <script>
+        //plant改变
+        $(document).ready(function() {
+            $("#plant2").change(function(){ 
                 
-            </fieldset>
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'MM:ajax_getStockByName' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        //plant值
+                        name:$("#plant2").val(),
+                    },
+                    
+                    success: function(data) {
+                        $('#test2').text(data);
+                        //add：如果没有该工厂，回传回来一个message提示
+                        var dataObj = eval("("+data+")");
+                        //注意：plant选择空的时候，这三项也返回空
+                        fields = dataObj[0].fields
+                        $("#pgrp2").val(fields.pGrp);
+                        $("#pOrg2").val(fields.pOrg);
+                        $("#company2").val(fields.companyCode);
+                    },
+                    failure: function() {
+    
+                    }
+                });
+            
+            }); 
+            $("#plant3").change(function(){ 
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'MM:ajax_getStockByName' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        //plant值
+                        name:$("#plant3").val(),
+                    },
+                    
+                    success: function(data) {
+                        $('#test2').text(data);
+                        //add：如果没有该工厂，回传回来一个message提示
+                        var dataObj = eval("("+data+")");
+                        //注意：plant选择空的时候，这三项也返回空
+                        fields = dataObj[0].fields
+                        $("#pgrp3").val(fields.pGrp);
+                        $("#pOrg3").val(fields.pOrg);
+                        $("#company3").val(fields.companyCode);
+                    },
+                    failure: function() {
+    
+                    }
+                });
+            
+            }); 
+            $.ajax({
+                type: "POST",
+                url: "{% url 'MM:ajax_load_sorg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择销售组织</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Sorg+'>'+ dataObj[i].Sorg + '--' + dataObj[i].Name1 + '</option>' ;
+                    }
+                    var items=document.getElementsByName("sorg");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+    
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_meaunit' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择单位</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Meaunit+'>'+ dataObj[i].Meaunit + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    
+                    var items=document.getElementsByName("meaunit");
+                    console.log(items);
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
+    
+                }
+            });
+            
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_plant' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择工厂</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
+                    var items=document.getElementsByName("plant");
+                    console.log(items);
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
+    
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_porg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择采购组织</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("porg");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+    
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_company' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择公司编码</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("company");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+    
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_pgrp' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择采购组</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("pgrp");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }  
+                },
+                failure: function() {
+    
+                }
+            });
+            
+        });
+    function re(){
+        document.getElementById("fu").style.display="none";
+                document.getElementById("yuan").style.display="";
+    }
+    </script>
+    <body>
+        <section id="main-content">
+            <section class="wrapper">
+                <h3><i class="fa fa-angle-right"></i> 查看或修改商品信息
+                </h3>
+                <div class="row mt">
+                  <div class="col-lg-12">
+                  <div class="form-panel3">
+                        
+                      <form id='material1' class="form-horizontal style-form" method="get">
+                          <!-- <div class="form-group"> -->
+                              <!-- <label class="col-sm-2 col-sm-2 control-label">搜索</label> -->
+                              <div class="col-sm-3">
+                                  <input class="form-control" id="materialInput1" name='pk' type="text"  placeholder="请输入商品编号" required>
+                              </div>
+                              <div class="col-sm-3">
+                                <select class="form-control" id="materialInput2" name='plant' required></select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control" id="materialInput3" name="sloc" required>
+                                    <option value=''>请选择存储位置</option> 
+                                    <option value='TG00'>TG00--贸易商品</option>
+                                    <option value='RM00'>RM00--原材料</option>
+                                    <option value='SF00'>SF00--半成品</option>
+                                    <option value='FG00'>FG00--产成品</option>
+                                    <option value='MI00'>MI00--混合产品</option>
+                                    <option value='RE00'>RE00--退货产品</option> 
+                                     
+                                </select>
+                            </div>
+                              <button type="submit" formmethod="post" class="btn btn-success "><i class="fa fa-search"></i></button>
+                            </form>
+                              
+                              <div class="col-sm-12">
+                              <button type="button" class="btn btn-link " data-toggle="modal" data-target="#myModal1">忘记编号？</button>
+                                      <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">搜索商品编号</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                                <!-- Hi there, I am a Modal Example for Dashgum Admin Panel. -->
+                                                <!-- 搜索条件 -->
+                                                <form  id="material2" class="form-horizontal style-form">
+                                                  <div class="form-group">
+                                                      <label class="col-sm-4 col-sm-4 control-label">
+                                                        <div class="pull-right">商品名称： </div>
+                                                      </label>
+                                                      <div class="col-sm-5">
+                                                          <input class="form-control" type="text" name="mname" id="mname" >
+                                                      </div>
+                                                  </div>
+                                  
+                                  
+                                                  <div class="form-group">
+                                                      <label class="col-sm-4 col-sm-4 control-label">
+                                                        <div class="pull-right">商品类型：</div>
+                                                      </label>
+                                                      <div class="col-sm-5">
+                                                          <select name="mType" id="mType" class="form-control" >
+                                                              <!-- 默认为未选 -->
+                                                              <option value=''>请选择商品类型</option>
+                                                              <option value='RM'>RM--原材料</option>
+                                                              <option value='HALB'>HALB--半成品</option>
+                                                              <option value='FERT'>SF00--成品</option>
+                                                              <option value='FREMD'>FG00--外部采购物料</option>
+                                                              <option value='PROC'>MI00--加工物料</option>
+                                                              <option value='HAWA'>RE00--贸易货物</option> 
+                                                              <option value='HIBE'>RE00--经营供应</option>
+                                                          </select>
+                                                         
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label class="col-sm-4 col-sm-4 control-label">
+                                                        <div class="pull-right">工业部门：</div>
+                                                      </label>
+                                                      <div class="col-sm-5">
+                                                          <select class="form-control" name='industrySector' id='industrySector' >
+                                                              <option value=''>请选择工业部门</option>
+                                                              <option value='C'>化学工业</option>
+                                                              <option value='M'>机械工业</option>
+                                                              <option value='W'>药剂工业</option>
+                                                              <option value='F'>设备工程</option>
+                                                              <option value='R'>零售</option>
+                                                          </select>
+                                                          
+                                                      </div>
+                                                  </div>
+                                                  
+                                  
+                                                  <div class="form-group">
+                                                      <label class="col-sm-4 col-sm-4 control-label">
+                                                        <div class="pull-right">工厂：</div>
+                                                      </label>
+                                                      <div class="col-sm-5">
+                                                          <select class="form-control" name='plant' id='plant' ></select>
+                                                          
+                                                      </div>
+                                                  </div>
+                                                  
+                                  
+                                                  <div class="form-group">
+                                                      <label class="col-sm-4 col-sm-4 control-label">
+                                                        <div class="pull-right">存储位置：</div>
+                                                      </label>
+                                                      <div class="col-sm-5">
+                                                          <select class="form-control" name="sloc" id="sloc" >
+                                                              <option value=''>请选择存储位置</option>
+                                                              <option value='TG00'>TG00--贸易商品</option>
+                                                              <option value='RM00'>RM00--原材料</option>
+                                                              <option value='SF00'>SF00--半成品</option>
+                                                              <option value='FG00'>FG00--产成品</option>
+                                                              <option value='MI00'>MI00--混合产品</option>
+                                                              <option value='RE00'>RE00--退货产品</option> 
+                                                          </select>
+                                                          
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <!-- <label class="col-sm-1 col-sm-1 control-label"></label> -->
+                                                      <label class="col-sm-4 col-sm-4 control-label">
+                                                          <div class="pull-right">创建者编号：</div>
+                                                          </label>
+                                                      <div class="col-sm-5">
+                                                          <input name="uid" id="uid" type="text" class="form-control">
+                                                      </div>
+                                                      <div class="col-sm-2">
+                                                          <input type="submit"  class="btn btn-theme02">
+                                                          </div>
+                                                  </div>
+                                                  
+                                  
+                                              </form>
+                                              {% comment %} <h4> 供应商</h4> {% endcomment %}
+                                              {% comment %} <hr> {% endcomment %}
+                                              <table  class="table table-bordered table-striped table-condensed">
+                                                *双击填入编号                                       
+                                                <thead>
+                                                <!-- 搜索编号返回的属性 style="width: 100px;"-->
+                                                <tr>
+                                                    <th> 商品编号</th>
+                                                    <th> 商品名称</th>
+                                                    <th> 商品类型</th>
+                                                    <th> 工业部门</th>
+                                                    <th> 工厂</th>
+                                                    <th> 存储位置</th>
+                                                    <th> 创建者编号</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="searchDiv"></tbody>
+                                            </table>
+                                              
+                                  
+                                              </div>
+                                              
+                                              <div class="modal-footer">
+                                                
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                              
+                      
+                  </div>
+              </div>
+              </div>
+              {% comment %} style="display: none;" {% endcomment %}
+              <div style="display: none;"  id='details'>  
+              <div class="row mt">  
+                  <div class="col-lg-12">
+                    <div class="col-lg-12">
+                      <div class="content-panel">
+                      <h4 ><i class="fa fa-angle-right"></i> 商品信息</h4>
+                          <section id="unseen">
+                            <form id="material3">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>基本信息</th>
+                                        {% comment %} style="width: 500px;" {% endcomment %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td >
+                                            <label>商品编号：</label>
+                                            <label><input type="text" value=""  disabled name="pk" id="pk2"></label>
+                                        </td>
+                                        <td >
+                                            <label>商品名称：</label>
+                                            <label><input type="text" name="mname" id="mname2" required></label>
+                                        </td>
+                                    </tr>
+                                    {% comment %} <tr>
+                                        <td>
+                                            <label>创建人编号：</label>
+                                            <label><input type="text" value=""  disabled id="uid2"></label>
+                                        </td>
+                                        
+                                    </tr> {% endcomment %}
+                                    
+                        
+                            </table>
 
-            <!-- 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项）。必填项见word/微信发的图-->
-            <button type="reset" >重置</button>
-            <!-- 提交修改后的商品，数据库更新-->
-            <button type="submit" formmethod="post" onclick="return tip()">Submit</button>
-        </form>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>主要信息</th>
+                                       
+                                    </tr>
+                                    </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label> 商品类型：
+                                                </label>
+                                            <label><select name="mType" id="mType2" required>
+                                                <option value=''>请选择商品类型</option>
+                                                <option value='RM'>RM--原材料</option>
+                                                <option value='HALB'>HALB--半成品</option>
+                                                <option value='FERT'>SF00--成品</option>
+                                                <option value='FREMD'>FG00--外部采购物料</option>
+                                                <option value='PROC'>MI00--加工物料</option>
+                                                <option value='HAWA'>RE00--贸易货物</option> 
+                                                <option value='HIBE'>RE00--经营供应</option>
+                                            </select></label>
+                                        </td>
+                                        <td>
+                                            <label> 商品组：
+                                                </label>
+                                            <label> <select name='mGroup' id='mGroup2' required>
+                                                <option value=''>请选择商品组</option>
+                                                <option value='AS'>AS--配件</option>
+                                                <option value='RAW'>RAW--原材料</option>
+                                                <option value='WASH'>WASH--洗衣机</option>
+                                                <option value='AIRC'>AIRC--空调</option>
+                                                <option value='FRIG'>MI00--冰箱</option>
+                                            </select></label>
+                                        </td>
+                                        <td>
+                                            <label> 单位：</label>
+                                            <label><select name="meaunit" id="meaunit2" required> </select></label>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label> 净重：
+                                                </label>
+                                            <label><input name='netWeight' id='netWeight2' type="text" ></label>
+                                        </td>
+                                        <td>
+                                            <label> 重量单位：
+                                                </label>
+                                            <label> <select name='weightUnit' id='weightUnit2' required>
+                                                <option value=''>请选择重量单位</option>
+                                                <option value='G'>G</option>
+                                                <option value='KG'>KG</option>
+                                                <option value='KT'>KT</option>
+                                                <option value='LB'>LB</option>
+                                                <option value='MG'>MG</option>
+                                                <option value='KT'>KT</option>
+                                                <option value='OZ'>OZ</option>
+                                                <option value='TO'>TO</option>
+                                                <option value='TON'>TON</option>
+                                            </select></label>
+                                        </td>
+                                        <td>
+                                            <label> 工业部门：</label>
+                                            <label><select name='industrySector' id='industrySector2' required>
+                                                <option value=''>请选择工业部门</option>
+                                                <option value='C'>化学工业</option>
+                                                <option value='M'>机械工业</option>
+                                                <option value='W'>药剂工业</option>
+                                                <option value='F'>设备工程</option>
+                                                <option value='R'>零售</option>
+                                            </select></label>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label> 运输组：
+                                                </label>
+                                            <label><select name='transGrp' id='transGrp2'>
+                                                <option value=''>请选择运输组</option>
+                                                <option value='C'>起重机</option>
+                                                <option value='L'>手动升降机</option>
+                                                <option value='F'>叉车</option>
+                                                <option value='M'>人手搬运</option>
+                                                <option value='T'>手推车</option>   
+                                            </select></label>
+                                        </td>
+                                        <td>
+                                            <label> 装载组：
+                                                </label>
+                                            <label><select name='loadingGrp' id='loadingGrp2'>
+                                                <option value=''>请选择装载组</option>
+                                                <option value='P'>托板</option>
+                                                <option value='C'>集装箱</option>
+                                                <option value='B'>盒装</option>
+                                            </select></label>
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>组织架构</th>
+                                       
+                                    </tr>
+                                    </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label> 工厂：</label>
+                                            <label><select name='plant' id='plant2' disabled required></select></label>
+                                        </td>
+                                        <td>
+                                            <label> 公司编码：</label>
+                                            <label><select name="company" id="company2" disabled required></select></label>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td>
+                                            <label> 采购组织：</label>
+                                            <label><select name="porg" id="porg2" disabled required></select></label>
+                                        </td>
+                                        <td>
+                                            <label> 采购组：</label>
+                                            <label><select name="pgrp" id="pgrp2" disabled></select></label>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label> 存储位置：</label>
+                                            <label><select name="sloc" id="sloc2" disabled required>
+                                                <option value=''>请选择存储位置</option>
+                                                <option value='TG00'>TG00--贸易商品</option>
+                                                <option value='RM00'>RM00--原材料</option>
+                                                <option value='SF00'>SF00--半成品</option>
+                                                <option value='FG00'>FG00--产成品</option>
+                                                <option value='MI00'>MI00--混合产品</option>
+                                                <option value='RE00'>RE00--退货产品</option> 
+                                            </select></label>
+                                        </td>
+                                        <td>
+                                            <label> 销售组织：</label>
+                                            <label><select name="sorg" id="sorg2"></select></label>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td>
+                                            <label> 分销渠道：</label>
+                                            <label><select  name="distrchannel" id="distrchannel2">
+                                                <option value=''>请选择分销渠道</option>
+                                                <option value='I'>Internet</option>
+                                                <option value='W'>Wholesale</option>
+                                            </select></label>
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                           
+                            <div class="col-sm-9"></div>
+                            <button  class="btn btn-danger btn-xs" type="reset" >重置</button>
+                            <div class="col-sm-2"></div>
+                            <button class="btn btn-primary btn-xs" type="submit" formmethod="post" onclick="return tip()">提交</button>
+                        </form>
 
-        <textarea id="item_result"></textarea>
+                                    
+                          </section>
+                    </div><!-- /content-panel -->
+                </div>
+                </div><!-- /col-md-12 -->
+                </div><!-- /row -->
+            </div>
+  
+          </section>
+        </section><!-- /MAIN CONTENT -->
+  
+        <!--main content end-->
+        <!--footer start-->
+        <footer class="site-footer">
+            <div class="text-center">
+                2014 - Alvarez.is
+                <a href="basic_table.html#" class="go-top">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+            </div>
+        </footer>
+        <!--footer end-->
+    </section>
+
+        {% comment %} <textarea id="item_result"></textarea> {% endcomment %}
 
         <script>
             //商品搜索 三项内容都填才能发起搜索，否则返回提示:请填写xxx（第一个未填的项）；如果搜不到，返回提示：没有符合条件的商品（这个也不返回了，可以判断是否为序列中只有一个元素）
@@ -214,30 +675,38 @@
                         sloc: $("#materialInput3").val(),
                     },
                     success: function(data) {
+                        
                         $('#item_result').text(data);
                         var dataObj = eval("("+data+")");
-                        fields = dataObj[0].fields;
-                        material = dataObj[0].material;
-                        stock = dataObj[0].stock;
-                        user = dataObj[0].user;
-                        //输入表单material3的属性的id
-                        $("#pk2").val(material.id);
-                        $("#mname2").val(material.mname); 
-                        $("#mType2").val(material.mType);
-                        $("#meaunit2").val(material.meaunit);
-                        $("#netWeight2").val(material.netWeight);
-                        $("#weightUnit2").val(material.weightUnit);
-                        $("#transGrp2").val(material.transGrp);
-                        $("#loadingGrp2").val(material.loadingGrp);
-                        $("#industrySector2").val(material.industrySector);
-                        $("#mGroup2").val(material.mGroup);
-                        $("#sloc2").val(fields.sloc);
-                        $("#sorg2").val(fields.sOrg);
-                        $("#distrchannel2").val(fields.distrChannel);
-                        $("#company2").val(stock.companyCode);
-                        $("#porg2").val(stock.pOrg);
-                        $("#pgrp2").val(stock.pGrp);
-                        $("#plant2").val(stock.name);
+                        if(dataObj==''){
+                            showMessage({text: '没有符合条件的商品' ,type: 'error'});
+                        }else{
+                            showMessage({text: dataObj.message ,type: 'success'});
+                            document.getElementById("details").style.display="";
+                            fields = dataObj[0].fields;
+                            material = dataObj[0].material;
+                            stock = dataObj[0].stock;
+                            user = dataObj[0].user;
+                            //输入表单material3的属性的id
+                            $("#pk2").val(material.id);
+                            $("#mname2").val(material.mname); 
+                            $("#mType2").val(material.mType);
+                            $("#meaunit2").val(material.meaunit);
+                            $("#netWeight2").val(material.netWeight);
+                            $("#weightUnit2").val(material.weightUnit);
+                            $("#transGrp2").val(material.transGrp);
+                            $("#loadingGrp2").val(material.loadingGrp);
+                            $("#industrySector2").val(material.industrySector);
+                            $("#mGroup2").val(material.mGroup);
+                            $("#sloc2").val(fields.sloc);
+                            $("#sorg2").val(fields.sOrg);
+                            $("#distrchannel2").val(fields.distrChannel);
+                            $("#company2").val(stock.companyCode);
+                            $("#porg2").val(stock.pOrg);
+                            $("#pgrp2").val(stock.pGrp);
+                            $("#plant2").val(stock.name);
+                        }
+                        
                         //document.getElementById("material3").style.visibility="visible";
                     },
                     failure: function() {
@@ -269,7 +738,10 @@
                         $('#item_result').text(data);
                     
                         var dataObj = eval("("+data+")");
-                        var out = "";
+                        if(dataObj==''){
+                            showMessage({text: '没有符合条件的商品' ,type: 'error'});
+                        }else{
+                            var out = "";
                         var i;
                         
                         for(i = 0; i < dataObj.length; i++) {
@@ -281,6 +753,8 @@
                             out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
                         }
                         document.getElementById("searchDiv").innerHTML=out;
+                        }
+                        
                     },
                     failure: function() {
 
@@ -339,6 +813,7 @@
             });
         </script>
 
+
         <!-- 确认提示 -->
         <script>
             function tip(){
@@ -351,144 +826,7 @@
             } 
         </script>
 
-        <!-- 下拉框ajax -->
-        <script>
-            $(document).ready(function () {
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_plant' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择工厂</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
-                    var items=document.getElementsByName("plant");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }
-                },
-                failure: function() {
+        
 
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_meaunit' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >meaunit</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Meaunit+'>'+ dataObj[i].Meaunit + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("meaunit");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }                
-                },
-                failure: function() {
-
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_pgrp' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >pgrp</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("pgrp");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }  
-                },
-                failure: function() {
-
-                }
-            });
-            
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_porg' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >porg</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("porg");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_sorg' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >sorg</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Sorg+'>'+ dataObj[i].Sorg + '--' + dataObj[i].Name1 + '</option>' ;
-                    }
-                    var items=document.getElementsByName("sorg");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_company' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >company</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("company");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-
-                }
-            });
-        });
-        </script>
     </body>
 </html>

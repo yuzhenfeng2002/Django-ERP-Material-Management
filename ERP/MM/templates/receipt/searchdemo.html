@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <head>Material Search</head>
+  <body>
+    <form id="material1">
+        {% comment %} 创建者编码 {% endcomment %}
+        <input type="text" placeholder="请输入创建者编码" onclick="openInsertModal()" id="cjzcode">
+        
+        {% comment %} 收据编号 {% endcomment %}
+        <input type="text" placeholder="请输入收据编号" id="sjcode">
+
+        {% comment %} 创建日期 {% endcomment %}
+        <input type="text" id="my-input" placeholder="请输入创建日期">
+        <input type="submit">
+    <table >
+        <thead>
+        <tr>
+            <th>收据编码</th>
+            <th>采购订单编码</th>
+            <th>条目编码</th>
+            <th> 商品名称</th>
+            <th> 数量</th>
+            <th> 实收数量</th>
+            <th>创建时间</th>
+            <th>查看详情</th>
+        
+        </tr>
+        </thead>
+        <tbody id="searchDiv"></tbody>
+        {% comment %} <tbody>
+        <tr>
+            <td >00001</td>
+            <td>拖拉机</td>
+            <td>填商品编码</td>
+            <td>001</td>
+            <td>填总价</td>
+            <td>填供应商编码</td>
+            <td>001</td>
+            <td><a href=""> <button class="btn btn-success btn-xs"><i class="fa fa-search-plus"></i></button></a></td>
+        </tr>
+        </tbody> {% endcomment %}
+    </table>
+    <textarea id="item_result"></textarea>
+    <script>
+        //收据搜索 不限制三项内容是否填写默认返回全部
+                $('#material1').on('submit', function(e) {
+                    e.preventDefault();
+                    $.ajax(
+                    {
+                        type: "POST",
+                        url: "{% url 'MM:ajax_search_receipt' %}",
+                        data:{
+                            dataType: "json",
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            //输入三个搜索框的值
+                            uid: $("#cjzcode").val(),
+                            pk: $("#sjcode").val(),
+                            date: $("#my-input").val(),
+                        },
+                        success: function(data) {
+                            $('#item_result').text(data);
+                            var dataObj = eval("("+data+")");
+                            //var content=dataObj[0].gr;
+                            console.log(dataObj.gr[0].pk);
+                            
+                            for(i = 0; i < dataObj.gr.length; i++) {
+                                content2 =dataObj.gr[i].fields
+                                //": 10, "sType": "1", "time": "2022-08-18T10:05:04.605Z", "postTime": "2022-08-18T10:03:52Z", "orderItem": 1, "euser": 1}, "user": {"id": 2,
+                                var out='';
+                                 out += '<tr><td id="itempk'+i+'">'+ dataObj.gr[i].pk+ '</td><td>' + dataObj.gr[i].po.id + '</td><td>' + dataObj.gr[i].orderItem.itemId+ '</td><td>' + dataObj.gr[i].material.mname+ '</td><td>'+ dataObj.gr[i].orderItem.quantity+ '</td><td>'+ content2.actualQnty+ '</td><td>'+ content2.time.substr(0,10) +'</td><td><button class="btn btn-success btn-xs" onclick="submitpk(this.id)" id="bid'+i+'"><i class="fa fa-search-plus">click</i></button></td></tr>';
+                             }
+                             document.getElementById("searchDiv").innerHTML=out;
+                        },
+                        failure: function() {
+
+                        }
+                    })
+                });
+
+                //点击按钮，收据编码给后端
+                function submitpk(clicked_id){
+                    var itempk='itempk'+clicked_id[6];
+                    
+                    //待补充，两个参数    dataObj.gr[i].orderItem.itemId dataObj.gr[i].po.id
+                    var target="{% url 'MM:display_receipt' %}"+'?'+'itemID='+ '1'+'&'+'orderID='+'1';
+                    window.location.href=target; 
+                    
+                }
+            </script>
+                    
+
+  </body>
+</html>
