@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>DASHGUM - Bootstrap Admin Template</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/style-qr.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/notice.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'assets/css/default.min.css' %}">
+
+   <link href="{% static 'assets/css/tabs.css" rel="stylesheet' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/js/bootstrap-datepicker/css/datepicker.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/js/bootstrap-daterangepicker/daterangepicker.css' %}" />
+        
+    <!-- Custom styles for this template -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/css/purchase.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
+ <style>
+    #tabs-wrap { width: 700px; margin: 100px auto 0 auto; font-family: Arial, Helvetica; font-size: small; background-color: #eee;  }
+
+  #tabs {
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #tabs li {
+    float: left;
+    margin: 0 -15px 0 0;
+  }
+
+  #tabs a {
+    float: left;
+    position: relative;
+    padding: 0 40px;
+    height: 0;
+    line-height: 30px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;      
+    border-right: 30px solid transparent;
+    border-bottom: 30px solid #3D3D3D;
+    border-bottom-color: #777;
+    opacity: .3;
+    filter: alpha(opacity=30);      
+  }
+
+  #tabs a:hover,
+  #tabs a:focus {
+    border-bottom-color: #2ac7e1;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+
+  #tabs a:focus {
+    outline: 0;
+  }
+
+  #tabs #current {
+    z-index: 3;
+    border-bottom-color: #3d3d3d;
+    opacity: 1;
+    filter: alpha(opacity=100);      
+  }
+
+  /* ----------- */
+  #content {
+      background: #fff;
+      border-top: 2px solid #3d3d3d;
+      padding: 2em;
+      /*height: 220px;*/
+  }
+
+  #content h2,
+    #content h3,
+    #content p {
+      margin: 0 0 15px 0;
+  }  
+
+  /* Demo page only */
+  #about {
+      color: #999;
+      text-align: center;
+      font: 0.9em Arial, Helvetica;
+  }
+
+  #about a {
+      color: #777;
+  }   
+ </style>
+  </head>
+
+  <body>
+
+  <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+
+
+
+      <header class="header black-bg">
+        <div class="sidebar-toggle-box">
+            <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+        </div>
+      <!--logo start-->
+      <a href="index.html" class="logo"><b>MD集团物料管理系统</b></a>
+      <!--logo end-->
+      <div class="nav notify-row" id="top_menu">
+          <!--  notification start -->
+      
+  </header>
+<!--header end-->
+
+<!-- **********************************************************************************************************************************************************
+MAIN SIDEBAR MENU
+*********************************************************************************************************************************************************** -->
+<!--sidebar start-->
+<aside>
+    <div id="sidebar"  class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+        
+              <p class="centered"><img src="{% static 'assets/img/ui-sam.jpg' %}" class="img-circle" width="60"></a></p>
+              <h5 class="centered">物料管理</h5>
+                  
+            <li class="mt">
+                <a href="{% url 'MM:login' %}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-desktop"></i>
+                    <span>供应商管理</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="general.html">创建新供应商</a></li>
+                    <li><a  href="buttons.html">查看或修改供应商信息</a></li>
+                    {% comment %} <li><a  href="panels.html">Panels</a></li> {% endcomment %}
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-cogs"></i>
+                    <span>商品管理</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="calendar.html">创建新商品</a></li>
+                    <li><a  href="gallery.html">查看或修改商品信息</a></li>
+                    <li><a  href="todo_list.html">查看商品库存</a></li>
+                </ul>
+            </li>
+            {% comment %} <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-book"></i>
+                    <span>采购订单管理</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="blank.html">Blank Page</a></li>
+                    <li><a  href="login.html">Login</a></li>
+                    <li><a  href="lock_screen.html">Lock Screen</a></li>
+                </ul>
+            </li> {% endcomment %}
+            <li class="sub-menu">
+                <a class="active" href="javascript:;" >
+                    <i class="fa fa-tasks"></i>
+                    <span>收货管理</span>
+                </a>
+                <ul class="sub">
+                    <li class="active"><a  href="form_component.html">创建商品收据</a></li>
+                    <li class="active"><a  href="form_component.html">查看商品收据</a></li>
+                    <li class="active"><a  href="form_component.html">创建发票收据</a></li>
+                    <li class="active"><a  href="form_component.html">查看发票收据</a></li>
+                    <li class="active"><a  href="form_component.html">付款</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-th"></i>
+                    <span>采购订单管理</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="/mm/purchaserequisition/getpq/">采购申请</a></li>
+                    <li><a  href="/mm/quotation/vreview/">供应商评估管理</a></li>
+                    <li><a  href="/mm/purchaseorder/searchpo/">采购订单</a></li>
+                </ul>
+            </li>
+            
+
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
+      <!--sidebar end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+          	<h3><i class="fa fa-angle-right"></i> 转化采购订单</h3>
+
+           <div style="display: flex">
+              <div class="row mt" id="po-vq">
+                  <div class="col-md-12">
+                    <div class="col-md-12">
+                    <div class="content-panel" style="height: 340px;">
+                        <!-- <div class="form-panel2"> -->
+                        
+                        <table class="table table-striped table-advance table-hover" >
+                            <thead>
+
+                            <tr>
+                            <th><i class="fa fa-bullhorn"></i> 报价申请单编码</th>
+                            <th>拒绝情况</th>
+                        </tr>
+                            </thead>
+                            <tbody>
+                                {%for c in zuoceinfo %}
+                            <tr>
+                                <td id="rfq__id">{{c.id}}</td>
+                                <td>{{c.rej}}</td>
+                            </tr>
+
+                            {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                  </div><!-- /col-md-12 -->
+              </div><!-- /row -->
+
+              <div class="row mt"  >
+                  <div class="col-lg-12">
+                  <div class="content-panel" style="width: 900px;">
+
+                        <div id="tabs-wrap" style="margin-top: 0px;width: 900px;">
+                            <ul id="tabs">
+                                <li><a href="#" name="#tab1">送货信息</a></li>
+                                <li><a href="#" name="#tab2">供应商信息</a></li>
+                                <li><a href="#" name="#tab3">采购方信息</a></li>
+                            </ul>
+                          
+                            <div id="content" style="height: 290px;"> <!--只有这个框需要输入，其他为后端调取-->
+                                <div id="tab1">
+                                    <h4 class="tab-text">收货方电话：<input class="form-control poc-text" id="telephone"> </h4>
+                                    <br>
+                                    <h4 class="tab-text">收货方传真：<input class="form-control poc-text" id="fax"></h4>
+                                    <br>
+                                    <h4 class="tab-text">送货地址：<input class="form-control poc-text" id="address"></h4>    
+                                </div>
+                                <div id="tab2">
+                   {% for c in vendor  %}
+                   <div style="display:flex"> <h4>供应商编码：</h4> <h4 id="vendor__id">{{c.vid}}</h4></div>
+                                  <br>
+                                  <h4>供应商名称：{{c.vname}}</h4>
+                                  <br>
+                                  <h4>城市：{{c.city}}</h4>    
+                                  <br>
+                                  <h4>街区地址：{{c.address}}</h4>    
+                                </div>
+                  {% endfor %}
+                                <div id="tab3">
+                                    {% for c in caigou   %}
+                                    <h4>公司编码：{{ c.meterial__stock__id }}</h4>
+                                    <br>
+                                    <h4>采购组织：{{ c.meterial__stock__pOrg }}</h4> 
+                                    <br> 
+                                    <h4>采购组：{{ c.meterial__stock__pGrp }}</h4> 
+                                    {% endfor %}
+                                </div>
+                            </div>
+                          </div>
+                  
+
+
+                        
+                </div><!-- /content-panel -->
+        </div>		
+          </div><!-- /r ow -->
+        </div>
+
+        <div class="col-md-12 mt">
+            <div class="content-panel">
+                <table class="table table-hover" id="dd">
+                 <div id="table-pr-head"> <h4><i class="fa fa-angle-right"></i> 订单</h4>
+                    <button type="button" class="btn btn-round btn-default" onclick="cancel()" style="margin-left: 900px;">取消拆分</button> <button type="button" class="btn btn-round btn-primary" onclick="chai()">拆分订单</button>
+                </div>  
+                    <thead>
+                    <tr>
+                        <hr>
+                        <th>条目编码</th>
+                        <th>商品编码</th>
+                        <th>商品名称</th>
+                        <th>数量</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                        <th>结算货币</th>
+                        <th>工厂</th>
+                        <th>存储位置</th>
+                        <th>送达时间</th>
+                    </tr>
+                    </thead>
+                    <tbody id="podiv">
+                        {% for c in requisitionItem %}
+                    <tr> 
+                        <td id="tiaomucode-po">{{c.itemId }}</td>
+                        <td id="goodcode-po">{{c.meterial__id}}</td>
+                        <td id="goodname-po">{{c.meterial__material__mname }}</td>
+                        <td class="text-po-create"><input class="form-control po-create-td" value="{{c.quantity }}" id="quantity"></td>
+                        <td class="text-po-create"><input class="form-control po-create-td" value="{{c.price }}" id="dj"></td>
+                        <td class="text-po-create"><input class="form-control po-create-td" value="{{c.sum }}" id="sum"></td>
+                        <td id="danwei-po">{{c.currency }}</td>
+                        <td id="factory-po">{{c.meterial__stock__name }}</td>
+                        <td id="clocation-po">{{c.meterial__sloc }}</td>
+                        <td class="text-po-create"><input class="form-control po-create-td" value="{{c.deliveryDate }}" onclick="date(this)" id="deliveryDate"></td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+              </div><! --/content-panel -->
+        </div><!-- /col-md-12 -->
+
+		</section><! --/wrapper -->
+
+        <div id="btn-pr-create">
+            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="create()">创建</button>
+    </div>
+
+      </section><!-- /MAIN CONTENT -->
+
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2014 - Alvarez.is
+              <a href="purchase_request.html" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+    <!--common script for all pages-->
+    <script src="{% static 'assets/js/common-scripts.js' %}"></script>
+
+    <script src="{% static 'assets/js/notice.min.js' %}"></script>
+    <script>
+        const notice = new Notice();
+    </script>
+
+    <script src="{% static 'assets/js/main-qr.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-1.7.2.min.js' %}"></script>
+        <script src="{% static 'assets/js/the-datepicker.js' %}"></script>
+    <script>
+        function resetTabs(){
+            $("#content > div").hide(); //Hide all content
+            $("#tabs a").attr("id",""); //Reset id's      
+        }
+    
+        var myUrl = window.location.href; //get URL
+        var myUrlTab = myUrl.substring(myUrl.indexOf("#")); // For localhost/tabs.html#tab2, myUrlTab = #tab2     
+        var myUrlTabName = myUrlTab.substring(0,4); // For the above example, myUrlTabName = #tab
+    
+        (function(){
+            $("#content > div").hide(); // Initially hide all content
+            $("#tabs li:first a").attr("id","current"); // Activate first tab
+            $("#content > div:first").fadeIn(); // Show first tab content
+            
+            $("#tabs a").on("click",function(e) {
+                e.preventDefault();
+                if ($(this).attr("id") == "current"){ //detection for current tab
+                 return       
+                }
+                else{             
+                resetTabs();
+                $(this).attr("id","current"); // Activate this
+                $($(this).attr('name')).fadeIn(); // Show content for current tab
+                }
+            });
+    
+            for (i = 1; i <= $("#tabs li").length; i++) {
+              if (myUrlTab == myUrlTabName + i) {
+                  resetTabs();
+                  $("a[name='"+myUrlTab+"']").attr("id","current"); // Activate url tab
+                  $(myUrlTab).fadeIn(); // Show url tab content        
+              }
+            }
+        })()
+      </script>
+
+      <script src="http://www.jq22.com/js/jq.js"></script>
+    
+  <script>
+      //custom select box
+
+      $(function(){
+          $('select.styled').customSelect();
+      });
+
+  </script>
+
+    <script>
+            function date(time){
+            var datepicker = new TheDatepicker.Datepicker(time);
+            datepicker.render();
+            }
+
+
+            var index=10
+            function chai(){
+                index+=10
+    var goodcode = document.getElementById("goodcode-po").innerText
+    var goodname = document.getElementById("goodname-po").innerText
+    var danwei = document.getElementById("danwei-po").innerText
+    var factory = document.getElementById("factory-po").innerText
+    var clocation = document.getElementById("clocation-po").innerText
+    var trStr = ''
+    i+=10
+    trStr = '<tr><td>' + index + '</td><td>' + goodcode  + '</td><td>' + goodname + '</td><td class="text-po-create"><input class="form-control po-create-td"></td> <td class="text-po-create"><input class="form-control po-create-td"></td> <td class="text-po-create"><input class="form-control po-create-td"></td><td>' + danwei + '</td><td>' + factory + '</td><td>' + clocation +  '</td><td class="text-po-create"><input class="form-control po-create-td" onclick="date(this)"></td>' + '</td></tr>'
+    document.getElementById("podiv").innerHTML += trStr;
+            }
+            function cancel(){
+                $("#dd tr:last").remove();
+            }
+
+            create =  function() { //创建成功
+                var tabLen = document.getElementById("podiv");
+                var rfq__id=document.getElementById("rfq__id").innerHTML;
+                var vendor__id=document.getElementById("vendor__id").innerHTML;
+                var telephone=document.getElementById("telephone").innerHTML;
+                var fax=document.getElementById("fax").innerHTML;
+                var shippingAddress=document.getElementById("address").innerHTML;
+                var jsonT = "[";
+        for (var i = 0; i < tabLen.rows.length; i++) {
+            var quantity = $("#podiv").children().eq(i).children().eq(3).children().val();
+            var dj = $("#podiv").children().eq(i).children().eq(4).children().val();
+            var sum = $("#podiv").children().eq(i).children().eq(5).children().val();
+            var deliveryDate = $("#podiv").children().eq(i).children().eq(9).children().val();
+    
+
+                jsonT += '{"itemId":"' + tabLen.rows[i].cells[0].innerHTML + '","meterial__id":"' + tabLen.rows[i].cells[1].innerHTML + '","meterial__material__mname":"' + tabLen.rows[i].cells[2].innerHTML + '","quantity":' + quantity + ',"price":' + dj + ',"sum":' + sum+ ',"currency":"' + tabLen.rows[i].cells[6].innerHTML+ '","plant":"' + tabLen.rows[i].cells[7].innerHTML+ '","meterial__sloc":"' + tabLen.rows[i].cells[8].innerHTML  + '","deliveryDate":"' + deliveryDate + '"},'
+        }
+        jsonT= jsonT.substr(0, jsonT.length - 1);
+        jsonT += "]";
+        console.log(jsonT);
+        $.ajax({
+            type: 'post',
+            url: '',
+            data:{
+                "json":jsonT,
+                "rfq__id":rfq__id,
+                "vendor__id":vendor__id,
+                "telephone":telephone,
+                "fax":fax,
+                "shippingAddress":shippingAddress
+            },
+            success: function (data) {
+                let a = JSON.parse(data)
+                showMessage({text: '创建成功！采购订单编号：'+a.content,type: 'success',showClose: true, autoClose: false})
+            }
+        });     
+
+}
+
+
+
+    </script>
+
+  </body>
+</html>

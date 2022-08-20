@@ -506,6 +506,15 @@ def vreview(request: HttpRequest):
             for j in orderitem:
                 sum+=j['price']*j['quantity']
             for p in orderitem:
+                print(p['ontimeScore'])
+                if p['ontimeScore']==None:
+                    p['ontimeScore'] =0
+                if p['quantityScore']==None:
+                    p['quantityScore'] =0
+                if p['serviceScore']==None:
+                    p['serviceScore'] =0
+                if p['qualityScore']==None:
+                    p['qualityScore'] =0
                 quanzhong = p['price']*p['quantity']/sum
                 ontimeScore+=p['ontimeScore']*quanzhong
                 quantityScore+=p['quantityScore']*quanzhong

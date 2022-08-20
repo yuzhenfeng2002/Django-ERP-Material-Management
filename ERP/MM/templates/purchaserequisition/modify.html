@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>modify</title>
+
+</head>
+<body>
+<div>
+    {{ reque }}
+     {% comment %}<table id="mytab" class="table table-hover"></table>{% endcomment %}
+</div>
+		      <form class="form-login" action="" method="post">
+                   {% csrf_token %}
+		        <div class="login-wrap" id="login">
+                 <input id="search-keyword-1" name="mid" placeholder="物料编码">
+                             <input id="search-keyword" name="plant"  placeholder="工厂编码">
+                  <input id="search-keyword" name="itemId"  placeholder="条目编码">
+                 <input id="search-keyword-1" name="deliveryDate" placeholder="交付日期">
+                             <input id="search-keyword" name="estimatedPrice"  placeholder="价格">
+                 <input id="search-keyword-1" name="currency" placeholder="货币">
+                             <input id="search-keyword" name="quantity"  placeholder="数量">
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+		            <hr>
+
+
+		        </div>
+
+		      </form>
+{{ message }}
+</body>
+        <script type="text/javascript">
+
+            {#var Datalist ='{{ datalist|safe }}'; // 获取后台传来的数据需要加上safe过滤#}
+            {#datalist= [[93,93,0,100.0],[20,23,26,29]]#}
+
+              var pk  = {{ pk }};
+              console.log(pk);
+            pk = Number(pk);
+
+
+                    $('#mytab').bootstrapTable({
+                        {#全部参数#}
+                        {#url: "{% static 'guchen1.json' %}",         //请求后台的URL（*）或者外部json文件，json内容必须为json数组[{"id": 0,"name": "Item 0","price": "$0"},{"id": 1,"name": "Item 1","price": "$1"}]#}
+                        {#                                                //且键的名字必须与下方columns的field值一样，才能读取到数据#}
+                        url:"http://127.0.0.1:8000/mm/purchaseorder/modifygetdata/"+pk+"",
+                        method: 'GET',
+                        dataType: "json",
+                        uniqueId: 'pr_id',
+                        striped: false,
+                        cache: false,
+                        sortName: 'pr_id',
+                        showColumns: true,                  //是否显示所有的列
+                        showRefresh: true,
+                        sortable: false,
+                        sortOrder: 'desc',
+                        sidePagination: "server",
+                        undefinedText: '--',
+                        singleSelect: true,
+                        toolbar: '#soft-toolbar',
+                        search: false,
+                        strictSearch: true,
+                        clickToSelect: true,
+                        pagination: true,
+                        pageNumber: 1,
+                        pageSize: 5,
+                        pageList: [5, 10, 20, 50, 100],
+                        paginationPreText: "上一页",
+                        paginationNextText: "下一页",
+                        queryParamsType: "",
+                        queryParams: function (params) {
+                            var temp = {
+                                'pageSize': params.pageSize,
+                                'pageNumber': params.pageNumber,
+                                'searchText': params.searchText,
+                                'sortName': params.sortName,
+                                'sortOrder': params.sortOrder,
+                                search_kw: $('#search-keyword').val(),
+                                 search_kw_1: $('#search-keyword-1').val(), // 请求时向服务端传递的参数
+                            };
+                            return temp;
+                        },
+                        //是否显示父子表
+                        columns: [
+                            {
+                                field: 'itemId',  　　　　　　//返回数据rows数组中的每个字典的键名与此处的field值要保持一致
+                                title: '项目名'
+                            },
+                            {
+                                field: 'estimatedPrice',
+                                title: '数据库表名'
+                            },
+                            {
+                                field: 'currency',
+                                title: '总数'
+                            },
+                            {
+                                field: 'deliveryDate',
+                                title: '总数'
+                            },
+                            {
+                                field: 'meterial_id',
+                                title: '总数'
+                            },
+                            {
+                                field: 'pr_id',
+                                title: '总数'
+                            },
+                            {
+                                field: 'status',
+                                title: '总数'
+                            },
+                        ],
+
+                    });
+
+
+                                // 怎么能把row作为参数传递到该函数，然后使用row.project_name的方法取出原有的值，再做修改
+
+                    // 修改
+            function modifyData(id) {
+                $("#modify-modal").modal("show");
+                $("#modify-modal-id").val(id);
+                console.log("id:"+id)
+                id = Number(id);
+                window.location.href="http://127.0.0.1:8000/mm/purchaseorder/modify/"+id+"";
+                {% comment %}var rows = $('#dataTable').bootstrapTable('getRowByUniqueId',id);
+                console.log(rows.val)
+
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "http://127.0.0.1:8000/mm/purchaseorder/query_article/",
+                    //traditional: true, //加上此项可以传数组
+                    dataType: 'json',
+                    data: { id },
+                    success: function (data) {
+                        if (data.ret) {
+                            $("#modify-modal-title").val(data.data.title);
+                            $("#modify-modal-content").val(data.data.content);
+                        }
+                    }
+                });{% endcomment %}
+            }
+
+
+
+
+
+
+
+
+                      // 搜索查询按钮触发事件
+                $(function() {
+                    $("#search-button").click(function () {
+                        $('#mytab').bootstrapTable(('refresh')); // 很重要的一步，刷新url！
+                        $('#search-keyword').val()
+                    })
+                })
+
+        </script>
+</html>

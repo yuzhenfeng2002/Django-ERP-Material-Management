@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form class="form-login" action="" method="post">
+                   {% csrf_token %}
+		        <div class="login-wrap" id="login">
+                 <input id="search-keyword-1" name="mid" placeholder="物料编码">
+                  <input id="search-keyword" name="itemId"  placeholder="条目编码">
+
+                             <input id="search-keyword" name="estimatedPrice"  placeholder="价格">
+                 <input id="search-keyword-1" name="currency" placeholder="货币">
+                             <input id="search-keyword" name="quantity"  placeholder="数量">
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+		            <hr>
+
+
+		        </div>
+
+		      </form>
+{{ context }}
+</body>
+</html>

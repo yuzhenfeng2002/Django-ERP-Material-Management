@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>quotation-insert</title>
+</head>
+<body>
+            <div>
+              <form class="form-login" action="/mm/quotation/getmaterial" method="post">
+                   {% csrf_token %}
+                  <input id="search-keyword" name="wuliao"  placeholder="请输入物料编码查询">
+                 <input id="search-keyword-1" name="factory" placeholder="请输入工厂编号查询">
+                <button id="search-button-1" type="submit">查询</button>
+                   {% if id %}
+                 物料ID：{{ id}}
+                     {% endif %}
+                             {% if memessage %}
+                    {{ memessage}}
+                     {% endif %}
+                </form>
+        </div>
+        <div>
+              <form class="form-login" action="/mm/quotation/getRequisitionItem" method="post">
+                   {% csrf_token %}
+                  <input id="search-keyword" name="qinggou"  placeholder="请输入请购编码查询">
+                 <input id="search-keyword-1" name="tiaomu" placeholder="请输入条目编码查询">
+                <button id="search-button-1" type="submit">查询</button>
+                   {% if reid %}
+                 请购条目ID：{{ reid}}
+                     {% endif %}
+                  {% if remessage %}
+                    {{ remessage}}
+                     {% endif %}
+                </form>
+        </div>
+            <div>
+  <form class="form-login" action="/mm/quotation/insert" method="post">
+                   {% csrf_token %}
+		        <h2 class="form-login-heading">sign in now</h2>
+		        <div class="login-wrap" id="login">
+
+                    <input id="search-keyword" name="euserid"  placeholder="用户ID">
+                    <input id="search-keyword-1" name="vendorvid" placeholder="供应商ID">
+                    <input id="search-keyword-1" name="mid" placeholder="物料条目">
+                    <input id="search-keyword" name="riid"  placeholder="参考请购条目ID">
+                    <input id="search-keyword-1" name="collNo" placeholder="集合码">
+                    <input id="search-keyword-1" name="deadline" placeholder="截止日期">
+                    <input id="search-keyword" name="quantity"  placeholder="数量">
+                    <input id="search-keyword-1" name="deliveryDate" placeholder="交付日期">
+                    <input id="search-keyword-1" name="price" placeholder="价格">
+                    <input id="search-keyword" name="currency"  placeholder="货币">
+                    <input id="search-keyword-1" name="validTime" placeholder="报价有效期">
+                    <br>
+
+
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+		            <hr>
+
+
+		        </div>
+
+		      </form>
+                 {% if insertmessage %}
+                    {{ insertmessage}}
+                     {% endif %}
+            </div>
+<div>
+
+</div>
+
+
+</body>
+</html>

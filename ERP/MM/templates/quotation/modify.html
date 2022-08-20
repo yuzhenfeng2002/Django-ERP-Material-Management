@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+{% comment %}
+   供应商信息
+{% endcomment %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ reque }}
+
+
+
+
+
+            <div>
+  <form class="form-login" action="" method="post">
+                   {% csrf_token %}
+		        <h2 class="form-login-heading">sign in now</h2>
+		        <div class="login-wrap" id="login">
+                    <input id="search-keyword-1" name="price" placeholder="价格">
+                    <input id="search-keyword" name="currency"  placeholder="货币">
+                    <input id="search-keyword-1" name="validTime" placeholder="报价有效期">
+                    <br>
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+		            <hr>
+
+
+		        </div>
+
+		      </form>
+                 {% if insertmessage %}
+                    {{ insertmessage}}
+                     {% endif %}
+            </div>
+</body>
+</html>

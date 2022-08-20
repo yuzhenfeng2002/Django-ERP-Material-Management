@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+            <div>
+            {{  }}
+  <form class="form-login" action="" method="post">
+                   {% csrf_token %}
+		        <h2 class="form-login-heading">sign in now</h2>
+		        <div class="login-wrap" id="login">
+                    <input id="search-keyword-1" name="collNo" placeholder="集合码">
+                    <input id="search-keyword-1" name="deadline" placeholder="截止日期">
+                    <input id="search-keyword" name="quantity"  placeholder="数量">
+                    <input id="search-keyword-1" name="deliveryDate" placeholder="交付日期">
+                    <input id="search-keyword-1" name="rej" placeholder="拒绝情况">
+                    <input id="search-keyword-1" name="vendorvid" placeholder="供应商ID">
+
+
+
+
+
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+		            <hr>
+
+
+		        </div>
+
+		      </form>
+                 {% if message %}
+                    {{message}}
+                     {% endif %}
+            </div>
+</body>
+</html>

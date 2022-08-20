@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="utf-8">
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+        <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+        <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+    <meta charset="UTF-8">
+    <title>purchase_order</title>
+</head>
+<body>
+
+<div>
+
+</div>
+
+            <div>
+              <form class="form-login" action="" method="post">
+                   {% csrf_token %}
+                  <input id="search-keyword" name="euserid"  placeholder="用户名">
+                 <input id="search-keyword-1" name="text" placeholder="备注">
+                <button id="search-button-1" type="submit">添加</button>
+                </form>
+                                        {% if memessage %}
+                    {{ memessage}}
+                     {% endif %}
+                                                  {% if id %}
+            prid:{{ id }}
+                     {% endif %}
+        </div>
+
+
+
+
+		      <form class="form-login" action="/mm/purchaserequisition/insertreque/" method="post">
+                   {% csrf_token %}
+
+
+                  <input id="search-keyword" name="prid"  placeholder="请购单编码">
+                 <input id="search-keyword-1" name="mid" placeholder="物料编码">
+                             <input id="search-keyword" name="plant"  placeholder="工厂编码">
+                  <input id="search-keyword" name="itemId"  placeholder="条目编码">
+                 <input id="search-keyword-1" name="deliveryDate" placeholder="交付日期">
+                             <input id="search-keyword" name="estimatedPrice"  placeholder="价格">
+                 <input id="search-keyword-1" name="currency" placeholder="货币">
+                             <input id="search-keyword" name="quantity"  placeholder="数量">
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+		            <hr>
+
+
+		        </div>
+
+		      </form>
+{{ remessages }}
+{{ content }}
+</body>
+</html>

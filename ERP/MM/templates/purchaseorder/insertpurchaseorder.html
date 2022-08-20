@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+            <div>
+  <form class="form-login" action="/mm/purchaseorder/insert" method="post">
+                   {% csrf_token %}
+		        <div class="login-wrap" id="login">
+                    <input id="search-keyword" name="euserid"  placeholder="用户ID">
+                 <input id="search-keyword-1" name="telephone" placeholder="电话">
+                    <input id="search-keyword" name="fax"  placeholder="传真">
+                 <input id="search-keyword-1" name="shippingAddress" placeholder="送货地址">
+                    <input id="search-keyword" name="vendor_id"  placeholder="供应商编码">
+                 <input id="search-keyword-1" name="rfq__id" placeholder="参考询价单编码">
+		            <br>
+<hr>
+
+
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+
+
+		        </div>
+
+		      </form>
+                        <div>
+                            {{ message }}
+                        </div>
+<div>
+                    {% if id %}
+                    采购订单：{{ id}}
+                     {% endif %}
+</div>
+              <form class="form-login" action="/mm/purchaseorder/insertorderform" method="post">
+                   {% csrf_token %}
+		        <div class="login-wrap" id="login">
+                     <input id="search-keyword" name="pid"  placeholder="请输入采购订单编码">
+                    <input id="search-keyword" name="itemId"  placeholder="请输入条目编码">
+                 <input id="search-keyword-1" name="price" placeholder="请输入单价">
+                    <input id="search-keyword" name="currency"  placeholder="请输入货币">
+                 <input id="search-keyword-1" name="quantity" placeholder="请输入数量">
+                    <input id="search-keyword" name="deliveryDate"  placeholder="请输入送货时间">
+                 <input id="search-keyword-1" name="plant" placeholder="请输入工厂">
+                    <input id="search-keyword" name="material_id"  placeholder="请输入物料编码">
+
+<hr>
+
+
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+
+
+		        </div>
+
+		      </form>
+            {{ pomessage }}
+
+
+            </div>
+</body>
+</html>

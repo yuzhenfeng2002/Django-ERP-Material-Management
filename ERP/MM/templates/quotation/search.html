@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+            <div>
+  <form class="form-login" action="" method="post">
+                   {% csrf_token %}
+		        <h2 class="form-login-heading">sign in now</h2>
+		        <div class="login-wrap" id="login">
+
+                    <input id="search-keyword" name="riid"  placeholder="参考请购条目ID">
+                 <input id="search-keyword-1" name="collNo" placeholder="集合码">
+                    <input id="search-keyword-1" name="mid" placeholder="物料条目">
+                    <div style="text-align:center">
+                         <button class="btn btn-theme"  type="submit" >Submit</button>
+                    </div>
+
+		            <hr>
+
+
+		        </div>
+
+		      </form>
+                {{ quotation }}
+                <br>
+                {{ material }}
+            </div>
+</body>
+</html>

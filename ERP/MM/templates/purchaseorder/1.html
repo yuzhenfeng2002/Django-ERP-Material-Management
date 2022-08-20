@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    {% load static %}
+<!-- import CSS -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Bootstrap core CSS -->
+<link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+<!--external css-->
+<link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    
+<!-- Custom styles for this template -->
+<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+
+
+<!--common script for all pages-->
+<script src="{% static 'assets/js/common-scripts.js' %}"></script>
+
+<!--script for this page-->
+
+<!-- 引入刚刚下载的 ECharts 文件 -->
+<script src="{% static 'assets/js/echarts.js' %}"></script>
+<script src="{% static 'assets/js/highlight.min.js' %}"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+
+    <script src="{% static 'assets/dist/notice.min.js' %}"></script>
+    <script>
+        const notice = new Notice();
+    </script>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/dist/notice.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/default.min.css' %}">
+
+
+    
+  </head>
+
+  <body>
+
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <section id="container" >
+        <!-- **********************************************************************************************************************************************************
+        TOP BAR CONTENT & NOTIFICATIONS
+        *********************************************************************************************************************************************************** -->
+        <!--header start-->
+        <header class="header black-bg">
+                <div class="sidebar-toggle-box">
+                    <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+                </div>
+              <!--logo start-->
+              <a href="index.html" class="logo"><b>MD集团物料管理系统</b></a>
+              <!--logo end-->
+              <div class="nav notify-row" id="top_menu">
+                  <!--  notification start -->
+              
+          </header>
+        <!--header end-->
+        
+        <!-- **********************************************************************************************************************************************************
+        MAIN SIDEBAR MENU
+        *********************************************************************************************************************************************************** -->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar"  class="nav-collapse ">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu" id="nav-accordion">
+                
+                      <p class="centered"><img src="{% static 'assets/img/ui-sam.jpg' %}" class="img-circle" width="60"></a></p>
+                      <h5 class="centered">物料管理</h5>
+                          
+                    <li class="mt">
+                        <a href="{% url 'MM:login' %}">
+                            <i class="fa fa-dashboard"></i>
+                            <span>主页</span>
+                        </a>
+                    </li>
+  
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-desktop"></i>
+                            <span>供应商管理</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="general.html">创建新供应商</a></li>
+                            <li><a  href="buttons.html">查看或修改供应商信息</a></li>
+                            {% comment %} <li><a  href="panels.html">Panels</a></li> {% endcomment %}
+                        </ul>
+                    </li>
+  
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-cogs"></i>
+                            <span>商品管理</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="calendar.html">创建新商品</a></li>
+                            <li><a  href="gallery.html">查看或修改商品信息</a></li>
+                            <li><a  href="todo_list.html">查看商品库存</a></li>
+                        </ul>
+                    </li>
+                    {% comment %} <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-book"></i>
+                            <span>采购订单管理</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="blank.html">Blank Page</a></li>
+                            <li><a  href="login.html">Login</a></li>
+                            <li><a  href="lock_screen.html">Lock Screen</a></li>
+                        </ul>
+                    </li> {% endcomment %}
+                    <li class="sub-menu">
+                        <a class="active" href="javascript:;" >
+                            <i class="fa fa-tasks"></i>
+                            <span>收货管理</span>
+                        </a>
+                        <ul class="sub">
+                            <li class="active"><a  href="form_component.html">创建商品收据</a></li>
+                            <li class="active"><a  href="form_component.html">查看商品收据</a></li>
+                            <li class="active"><a  href="form_component.html">创建发票收据</a></li>
+                            <li class="active"><a  href="form_component.html">查看发票收据</a></li>
+                            <li class="active"><a  href="form_component.html">付款</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-th"></i>
+                            <span>Data Tables</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="basic_table.html">Basic Table</a></li>
+                            <li><a  href="responsive_table.html">Responsive Table</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class=" fa fa-bar-chart-o"></i>
+                            <span>Charts</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a  href="morris.html">Morris</a></li>
+                            <li><a  href="chartjs.html">Chartjs</a></li>
+                        </ul>
+                    </li>
+  
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        
+        <!-- **********************************************************************************************************************************************************
+        MAIN CONTENT
+        *********************************************************************************************************************************************************** -->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <h3><i class="fa fa-angle-right"></i> 创建新供应商</h3>
+                
+                <!-- BASIC FORM ELELEMNTS -->
+                <div class="row mt">
+                    <div class="col-lg-12">
+                    <div class="form-panel">
+                          <h4 class="mb"><i class="fa fa-angle-right"></i> 供应商信息</h4>
+                          
+                          <form id="material3" class="form-horizontal style-form">
+                            
+                            {% csrf_token %}
+                            <fieldset>
+                               
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">供应商名称： </div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" name="vname" id="vname2" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">语言：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="language" id='language2' required></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">电话： </div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" id='phone2'>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">传真：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" id='fax2'>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">国家：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="country" id="country2" required></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">所在城市：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" name="city" id="city2"  required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">街区地址：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" name="address" id="address2" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">邮政编码：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" name="postcode" id="postcode2" type="text" required>
+                                    </div>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">公司编码：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="company" id="company2" required></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">采购组织：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="pOrg" id="pOrg2" required></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">支付类型：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="tpType" id="tpType2"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">交易货币：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control po-text-modify" onclick="currencyf()" name="currency" id="currency2">
+                                        <div class="col-sm-12">
+                                            <div class="modal fade" id="myModalcurr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">货币</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    *双击填入货币
+                                                    <table  class="table table-bordered table-striped table-condensed">
+                                                        <thead>
+                                                            <!-- tr 指定表行标签-->
+                                                            <tr>
+                                                                <!-- th 设置表头内容，默认加粗-->
+                                                                <th style="width: 100px;">序号</th>
+                                                                <th style="width: 120px;">货币</th>
+                                                                <th>名称</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="currDiv">
+
+                                                        </tbody>
+                                                    </table>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            <!--结算货币modal-->
+
+
+                                        {% comment %} <select class="form-control" name="currency" id="currency2"></select> {% endcomment %}
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-2 control-label">
+                                      <div class="pull-right">总账账户编码：</div>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" name="glAcount" id="glAcount2" type="text" required>
+                                    </div>
+                                </div>
+
+                                 
+                            </fieldset>
+                           
+                            <div class="col-sm-10"></div>
+                            <button class="btn btn-theme04" type="reset">重置</button>
+                            <input type='submit'  class="btn btn-theme"  formmethod="post"></button>
+
+                            
+                            
+                        </form>
+                    
+                    </div>
+                    </div><!-- col-lg-12-->      	
+                </div><!-- /row -->
+                
+                
+                </div><!-- /row -->
+                
+                
+          </section>
+        </section><!-- /MAIN CONTENT -->
+  
+        <!--main content end-->
+        <!--footer start-->
+        <footer class="site-footer">
+            <div class="text-center">
+                2014 - Alvarez.is
+                <a href="responsive_table.html#" class="go-top">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+            </div>
+        </footer>
+        <!--footer end-->
+    </section>
+      
+    <script>
+        //custom select box
+  
+        $(function(){
+            $('select.styled').customSelect();
+        });
+  
+    </script>
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	{% comment %} <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> {% endcomment %}
+    <script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+
+
+    <!--common script for all pages-->
+    <script src="{% static 'assets/js/common-scripts.js' %}"></script>
+
+    <!--script for this page-->
+    <script src="{% static 'assets/js/jquery-ui-1.9.2.custom.min.js' %}"></script>
+
+	<!--custom switch-->
+	<script src="{% static 'assets/js/bootstrap-switch.js' %}"></script>
+	
+	<!--custom tagsinput-->
+	<script src="{% static 'assets/js/jquery.tagsinput.js' %}"></script>
+	
+	<!--custom checkbox & radio-->
+	
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap-daterangepicker/date.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+	
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap-inputmask/bootstrap-inputmask.min.js' %}"></script>
+	
+	
+	<script src="{% static 'assets/js/form-component.js' %}"></script>
+    <script>   //不需要提交表单，点击input框加载modal直接列出
+                                                        
+        $(document).ready(function() {
+            
+            $.ajax(
+            {
+                type: "post",
+                url: "{% url 'MM:ajax_load_currency' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<tr><td>'+ i + '</td><td>' +dataObj[i].Currency + '</td><td>' + dataObj[i].Name +'</td><tr>';
+                            //out += '<option value=' + +'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    document.getElementById("currDiv").innerHTML=out;
+                    
+                },
+                failure: function() {
+
+                }
+            })
+        });
+        $("table").on("dblclick","tr",function(e){
+            
+            document.getElementById("currency2").value=$(this).find('td').eq(1).text();
+            $('#myModalcurr').modal('hide')
+            
+        });
+        
+    </script>
+    <script type="text/javascript">
+        function currencyf() {
+            console.log(1);
+
+            //弹出模态框
+            
+            $("#myModalcurr").modal("show")}
+            
+        
+
+        //提交修改信息 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项），必填项见word/微信发的图；提交成功后，返回提示：商品信息已更新
+        //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
+        $('#material3').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax(
+            {
+                type: "POST",
+                url: "{% url 'MM:ajax_create_vendor' %}",
+                data:{
+                    dataType: "json",
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    vname: $("#vname2").val(),
+                    city: $("#city2").val(),
+                    address: $("#address2").val(),
+                    postcode: $("#postcode2").val(),
+                    country: $("#country2").val(),
+                    language: $("#language2").val(),
+                    glAcount: $("#glAcount2").val(),
+                    phone: $("#phone2").val(),
+                    fax: $("#fax2").val(),
+                    tpType: $("#tpType2").val(),
+                    companyCode: $("#company2").val(),
+                    pOrg: $("#pOrg2").val(),
+                    currency: $("#currency2").val(),
+                    //输入创建信息
+                },
+                success: function(data) {
+                    $('#item_result').text(data);
+                    var dataObj = eval("("+data+")");
+                    if(dataObj.status==1){
+                        showMessage({text: dataObj.message ,type: 'success'});
+                    }else{
+                        showMessage({text: dataObj.message ,type: 'error'});
+                    }
+                    //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
+                    //根据status写。。。
+                },
+                failure: function() {
+
+                }
+            })
+        });
+    </script>
+
+    <!-- 确认提示 -->
+    <script>
+        function tip(){
+            if(confirm("您确认修改吗？")){
+            return true;
+            }
+            else{
+            return false;
+            }
+        } 
+    </script>
+
+    <!-- 下拉框ajax -->
+    <script>
+            
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "get",
+                url: "{% url 'MM:ajax_load_language' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择语言</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Language+'>'+ dataObj[i].Language + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("language");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_tptype' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择支付类型</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Tptype+'>'+ dataObj[i].Tptype + '--' + dataObj[i].Description + '</option>' ;
+                    }
+                    var items=document.getElementsByName("tpType");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
+
+                }
+            });
+            
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_country' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择国家</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Country+'>'+ dataObj[i].ChineseName + '--' + dataObj[i].EnglishName + '</option>' ;
+                    }
+                    var items=document.getElementsByName("country");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                        
+                    },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_plant' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择工厂</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
+                    var items=document.getElementsByName("plant");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_porg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择采购组织</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("pOrg");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_company' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择公司编码</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    var items=document.getElementsByName("company");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    } 
+                },
+                failure: function() {
+
+                }
+            });
+        });
+    </script>
+  
+  </body>
+</html>
