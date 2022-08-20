@@ -76,9 +76,11 @@
                        // console.log(dataObj.gr[0].pk);
                        var out='';
                         for(i = 0; i < dataObj.gr.length; i++) {
-                           
+                            content2 =dataObj.gr[i].fields；
+                            out += '<tr><td id="itempk'+i+'">'+ dataObj.gr[i].vendor.companyCode+ '</td><td>' + dataObj.gr[i].vendor.id + '</td><td>' + dataObj.gr[i].pk+ '</td><td>' + dataObj.gr[i].fields.text+ '</td><td>'+ dataObj.gr[i].fields.postDate.quantity+ '</td><td>'+ content2.sumAmount+ '</td><td>'+ 未结算 +'</td><td><button class="btn btn-success btn-xs" onclick="submitpk(this.id)" id="bid'+i+'"><i class="fa fa-search-plus"></i></button></td></tr>';
                          }
-                         document.getElementById("sum").innerHTML=out;
+                        //  $('#item_result').text(out);
+                         document.getElementById("searchDiv").innerHTML=out;
                          //console.log(out);
                     },
                     failure: function() {
