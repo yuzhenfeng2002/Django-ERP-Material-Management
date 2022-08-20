@@ -95,7 +95,8 @@ def create_invoice(request: HttpRequest):
     postDate = getDate(post.get('postDate'))
     invoiceDate = getDate(post.get('invoiceDate'))
     
-    orderItem: OrderItem = OrderItem.objects.get(po__id__exact=po_id, itemId__exact=oi_itemId)
+    orderItems: QuerySet = OrderItem.objects.filter(po__id__exact=po_id, itemId__exact=oi_itemId)
+    orderItem = orderItems.last()
     euser = EUser.objects.get(pk__exact=request.user.id)
     goodReceipt: GoodReceipt = GoodReceipt.objects.get(orderItem__id=orderItem.id)
     actualAmount = goodReceipt.actualQnty * orderItem.price
