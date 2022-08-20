@@ -135,13 +135,14 @@ def create_invoice(request: HttpRequest):
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
     accountDetail1.save()
     accountDetail2.save()
-    return HttpResponse(json.dumps({'status':1, 'message':"Succeed!"}))
+    return HttpResponse(json.dumps({'status':1, 'message':"发票创建成功!"}))
 
 @login_required
 def search_unpaied_invoice(request: HttpRequest):
     post = request.POST
     vid = getPkExact(post.get('vid'), 'V')
     status = post.get('status')
+    status = 2
     invoices: QuerySet = Invoice.objects.filter(orderItem__status=status, orderItem__po__id=vid)
     results_list = json.loads(serializers.serialize('json', list(invoices)))
     for i, r in enumerate(invoices):
