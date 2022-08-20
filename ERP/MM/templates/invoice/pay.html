@@ -18,13 +18,26 @@
             <thead>
             <tr>
                 <th></th>
+                <script>
+                    function submitpk(clicked_id){
+                        var bid='#bid'+clicked_id[3];
+                       // console.log($(itempk).html());
+                        if($(bid).html()=='未结算'){
+                            $(bid).html('正在结算');
+                        }else{
+                            $(bid).html('未结算');
+                        }
+                        
+                        
+                    }
+                    
+                    </script>
                 <th> 公司编号</th>
                 <th> 供应商编号</th>
                 <th> 发票编号</th>
-                <th> 发票对应会计分录号</th>
                 <th> 发票备注</th>
-                <th> 总金额</th>
                 <th> 发票过账时间</th>
+                <th> 总金额</th>
                 <th> 结算</th>
             
             </tr>
@@ -33,7 +46,7 @@
             
         </table>
         <label>本次结算总金额：</label>
-        <label id=''></label>
+        <label id='sum'></label>
 
         <input  type="text" id="materialInput2" placeholder="请输入付款过账日期">
         <button type="submit" formmethod="post">Submit</button>
@@ -52,7 +65,7 @@
                     data:{
                         dataType: "json",
                         csrfmiddlewaretoken: '{{ csrf_token }}',
-                        : $("#materialInput1").val(),
+                        vid: $("#materialInput1").val(),
                         
                         //输入2个搜索框的值
                     },
@@ -61,19 +74,61 @@
                         var dataObj = eval("("+data+")");
                         //var content=dataObj[0].gr;
                        // console.log(dataObj.gr[0].pk);
-                        
+                       var out='';
                         for(i = 0; i < dataObj.gr.length; i++) {
-                           // content2 =dataObj.gr[i].fields
-                            //": 10, "sType": "1", "time": "2022-08-18T10:05:04.605Z", "postTime": "2022-08-18T10:03:52Z", "orderItem": 1, "euser": 1}, "user": {"id": 2,
-                            //var out='';
-                            // out += '<tr><td id="itempk'+i+'">'+ dataObj.gr[i].pk+ '</td><td>' + dataObj.gr[i].po.id + '</td><td>' + dataObj.gr[i].orderItem.id+ '</td><td>' + dataObj.gr[i].material.mname+ '</td><td>'+ dataObj.gr[i].orderItem.quantity+ '</td><td>'+ content2.actualQnty+ '</td><td>'+ content2.time.substr(0,10) +'</td><td><button class="btn btn-success btn-xs" onclick="submitpk(this.id)" id="bid'+i+'"><i class="fa fa-search-plus"></i></button></td></tr>';
+                           
                          }
-                         document.getElementById("searchDiv").innerHTML=out;
+                         document.getElementById("sum").innerHTML=out;
+                         //console.log(out);
                     },
                     failure: function() {
 
                     }
                 })
+            });
+
+            $('#material5').on('submit', function(e) {
+                e.preventDefault();
+                var checkId=document.getElementsByName("checkId")
+                checkar=[];
+                for(k in checkId){
+                    if(checkId[k].checked){
+                        var itempk='#itempk'+k.toString();
+                        console.log(k);
+                        checkar.push($(itempk).html());
+                        console.log(checkar);
+
+                    }
+                }
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url '",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        : $("#materialInput2").val(),
+                           : checkar,
+                        
+                        //输入2个搜索框的值
+                    },
+                    success: function(data) {
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                        
+                       var out='';
+                        for(i = 0; i < dataObj.gr.length; i++) {
+                           
+                         }
+                         document.getElementById("searchDiv").innerHTML=out;
+                         console.log(out);
+                    },
+                    failure: function() {
+
+                    }
+                })
+                
+                
             });
             
             //其他搜索
