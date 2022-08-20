@@ -110,6 +110,7 @@ def create_item(request: HttpRequest):
     mType = post.get('mType')
     meaunit = post.get('meaunit')
     netWeight = post.get('netWeight')
+    if netWeight == '': netWeight = 0
     weightUnit = post.get('weightUnit')
     transGrp = post.get('transGrp')
     loadingGrp = post.get('loadingGrp')
