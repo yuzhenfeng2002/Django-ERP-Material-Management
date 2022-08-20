@@ -103,12 +103,12 @@
                 $.ajax(
                 {
                     type: "POST",
-                    url: "{% url '",
+                    url: "{% url 'MM:ajax_pay_invoice' %}",
                     data:{
                         dataType: "json",
                         csrfmiddlewaretoken: '{{ csrf_token }}',
-                        : $("#materialInput2").val(),
-                           : checkar,
+                        postDate: $("#materialInput2").val(),
+                        invoiceIDList: '[1, 2, 3]',
                         
                         //输入2个搜索框的值
                     },

@@ -166,7 +166,7 @@ def pay(request: HttpRequest):
     postDate = getDate(post.get('postDate'))
     invoiceIDList = post.get('invoiceIDList')
     invoiceIDList = json.loads(invoiceIDList)
-    return HttpResponse(json.dumps(invoiceIDList, default=str))
+    # return HttpResponse(str(invoiceIDList))
     account = Account(
         JEType='KZ', sumAmount=0, postDate=postDate
     )
@@ -195,7 +195,7 @@ def pay(request: HttpRequest):
     account.sumAmount = sum
     account.save()
     accountDetail2 = AccountDetail(
-        glAccount='100000', type='1', amount=sum
+        glAccount='100000', type='1', amount=sum, je=account
     )
     try:
         accountDetail2.full_clean()
