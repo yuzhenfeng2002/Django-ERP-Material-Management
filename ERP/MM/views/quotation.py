@@ -434,7 +434,7 @@ def rfqinfo2(request: HttpRequest, pk):
         print(caigou)
         while len(caigou)!=1:
             caigou.pop()
-        baojia = Quotation.objects.filter(id=pk).values("price","deadline")
+        baojia = Quotation.objects.filter(id=pk).values("price","deadline","currency")
         baojia = list(baojia)
         return render(request, '../templates/quotation/RFQ-info.html', locals())
 
