@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>Register</head>
+    <body>
+        <form action="{% url 'MM:register' %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <input type="text" name="username" placeholder="用户名">
+                <input type="text" name="first_name" placeholder="名">
+                <input type="text" name="last_name" placeholder="姓">
+                <input type="email" name="email" placeholder="邮箱地址">
+                <input type="password" name="password" placeholder="密码">
+                <input type="password" name="password2" placeholder="再次输入密码">
+                <input type="text" name="sector" placeholder="部门">
+                <input type="tel" name="phone" placeholder="电话">
+                <input type="text" name="question1" placeholder="验证问题1">
+                <input type="text" name="answer1" placeholder="答案1">
+                <input type="text" name="question2" placeholder="验证问题2">
+                <input type="text" name="answer2" placeholder="答案2">
+            </fieldset>
+            {% if message %}
+                {{ message }}
+            {% endif %}
+            <input type="submit">
+        </form>
+    </body>
+</html>

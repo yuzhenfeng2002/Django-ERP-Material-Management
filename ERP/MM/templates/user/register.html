@@ -1,27 +1,218 @@
 <!DOCTYPE html>
-<html>
-    <head>Register</head>
-    <body>
-        <form action="{% url 'MM:register' %}" method="post">
-            {% csrf_token %}
-            <fieldset>
-                <input type="text" name="username" placeholder="用户名">
-                <input type="text" name="first_name" placeholder="名">
-                <input type="text" name="last_name" placeholder="姓">
-                <input type="email" name="email" placeholder="邮箱地址">
-                <input type="password" name="password" placeholder="密码">
-                <input type="password" name="password2" placeholder="再次输入密码">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>DASHGUM - Bootstrap Admin Template</title>
+    {% load static %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+        
+    <!-- Custom styles for this template -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet" href="{% static 'assets/css/register_style.css' %}">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+
+	  <div id="login-page">
+	  	<div class="container">
+	  	
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <form id="msform" action="{% url 'MM:register' %}" method="post" >
+              {% csrf_token %}
+              <!-- progressbar -->
+              <ul id="progressbar">
+                <li class="active">个人信息</li>
+                <li>账号信息</li>
+                <li>设置密码</li>
+              </ul>
+              <!-- fieldsets -->
+              <fieldset>
+                <h2 class="fs-title">个人信息</h2>
+                <br>
+                <input type="text" name="username" placeholder="用户名" autofocus>
+                <input type="text" name="first_name" placeholder="名" >
+                <input type="text" name="last_name" placeholder="姓" >
+                <input type="button" name="next" class="next action-button" value="下一步"/>
+              </fieldset>
+              <fieldset>
+                <h2 class="fs-title">账号信息</h2>
+                <br>
+                <input type="email" name="email" placeholder="邮箱地址" >
                 <input type="text" name="sector" placeholder="部门">
-                <input type="tel" name="phone" placeholder="电话">
-                <input type="text" name="question1" placeholder="验证问题1">
-                <input type="text" name="answer1" placeholder="答案1">
-                <input type="text" name="question2" placeholder="验证问题2">
-                <input type="text" name="answer2" placeholder="答案2">
-            </fieldset>
-            {% if message %}
-                {{ message }}
-            {% endif %}
-            <input type="submit">
-        </form>
-    </body>
+                <input type="tel" name="phone" placeholder="电话" >
+                <input type="button" name="previous" class="previous action-button-previous" value="上一步"/>
+                <input type="button" name="next" class="next action-button" value="下一步"/>
+              </fieldset>
+              <fieldset>
+                <h2 class="fs-title">设置密码</h2>
+                <br>
+                <input type="password" name="password" placeholder="密码" id="pw">
+                <div id="tipshow" style="display:none">
+                <div id="tips">
+                      <b></b>
+                      <b></b>
+                      <b></b>
+                      <b></b>
+                      &nbsp&nbsp<span></span>
+                  </div>
+                </div>
+                <label style="display:none" id="tishi"></label>     
+                  <input type="password" name="password2" placeholder="再次输入密码" id="repw"  onkeyup="checkpassword()">
+                  <input type="text" name="question1" placeholder="验证问题1" >
+                  <input type="text" name="answer1" placeholder="答案1" >
+                  <input type="text" name="question2" placeholder="验证问题2" >
+                  <input type="text" name="answer2" placeholder="答案2" >
+                <input type="button" name="previous" class="previous action-button-previous" value="上一步"/>
+                <button formaction="{% url 'MM:register' %}" formmethod="post"  class="action-button">立即注册</button>
+                {% if message %}
+                <script>
+                    mes = "{{message}}";
+                    if (!mes.match("message"))
+                        alert(mes);
+                </script>
+                {% endif %}
+              </fieldset>
+            </form>
+            
+          </div>
+        </div>
+	  	
+	  	</div>
+	  </div>
+      
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <!--BACKSTRETCH-->
+    <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+    <script type="text/javascript" src="{% static 'assets/js/jquery.backstretch.min.js' %}"></script>
+    <script>
+        $.backstretch("{% static 'assets/img/login-bg.jpg' %}", {speed: 500});
+    </script>
+
+     <script src="https://s1.pstatp.com/cdn/expire-1-M/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+<script src="{% static 'assets/js/jquery.easing.min.js' %}"></script>
+<script  src="{% static 'assets/js/register-script.js' %}"></script>
+<script type="text/javascript">
+  function checkpassword() {
+      var password = document.getElementById("pw").value;
+      var repassword = document.getElementById("repw").value;
+      var tishi =document.getElementById('tishi')
+      if(password == repassword) {
+		tishi.className = 'show'; 
+          document.getElementById("tishi").innerHTML="<br><font color='green'>两次密码输入一致</font>";
+          document.getElementById("submit").disabled = false;
+
+      }else {
+        tishi.className = 'show';
+          document.getElementById("tishi").innerHTML="<br><font color='red'>两次输入密码不一致!</font>";
+          document.getElementById("submit").disabled = true;
+
+      }
+  };
+
+
+window.onload = function () {
+var password = document.getElementById('pw')
+var tips = document.getElementById('tips').getElementsByTagName('b')
+var span = document.getElementById('tips').getElementsByTagName('span')
+var tipshow =document.getElementById('tipshow')
+//Regular expression to judge the safety factor
+function checkpassword(val) {
+var model = 0
+if (val.length < 6) return 0
+if (/\d/.test(val)) model++
+if (/[a-z]/.test(val)) model++
+if (/[A-Z]/.test(val)) model++
+if (/\W/.test(val)) model++
+if (val.length > 20) return 4
+return model
+}
+
+//Input box gets focus
+password.onfocus = function () {
+password.style.border = ' 1px solid yellow'
+console.log(1)
+}
+
+//Input box loose focus
+password.onblur = function () {
+password.style.border = '1px solid #aaa'
+if (password.value == '') {
+alert('您还未填写密码')
+}
+}
+
+
+//User enters password
+password.onkeyup = function () {
+var psvalue = password.value
+var models = checkpassword(psvalue)
+tipshow.className = 'show';
+for(var i = 0; i<tips.length;i++)
+{
+  tips[i].style.backgroundColor = "white";
+}
+
+//Judging the safety factor
+switch (models) {
+case 0:
+  break
+case 1:
+  tips[0].style.backgroundColor = 'red'
+  span[0].innerHTML = '不安全'
+  break
+case 2:
+  tips[0].style.backgroundColor = 'yellow'
+  tips[1].style.backgroundColor = 'yellow'
+  span[0].innerHTML = '安全度弱'
+  break
+case 3:
+  tips[0].style.backgroundColor = 'green'
+  tips[1].style.backgroundColor = 'green'
+  tips[2].style.backgroundColor = 'green'
+  span[0].innerHTML = '安全度普通'
+  break
+case 4:
+  tips[0].style.backgroundColor = 'blue'
+  tips[1].style.backgroundColor = 'blue'
+  tips[2].style.backgroundColor = 'blue'
+  tips[3].style.backgroundColor = 'blue'
+  span[0].innerHTML = '安全'
+  break
+}
+}
+}
+</script>
+
+
+  </body>
 </html>

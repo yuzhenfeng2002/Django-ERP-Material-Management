@@ -1,17 +1,144 @@
 <!DOCTYPE html>
-<html>
-    <head>Login</head>
-    <body>
-        <form action="{% url 'MM:login' %}" method="post">
-            {% csrf_token %}
-            <fieldset>
-                <input type="email" name="email" placeholder="邮箱地址">
-                <input type="password" name="password" placeholder="密码">
-            </fieldset>
-            {% if message %}
-                {{ message }}
-            {% endif %}
-            <input type="submit">
-        </form>
-    </body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>DASHGUM - Bootstrap Admin Template</title>
+    {% load static %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+        
+    <!-- Custom styles for this template -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+
+	  <div id="login-page">
+	  	<div class="container">
+
+	  	<!--交互部分代码段begin-->
+            <form action="{% url 'MM:login' %}" method="post" class="form-login">
+                {% csrf_token %}
+        <!--交互部分代码段end-->
+		        <h2 class="form-login-heading">登陆账号</h2>
+		        <div class="login-wrap" id="login">
+        <!--交互部分代码段begin-->
+                    <input type="email" name="email" class="form-control" placeholder="邮箱地址" autofocus> 
+		            <br>
+                    <input type="password" name="password" class="form-control" placeholder="密码">
+                    {% if message %}
+                    <script>
+                        mes = "{{message}}";
+                        if (!mes.match("message"))
+                            alert(mes);
+                    </script>
+                    {% endif %}
+        <!--交互部分代码段end-->
+		            <label class="checkbox">
+		                <span class="pull-right">
+		                    <a data-toggle="modal" href="login.html#myModal"> 忘记密码？</a>
+		
+		                </span>
+		            </label>
+        <!--交互部分代码段begin-->
+                    <input type="submit" value="登陆" class="btn btn-theme btn-block">
+        <!--交互部分代码段end-->
+		            <hr>
+		            
+
+		            <div class="registration">
+		                现在还没有账号？<br/>
+		                <a class="" href="http://127.0.0.1:8000/mm/register/">
+		                    注册账号
+		                </a>
+		            </div>
+		        </div>
+		
+		        <!-- Modal -->
+		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+		              <div class="modal-dialog">
+		                  <div class="modal-content">
+		                      <div class="modal-header">
+		                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                          <h4 class="modal-title">忘记密码</h4>
+		                      </div>
+		                      <div class="modal-body">
+
+		                          <p>请回答注册时设置的问题来重新设置密码</p>
+                                    <input type="email" name="email2" class="form-control" placeholder="邮箱地址" autofocus>
+                                  <br>
+                                  <select class="form-control">
+                                    <option>验证问题1</option>
+                                    <option>验证问题2</option>
+                                  </select>
+                                  <br>
+                                  <input type="text" name="question1" placeholder="验证问题" class="form-control"> <!--这边应该需要改成label/其他非输入框-->
+                                  <br>
+                                  <input type="text" name="answer1" placeholder="答案" class="form-control">
+                                  <br>
+                                  <input type="password" name="password1" placeholder="密码" class="form-control" id="pw">
+                                  <label id="tishi"></label>
+                                  <input type="password" name="password2" placeholder="再次输入密码" class="form-control" id="repw"  onkeyup="checkpassword()">
+		                      </div>
+		                      <div class="modal-footer">
+		                          <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+		                          <button class="btn btn-theme" type="button">修改密码</button>
+		                      </div>
+		                  </div>
+		              </div>
+		          </div>
+		          <!-- modal -->
+        <!--交互部分代码段begin-->
+            </form>
+        <!--交互部分代码段end-->
+	  	
+	  	</div>
+	  </div>
+
+    <!-- js placed at the end of the document so the pages load faster -->
+  //  <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <!--BACKSTRETCH-->
+    <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+    <script type="text/javascript" src="{% static 'assets/js/jquery.backstretch.min.js' %}"></script>
+    <script>
+        $.backstretch("{% static 'assets/img/login-bg.jpg' %}", {speed: 500});
+    </script>
+   <script type="text/javascript">
+    function checkpassword() {
+        var password = document.getElementById("pw").value;
+        var repassword = document.getElementById("repw").value;
+
+        if(password == repassword) {
+            document.getElementById("tishi").innerHTML="<br><font color='green'>两次密码输入一致</font>";
+            document.getElementById("submit").disabled = false;
+
+        }else {
+            document.getElementById("tishi").innerHTML="<br><font color='red'>两次输入密码不一致!</font>";
+            document.getElementById("submit").disabled = true;
+        }
+    }
+</script>
+  </body>
 </html>
