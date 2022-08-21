@@ -139,6 +139,7 @@ def getpq(request):
     if request.method == "GET":
         purc = PurchaseRequisition.objects.all().values()
         purc = list(purc)
+        print(purc)
         return render(request, '../templates/purchaserequisition/purchase_request.html', locals())
     if request.method == "POST":
         id = request.POST.get("id")
@@ -164,6 +165,11 @@ def getpqinfo(request: HttpRequest, pk):
                                                             "meterial__id", "pr_id", "status","meterial__sloc","meterial__material__mname"
                                                             ,"meterial__stock__id")
         reuqe = list(reuqe)
+        for i in reuqe:
+            if i['status']=='0':
+                i['status'] = "已创建采购申请"
+            if i['status']=='1':
+                i['status'] = "已创建采购订单"
         purchaseRequisition = list(purchaseRequisition)
         print(reuqe)
         return render(
@@ -239,11 +245,14 @@ def modify_pr(request: HttpRequest, pk):
 
 
 @csrf_exempt
+@login_required
 def newrequeinsert(request):
     if request.method == "GET":
         return render(request, '../templates/purchaserequisition/create-new.html', locals())
     if request.method == "POST":
         print("11111")
+        euser = request.user
+        euserid = euser.pk
         mid = request.POST.get("mid")
         plant = request.POST.get("plant")
         itemId = request.POST.get("itemId")
@@ -252,7 +261,7 @@ def newrequeinsert(request):
         print(text)
         print("type:",type(data))
         now_time = datetime.datetime.now()
-        requision = PurchaseRequisition.objects.create(time=now_time, euser_id=1, text=text)
+        requision = PurchaseRequisition.objects.create(time=now_time, euser_id=euserid, text=text)
         prid= requision.id
         data1 = eval(data)
         for i in data1:
@@ -263,7 +272,7 @@ def newrequeinsert(request):
                                                              estimatedPrice=i['estimatedPrice'],
                                                              currency=i['currency'],
                                                              quantity=i['quantity'],
-                                                             status="1",
+                                                             status="0",
                                                              itemId=i['itemId'],
                                                              deliveryDate= str)
 
@@ -361,12 +370,13 @@ def createsys(request: HttpRequest, pk):
 
 
 @csrf_exempt
-def createmanu(request: HttpRequest, pk):
+@login_required
+def createmanu(request):
     if request.method == "GET":
         return render(request, '../templates/purchaseorder/po-create_manual.html', locals())
     if request.method == "POST":
-        quotation = Quotation.objects.filter(id = pk).values()
-        euser_id = quotation[0]['euser_id']
+        euser = request.user
+        euserid = euser.pk
         data1= request.POST.get("json")
         data1 = eval(data1)
         telephone = request.POST.get("telephone")
@@ -379,9 +389,10 @@ def createmanu(request: HttpRequest, pk):
         print(fax)
         print(vendor_id)
         print(shippingAddress)
-        pr =PurchaseOrder.objects.create(euser_id=euser_id, telephone=telephone,
+        pr =PurchaseOrder.objects.create(euser_id=euserid, telephone=telephone,
                                                  shippingAddress=shippingAddress, fax=fax,
-                                                 vendor_id=vendor_id, rfq_id=pk,time=now_time)
+                                                 vendor_id=vendor_id,time=now_time)
+        prid = pr.id
         for i in data1:
             print(i['deliveryDate'])
             str1 = getDate2(i['deliveryDate'])
@@ -395,7 +406,7 @@ def createmanu(request: HttpRequest, pk):
                                                              status="0",
                                                              itemId=i['itemId'],
                                                              deliveryDate=str1,
-                                                                po_id=pk)
+                                                                po_id=prid)
         return render(request, '../templates/purchaseorder/po-create_manual.html', locals())
 
 
