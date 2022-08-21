@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>DASHGUM - Bootstrap Admin Template</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/style-qr.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/notice.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'assets/css/default.min.css' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/js/bootstrap-datepicker/css/datepicker.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/js/bootstrap-daterangepicker/daterangepicker.css' %}" />
+        
+    <!-- Custom styles for this template -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/css/purchase.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
+
+
+
+  </head>
+
+  <body>
+
+  <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+      <header class="header black-bg">
+              <div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div>
+            <!--logo start-->
+            <a href="index.html" class="logo"><b>DASHGUM FREE</b></a>
+            <!--logo end-->
+            <div class="nav notify-row" id="top_menu">
+                <!--  notification start -->
+                <ul class="nav top-menu">
+                    <!-- settings start -->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                            <i class="fa fa-tasks"></i>
+                            <span class="badge bg-theme">4</span>
+                        </a>
+                        <ul class="dropdown-menu extended tasks-bar">
+                            <div class="notify-arrow notify-arrow-green"></div>
+                            <li>
+                                <p class="green">You have 4 pending tasks</p>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <div class="task-info">
+                                        <div class="desc">DashGum Admin Panel</div>
+                                        <div class="percent">40%</div>
+                                    </div>
+                                    <div class="progress progress-striped">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                            <span class="sr-only">40% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <div class="task-info">
+                                        <div class="desc">Database Update</div>
+                                        <div class="percent">60%</div>
+                                    </div>
+                                    <div class="progress progress-striped">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                            <span class="sr-only">60% Complete (warning)</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <div class="task-info">
+                                        <div class="desc">Product Development</div>
+                                        <div class="percent">80%</div>
+                                    </div>
+                                    <div class="progress progress-striped">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                            <span class="sr-only">80% Complete</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <div class="task-info">
+                                        <div class="desc">Payments Sent</div>
+                                        <div class="percent">70%</div>
+                                    </div>
+                                    <div class="progress progress-striped">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                                            <span class="sr-only">70% Complete (Important)</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="external">
+                                <a href="#">See All Tasks</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- settings end -->
+                    <!-- inbox dropdown start-->
+                    <li id="header_inbox_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="badge bg-theme">5</span>
+                        </a>
+                        <ul class="dropdown-menu extended inbox">
+                            <div class="notify-arrow notify-arrow-green"></div>
+                            <li>
+                                <p class="green">You have 5 new messages</p>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <span class="photo"><img alt="avatar" src="assets/img/ui-zac.jpg"></span>
+                                    <span class="subject">
+                                    <span class="from">Zac Snider</span>
+                                    <span class="time">Just now</span>
+                                    </span>
+                                    <span class="message">
+                                        Hi mate, how is everything?
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <span class="photo"><img alt="avatar" src="assets/img/ui-divya.jpg"></span>
+                                    <span class="subject">
+                                    <span class="from">Divya Manian</span>
+                                    <span class="time">40 mins.</span>
+                                    </span>
+                                    <span class="message">
+                                     Hi, I need your help with this.
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <span class="photo"><img alt="avatar" src="assets/img/ui-danro.jpg"></span>
+                                    <span class="subject">
+                                    <span class="from">Dan Rogers</span>
+                                    <span class="time">2 hrs.</span>
+                                    </span>
+                                    <span class="message">
+                                        Love your new Dashboard.
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <span class="photo"><img alt="avatar" src="assets/img/ui-sherman.jpg"></span>
+                                    <span class="subject">
+                                    <span class="from">Dj Sherman</span>
+                                    <span class="time">4 hrs.</span>
+                                    </span>
+                                    <span class="message">
+                                        Please, answer asap.
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html#">See all messages</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- inbox dropdown end -->
+                </ul>
+                <!--  notification end -->
+            </div>
+            <div class="top-menu">
+            	<ul class="nav pull-right top-menu">
+                    <li><a class="logout" href="login.html">Logout</a></li>
+            	</ul>
+            </div>
+        </header>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+              
+              	  <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+              	  <h5 class="centered">Marcel Newman</h5>
+              	  	
+                  <li class="mt">
+                      <a href="index.html">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Dashboard</span>
+                      </a>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-desktop"></i>
+                          <span>UI Elements</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="general.html">General</a></li>
+                          <li><a  href="buttons.html">Buttons</a></li>
+                          <li><a  href="panels.html">Panels</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-cogs"></i>
+                          <span>Components</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="calendar.html">Calendar</a></li>
+                          <li><a  href="gallery.html">Gallery</a></li>
+                          <li><a  href="todo_list.html">Todo List</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-book"></i>
+                          <span>Extra Pages</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="blank.html">Blank Page</a></li>
+                          <li><a  href="login.html">Login</a></li>
+                          <li><a  href="lock_screen.html">Lock Screen</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a class="active" href="javascript:;" >
+                          <i class="fa fa-tasks"></i>
+                          <span>Forms</span>
+                      </a>
+                      <ul class="sub">
+                          <li class="active"><a  href="form_component.html">Form Components</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-th"></i>
+                          <span>Data Tables</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="basic_table.html">Basic Table</a></li>
+                          <li><a  href="responsive_table.html">Responsive Table</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class=" fa fa-bar-chart-o"></i>
+                          <span>Charts</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="morris.html">Morris</a></li>
+                          <li><a  href="chartjs.html">Chartjs</a></li>
+                      </ul>
+                  </li>
+
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+          	<h3><i class="fa fa-angle-right"></i> 创建采购申请</h3>
+          	
+
+
+              <div class="row mt">
+                <div class="col-lg-12">
+                <div class="form-panel">
+                      <h4 class="mb"><i class="fa fa-angle-right"></i> 商品信息</h4>
+                    <form class="form-horizontal style-form" method="get">
+
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">商品编码</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="goodcode-pocm">
+                             <button type="button" class="btn btn-link " data-toggle="modal" data-target="#myModalgood">忘记编号？</button>
+                               
+                          </div>
+                      </div>
+                      
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">商品名称</label> <!--自动显示-->
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="goodname-pocm">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">数量</label>
+                          <div class="col-sm-10">
+                              <input type="text"  class="form-control" id="number-pocm">
+                          </div>
+                      </div>
+                     
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">单价</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="danjia-pocm">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">总价</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="zongjia-pocm">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">结算货币</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="danwei-pocm" onclick="currency()">
+                        </div>
+                    </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">工厂</label>
+                          <div class="col-sm-10">
+                              <input type="text"  class="form-control" id="factory-pocm">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">存储位置</label>
+                          <div class="col-sm-10" >
+                              <select name="industrySector"  class="form-control" id="clocation-pocm">
+                                <option value=''>请选择存储位置</option>
+                                <option value='CN00'>TG00--贸易商品</option>
+                                <option value='AS00'>RM00--原材料</option>
+                                <option value='AF00'>SF00--半成品</option>
+                                <option value='SA00'>FG00--产成品</option>
+                                <option value='NA00'>MI00--混合产品</option>
+                                <option value='NA00'>RE00--退货产品</option>
+                            </select>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">送达时间</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="time-pocm" onclick="date(this)">
+                        </div>
+                    </div>
+                      <button type="button" class="btn btn-round btn-primary" id="btn-addgood" onclick="addgood()">添加商品</button>
+                        
+                    
+                    </form>
+                </div>
+                </div><!-- col-lg-12-->      	
+            </div><!-- /row -->
+                
+            <div class="col-md-12 mt">
+                <div class="content-panel">
+                    <table class="table table-hover" id="dd">
+                     <div id="table-pr-head"> <h4><i class="fa fa-angle-right"></i> 订单</h4>
+                        <button type="button" class="btn btn-round btn-default" onclick="cancel()" style="margin-left: 900px;">取消拆分</button> <button type="button" class="btn btn-round btn-primary" onclick="chai()">拆分订单</button>
+                    </div>  
+                        <thead>
+                        <tr>
+                            <th>条目编码</th>
+                            <th>商品编码</th>
+                            <th>商品名称</th>
+                            <th>数量</th>
+                            <th>单价</th>
+                            <th>总价</th>
+                            <th>结算货币</th>
+                            <th>工厂</th>
+                            <th>存储位置</th>
+                            <th>送达时间</th>
+                        </tr>
+                        </thead>
+                        <tbody id="podiv">
+                      
+                    </tbody>
+                    </table>
+                              	<!-- BASIC FORM ELELEMNTS -->
+          	<div class="row mt">
+                <div class="col-lg-12">
+                <div class="form-panel">
+                      <h5 class="mb"><i class="fa fa-angle-right"></i> 送货信息</h5>
+                    <form class="form-horizontal style-form" method="post">
+
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">收货方电话</label>
+                          <div class="col-sm-10">
+                              <input type="text"name="telephone" class="form-control" >
+                          </div>
+                      </div>
+                      
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">收货方传真</label>
+                          <div class="col-sm-10">
+                              <input type="text"name="fax" class="form-control">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">送货地址</label>
+                          <div class="col-sm-10">
+                              <input type="text"name="shippingAddress"  class="form-control">
+                          </div>
+                      </div>
+                      <h5 class="mb"><i class="fa fa-angle-right"></i> 供应商信息</h5>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">供应商编码</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" name="ven" id="gyscode" placeholder="请输入">
+                            <button type="button" class="btn btn-link " data-toggle="modal" data-target="#myModalgys">忘记编号？</button>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">供应商名称</label><!--输入供应商编码后自动显示-->
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">城市</label><!--输入供应商编码后自动显示-->
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">街区地址</label><!--输入供应商编码后自动显示-->
+                          <div class="col-sm-10">
+                              <input type="text"  class="form-control" >
+                          </div>
+                      </div>
+                      <h5 class="mb"><i class="fa fa-angle-right"></i> 采购方信息</h5>
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">公司编码</label>
+                          <div class="col-sm-10" >
+                              <input type="text"  class="form-control" >
+                          </div>
+                      </div>
+                      
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">采购组织</label>
+                          <div class="col-sm-10">
+                              <select name="industrySector"  class="form-control">
+                                <option value=''>请选择采购组织</option>
+                                <option value='CN00'>CN00--中国区</option>
+                                <option value='AS00'>AS00--海外亚洲区</option>
+                                <option value='AF00'>AF00--非洲区</option>
+                                <option value='SA00'>SA00--南美洲区</option>
+                                <option value='NA00'>NA00--北美洲区</option>
+                            </select>
+                          </div>
+                      </div>
+                      
+                      <div class="form-group">
+                          <label class="col-sm-2 col-sm-2 control-label">采购组</label>
+                          <div class="col-sm-10">
+                            <select name="industrySector"  class="form-control">
+                                <option value=''>请选择采购组</option>
+                                <option value='CN00'>G00--广东组</option>
+                                <option value='AS00'>A00--安徽组</option>
+                                <option value='AF00'>H00--湖北组</option>
+                                <option value='SA00'>J00--江苏组</option>
+                                <option value='NA00'>C00--重庆组</option>
+                                <option value='NA00'>S00--山西组</option>
+                                <option value='NA00'>B00--河北组</option>
+                                <option value='NA00'>X00--江西组</option>
+                                <option value='NA00'>V00--越南组</option>
+                                <option value='NA00'>P00--日本组</option>
+                                <option value='NA00'>T00--泰国组</option>
+                                <option value='NA00'>I00--印度组</option>
+                                <option value='NA00'>E00--埃及组</option>
+                                <option value='NA00'>R00--巴西组</option>
+                                <option value='NA00'>D00--阿根廷组</option>
+                                <option value='NA00'>U00--美国组</option>
+                            </select>
+                          </div>
+                      </div>
+                                 <div id="btn-pr-create">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" >创建</button>
+        </div>
+                    </form>
+                </div>
+                </div><!-- col-lg-12-->      	
+            </div><!-- /row -->
+
+                  </div><! --/content-panel -->
+            </div><!-- /col-md-12 -->
+           
+                          
+   <!--搜索商品编码modal-->
+   <div class="col-sm-12">
+    <div class="modal fade" id="myModalgood" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">搜索商品编码</h4>
+            </div>
+            <div class="modal-body">
+              <!-- Hi there, I am a Modal Example for Dashgum Admin Panel. -->
+              <!-- 搜索条件 -->
+              <form class="form-horizontal style-form" id="material" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label">
+                            <div class="pull-right">商品名称:</div>
+                            </label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="mname" id="mname">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label">
+                            <div class="pull-right">商品类型:</div>
+                            </label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="industrySector" id="industrySector">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label">
+                            <div class="pull-right">储存位置:</div>
+                            </label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="mType" id="mType">
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="btn btn-theme02" type="submit" name="submit" value="submit">
+                        </div>
+                    </div>
+                  </fieldset>
+            </form>
+            
+
+            <table  class="table table-bordered table-striped table-condensed">
+                <thead>
+                    <!-- tr 指定表行标签-->
+                    <tr>
+                        <!-- th 设置表头内容，默认加粗-->
+                        <th>商品编号</th>
+                        <th>商品名称</th>
+                    </tr>
+                </thead>
+                <tbody id="searchDiv">
+
+                </tbody>
+            </table>
+            <script>
+                $('#material').on('submit', function(e) {
+                    e.preventDefault();
+                    $.ajax(
+                    {
+                        type: "POST",
+                        data:{
+                            mname: $("#mname").val(),
+                            mType: $("#mType").val(),
+                            industrySector: $("#industrySector").val(),
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            dataType: "json"
+                        },
+                        success: function(data) {
+                          //  $('#material_result').text(data);
+                            var dataObj=eval("("+data+")");
+                            var out = "";
+                            var i;
+                            //"pk": 1, "fields": {"mname": "CHLK", "mType": "HALB", "mGroup": "AS", "meaunit": "ABC", "netWeight": 1, "weightUnit": "ABC", "transGrp": "T", "loadingGrp": "L", "industrySector": "I"}
+                            for(i = 0; i < dataObj.length; i++) {
+                                //out += '<p '+ dataObj[i].fields.mname + '>' + '</p><br>';<a href="basic_table.html#">Company Ltd</a>
+                                out += '<tr><td>'+ dataObj[i].pk+ '</td><td>' + dataObj[i].fields.mname +'</td><tr>';
+                            }
+                            document.getElementById("searchDiv").innerHTML=out;
+                        },
+                        failure: function() {
+    
+                        }
+                    })
+                });
+                $("table").on("dblclick","tr",function(e){
+                    
+                    document.getElementById("goodcode-pocm").value=$(this).find('td').eq(0).text();
+                    $('#myModalgood').modal('hide')
+                    
+                })
+                
+            </script>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--搜索商品编码modal-->
+
+  <!--搜索供应商编码modal-->
+  <div class="col-sm-12">
+    <div class="modal fade" id="myModalgys" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">搜索供应商编码</h4>
+            </div>
+            <div class="modal-body">
+              <!-- Hi there, I am a Modal Example for Dashgum Admin Panel. -->
+              <!-- 搜索条件 -->
+              <form class="form-horizontal style-form" id="vendor" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label">
+                            <div class="pull-right">供应商名称:</div>
+                            </label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="vname" id="vname">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label">
+                            <div class="pull-right">城市:</div>
+                            </label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="city" id="city">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label">
+                            <div class="pull-right">创建者编码:</div>
+                            </label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="ccode" id="ccode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label">
+                            <div class="pull-right">公司编码:</div>
+                            </label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="gcode" id="gcode">
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="btn btn-theme02" type="submit" name="submit" value="submit">
+                        </div>
+                    </div>
+                  </fieldset>
+            </form>
+            
+
+            <table  class="table table-bordered table-striped table-condensed">
+                <thead>
+                    <!-- tr 指定表行标签-->
+                    <tr>
+                        <!-- th 设置表头内容，默认加粗-->
+                        <th>供应商编号</th>
+                        <th>供应商名称</th>
+                        <th>所在城市</th>
+                        <th>公司编码</th>
+                        <th>创建者编码</th>
+                    </tr>
+                </thead>
+                <tbody id="gysDiv">
+
+                </tbody>
+            </table>
+            <script>
+                $('#vendor').on('submit', function(e) {
+                    e.preventDefault();
+                    $.ajax(
+                    {
+                        type: "POST",
+                        url: 
+                        data:{
+                            $("#vname").val(), //供应商名称
+                            $("#city").val(), //城市
+                            $("#ccode").val(), //创建者编码
+                            $("#gcode").val(), //公司编码
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            dataType: "json"
+                        },
+                        success: function(data) {
+                            var dataObj=eval("("+data+")");
+                            var out = "";
+                            var i;
+                            for(i = 0; i < dataObj.length; i++) {
+                                out += '<tr><td>'+ /*供应商编号*/ + '</td><td>' + /*供应商名称*/ + '</td><td>' + /*所在城市*/ + '</td><td>' + /*公司编码*/ + '</td><td>' + /*创建者编码*/+'</td><tr>';
+                            }
+                            document.getElementById("gysDiv").innerHTML=out;
+                        },
+                        failure: function() {
+    
+                        }
+                    })
+                });
+                $("table").on("dblclick","tr",function(e){
+                    
+                    document.getElementById("gyscode").value=$(this).find('td').eq(0).text();
+                    $('#myModalgys').modal('hide')
+                    
+                })
+                
+            </script>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--搜索供应商编码modal-->
+
+                <!--结算货币modal--> 
+                <div class="col-sm-12">
+                    <div class="modal fade" id="myModalcurr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title" id="myModalLabel">货币</h4>
+                            </div>
+                            <div class="modal-body">
+                              
+                            <table  class="table table-bordered table-striped table-condensed">
+                                <thead>
+                                    <!-- tr 指定表行标签-->
+                                    <tr>
+                                        <!-- th 设置表头内容，默认加粗-->
+                                        <th style="width: 100px;">序号</th>
+                                        <th style="width: 120px;">货币</th>
+                                        <th>名称</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="currDiv">
+                
+                                </tbody>
+                            </table>
+                
+                            <script>   //不需要提交表单，点击input框加载modal直接列出
+                                $('').on('', function(e) {
+                                    e.preventDefault();
+                                    $.ajax(
+                                    {
+                                        type: 
+                                        url: 
+                                        data:{
+                                           
+                                        },
+                                        success: function() {
+                                          var i=0 //序号
+                                            for() {
+                                                i++
+                                                out += '<tr><td>'+ i + '</td><td>' + /* 货币 */ + '</td><td>' + /* 名称 */ +'</td><tr>';
+                                            }
+                                            document.getElementById("currDiv").innerHTML=out;
+                                        },
+                                        failure: function() {
+                    
+                                        }
+                                    })
+                                });
+                                $("table").on("dblclick","tr",function(e){
+                                    
+                                    document.getElementById("danwei-pocm").value=$(this).find('td').eq(0).text();
+                                    $('#myModalcurr').modal('hide')
+                                    
+                                })
+                                
+                            </script>
+                            
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                <!--结算货币modal-->
+                
+
+
+
+		</section><! --/wrapper -->
+      </section><!-- /MAIN CONTENT -->
+
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2022 - ERP
+              <a href="pr-create.html" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+
+        <!-- js placed at the end of the document so the pages load faster -->
+        <script src="{% static 'assets/js/jquery.js' %}"></script>
+        <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+        <script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+        <!--common script for all pages-->
+        <script src="{% static 'assets/js/common-scripts.js' %}"></script>
+    
+        <!--script for this page-->
+        <script src="{% static 'assets/js/jquery-ui-1.9.2.custom.min.js' %}"></script>
+    
+        <!--custom switch-->
+        <script src="{% static 'assets/js/bootstrap-switch.js' %}"></script>
+        
+        <!--custom tagsinput-->
+        <script src="{% static 'assets/js/jquery.tagsinput.js' %}"></script>
+        
+        <!--custom checkbox & radio-->
+    
+        <script src="{% static 'assets/js/form-component.js' %}"></script> 
+    
+        <script src="{% static 'assets/js/highlight.min.js' %}"></script>
+        <script>
+            hljs.highlightAll();
+        </script>
+    
+        <script src="{% static 'assets/js/notice.min.js' %}"></script>
+        <script>
+            const notice = new Notice();
+        </script>
+    
+        <script src="{% static 'assets/js/main-qr.js' %}"></script>
+       
+            <script src="{% static 'assets/js/the-datepicker.js' %}"></script>
+        <script>
+            function date(time){
+            var datepicker = new TheDatepicker.Datepicker(time);
+            datepicker.render();
+            }
+    </script>
+
+        <script>  
+      
+      var i=10
+function addgood() { //商品
+   // if(){
+ 
+    var goodcode = document.getElementById("goodcode-pocm").value
+    var goodname = document.getElementById("goodname-pocm").value
+    var number = document.getElementById("number-pocm").value
+    var danjia = document.getElementById("danjia-pocm").value
+    var zongjia = document.getElementById("zongjia-pocm").value
+    var danwei = document.getElementById("danwei-pocm").value
+    var factory = document.getElementById("factory-pocm").value
+    var clocation = document.getElementById("clocation-pocm").value
+    var time = document.getElementById("time-pocm").value
+    var trStr = ''
+
+
+    trStr = '<tr><td id="tiaomucode-po">' + i + '</td><td id="goodcode-po">' + goodcode  + '</td><td id="goodname-po">' + goodname + '</td><td id="number-po">' + number + '</td><td id="danjia-po">' +  danjia + '</td><td>' + zongjia + '</td><td id="danwei-po">' + danwei  +  '</td><td id="factory-po">'+ factory + '</td><td id="clocation-po">'+clocation+ '</td><td id="time-po">' + time + '</td></tr>'
+    document.getElementById("podiv").innerHTML += trStr;
+    document.getElementById("goodcode-pocm").value=''
+    document.getElementById("goodname-pocm").value=''
+    document.getElementById("number-pocm").value=''
+    document.getElementById("danjia-pocm").value=''
+    document.getElementById("zongjia-pocm").value=''
+    document.getElementById("danwei-pocm").value=''
+    document.getElementById("factory-pocm").value=''
+    document.getElementById("clocation-pocm").value=''
+    document.getElementById("time-pocm").value=''
+    showMessage({text: '添加成功！',type: 'success'})
+  //     }
+  // else
+  //  showMessage({text: '添加失败，商品不存在。',type: 'warning'})
+
+}
+
+
+function chai(){//拆分订单
+                i+=10
+    var goodcode = document.getElementById("goodcode-po").innerText
+    var goodname = document.getElementById("goodname-po").innerText
+    var danwei = document.getElementById("danwei-po").innerText
+    var factory = document.getElementById("factory-po").innerText
+    var clocation = document.getElementById("clocation-po").innerText
+    var trStr = ''
+    trStr = '<tr><td>' + i + '</td><td>' + goodcode  + '</td><td>' + goodname + '</td><td class="text-po-create"><input class="form-control po-create-td"></td> <td class="text-po-create"><input class="form-control po-create-td"></td> <td class="text-po-create"><input class="form-control po-create-td"></td><td>' + danwei + '</td><td>' + factory + '</td><td>' + clocation +  '</td><td class="text-po-create"><input class="form-control po-create-td" onclick="date(this)"></td>' + '</td></tr>'
+    document.getElementById("podiv").innerHTML += trStr;
+            }
+
+function cancel(){//取消拆分
+                $("#dd tr:last").remove();
+            }
+
+function create(){ //创建成功
+showMessage({text: '创建成功！采购订单编号：',type: 'success',showClose: true, autoClose: false})
+}
+
+
+function currency() {
+
+//弹出模态框
+
+$("#myModalcurr").modal("show")
+
+}
+
+        </script>
+
+    
+
+
+</body>
+</html>
