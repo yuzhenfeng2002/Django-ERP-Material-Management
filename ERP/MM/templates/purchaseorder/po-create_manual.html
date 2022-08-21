@@ -408,20 +408,20 @@
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">收货方电话</label>
                           <div class="col-sm-10">
-                              <input type="text"name="telephone" class="form-control" >
+                              <input type="text"name="telephone" class="form-control" id="telephone">
                           </div>
                       </div>
                       
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">收货方传真</label>
                           <div class="col-sm-10">
-                              <input type="text"name="fax" class="form-control">
+                              <input type="text"name="fax" class="form-control" id="fax">
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">送货地址</label>
                           <div class="col-sm-10">
-                              <input type="text"name="shippingAddress"  class="form-control">
+                              <input type="text"name="shippingAddress"  class="form-control" id="shippingAddress">
                           </div>
                       </div>
                       <h5 class="mb"><i class="fa fa-angle-right"></i> 供应商信息</h5>
@@ -497,7 +497,7 @@
                           </div>
                       </div>
                                  <div id="btn-pr-create">
-                <button type="submit" class="btn btn-primary btn-lg btn-block" >创建</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="create()">创建</button>
         </div>
                     </form>
                 </div>
@@ -877,7 +877,7 @@ function addgood() { //商品
     var trStr = ''
 
 
-    trStr = '<tr><td id="tiaomucode-po">' + i + '</td><td id="goodcode-po">' + goodcode  + '</td><td id="goodname-po">' + goodname + '</td><td id="number-po">' + number + '</td><td id="danjia-po">' +  danjia + '</td><td>' + zongjia + '</td><td id="danwei-po">' + danwei  +  '</td><td id="factory-po">'+ factory + '</td><td id="clocation-po">'+clocation+ '</td><td id="time-po">' + time + '</td></tr>'
+    trStr = '<tr><td id="tiaomucode-po">' + i + '</td><td id="goodcode-po">' + goodcode  + '</td><td id="goodname-po">' + goodname + '</td><td class="text-po-create"><input class="form-control po-create-td" id="number-po" value="'+ number + '"></td>' + '<td class="text-po-create"><input class="form-control po-create-td" id="danjia-po" value="'+danjia+'"></td> ' + '<td class="text-po-create"><input class="form-control po-create-td" id="sum-po" value="'+ zongjia +'"></td>' + '<td id="danwei-po">' + danwei  +  '</td><td id="factory-po">'+ factory + '</td><td id="clocation-po">'+clocation+ '</td><td class="text-po-create"><input class="form-control po-create-td" id="time-po" value="'+ time + '"></td></tr>'
     document.getElementById("podiv").innerHTML += trStr;
     document.getElementById("goodcode-pocm").value=''
     document.getElementById("goodname-pocm").value=''
@@ -913,7 +913,37 @@ function cancel(){//取消拆分
             }
 
 function create(){ //创建成功
-showMessage({text: '创建成功！采购订单编号：',type: 'success',showClose: true, autoClose: false})
+    var tabLen = document.getElementById("podiv");
+    var telephone = $("#telephone").val()
+    var fax = $("#fax").val()
+    var shippingAddress = $("#shippingAddress").val()
+    var gyscode = $("#gyscode").val()
+    var jsonT = "[";
+    for (var i = 0; i < tabLen.rows.length; i++) {
+        var quantity = $("#podiv").children().eq(i).children().eq(3).children().val();
+        var dj = $("#podiv").children().eq(i).children().eq(4).children().val();
+        var sum = $("#podiv").children().eq(i).children().eq(5).children().val();
+        var deliveryDate = $("#podiv").children().eq(i).children().eq(9).children().val();
+        jsonT += '{"itemId":"' + tabLen.rows[i].cells[0].innerHTML + '","material_id":"' + tabLen.rows[i].cells[1].innerHTML + '","material_name":"' + tabLen.rows[i].cells[2].innerHTML + '","quantity":' + quantity + ',"price":' + dj + ',"sum":' + sum + ',"currency":"' + tabLen.rows[i].cells[6].innerHTML + '","plant":"' + tabLen.rows[i].cells[7].innerHTML + '","sloc":"' + tabLen.rows[i].cells[8].innerHTML+ '","deliveryDate":"' + deliveryDate + '"},'
+}
+    jsonT= jsonT.substr(0, jsonT.length - 1);
+    jsonT += "]";
+    console.log(jsonT);
+    
+    $.ajax({
+        type: 'post',
+        url: '',
+        data:{
+            "json":jsonT,
+            "telephone": telephone,
+            "fax": fax,
+            "shippingAddress": shippingAddress,
+            "vid": gyscode
+    },
+        success: function (data) {
+            alert(data);
+showMessage({text: '创建成功！采购订单编号：',type: 'success',showClose: true, autoClose: false})}
+        })
 }
 
 
