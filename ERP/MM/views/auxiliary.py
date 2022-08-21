@@ -25,3 +25,11 @@ def getDate(string):
         year=int(dateInfo[2]), month=int(dateInfo[1]), day=int(dateInfo[0])
     )
     return string
+
+
+def getDate2(string):
+    dateInfo = string.split('. ')
+    string = datetime.date(
+        year=int(dateInfo[2]), month=int(dateInfo[1]), day=int(dateInfo[0])
+    )
+    return string
