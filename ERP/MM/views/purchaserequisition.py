@@ -353,28 +353,50 @@ def createsys(request: HttpRequest, pk):
 
 
 
+
+
+
+
+
+
+
 @csrf_exempt
 def createmanu(request: HttpRequest, pk):
     if request.method == "GET":
-        return render(request, '../templates/purchaseorder/po-create_manual.html',locals())
+        return render(request, '../templates/purchaseorder/po-create_manual.html', locals())
     if request.method == "POST":
         quotation = Quotation.objects.filter(id = pk).values()
         euser_id = quotation[0]['euser_id']
+        data1= request.POST.get("json")
+        data1 = eval(data1)
         telephone = request.POST.get("telephone")
         shippingAddress = request.POST.get("shippingAddress")
         fax = request.POST.get("fax")
         now_time = datetime.datetime.now()
-        vendor_id =  request.POST.get("ven")
+        vendor_id =  request.POST.get("vid")
+        print(data1)
+        print(telephone)
+        print(fax)
+        print(vendor_id)
+        print(shippingAddress)
         pr =PurchaseOrder.objects.create(euser_id=euser_id, telephone=telephone,
                                                  shippingAddress=shippingAddress, fax=fax,
                                                  vendor_id=vendor_id, rfq_id=pk,time=now_time)
-        if pr:
-            print("1111")
-        datalist = {
-            "message": "创建成功",
-            "content": pr
-        }
-        return render(request, '../templates/purchaseorder/po-create_manual.html',locals())
+        for i in data1:
+            print(i['deliveryDate'])
+            str1 = getDate2(i['deliveryDate'])
+            mete = MaterialItem.objects.filter(stock_id = i['plant'],material_id=i['material_id']).values()
+            mateid = mete[0]['id']
+            requisitionitem = OrderItem.objects.create(
+                                                             meterialItem_id=mateid,
+                                                             price=i['price'],
+                                                             currency=i['currency'],
+                                                             quantity=i['quantity'],
+                                                             status="0",
+                                                             itemId=i['itemId'],
+                                                             deliveryDate=str1,
+                                                                po_id=pk)
+        return render(request, '../templates/purchaseorder/po-create_manual.html', locals())
 
 
 
