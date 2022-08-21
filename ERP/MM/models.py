@@ -150,7 +150,7 @@ class PurchaseOrder(models.Model):
     fax = models.CharField(max_length=10, validators=[validate_digit])
     shippingAddress = models.CharField(max_length=50)
     time = models.DateTimeField(auto_now_add=True, auto_now=False)
-    rfq = models.ForeignKey(Quotation, on_delete=models.CASCADE)
+    rfq = models.ForeignKey(Quotation, on_delete=models.CASCADE, null=True)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     euser = models.ForeignKey(to=EUser, on_delete=models.CASCADE)
 
