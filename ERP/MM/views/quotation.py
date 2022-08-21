@@ -312,6 +312,7 @@ def makebyrq(request: HttpRequest, pk):
         quantity = request.POST.get("quantity")
         deliveryDate = request.POST.get("deliveryDate")
         vendorvid = request.POST.get("vendorvid")
+        print(quantity)
         euser =RequisitionItem.objects.filter(id = pk).values("id","pr__euser_id",
                                                                "itemId",
                                                                "meterial__id",
@@ -322,7 +323,7 @@ def makebyrq(request: HttpRequest, pk):
         quotation = Quotation.objects.create(deadline=deadline,
                                              quantity=quantity,
                                              ri_id=pk,
-                                             vendor_id=1,
+                                             vendor_id=vendorvid,
                                              euser_id=euserid,
                                              time=now_time,
                                              collNo=collNo,
@@ -408,14 +409,16 @@ def rfqinfo(request: HttpRequest, pk):
 def rfqinfo2(request: HttpRequest, pk):
     if request.method == "GET":
         quoatations = Quotation.objects.filter(id=pk).values("id","euser_id","ri_id",
-                                                             "deadline","time","rej","vendor_id")
+                                                             "deadline","time","rej","vendor_id","collNo")
 
         quoatations = list(quoatations)
         riid = quoatations[0]['ri_id']
         viid = quoatations[0]['vendor_id']
+        colno = quoatations[0]['collNo']
         caigou = RequisitionItem.objects.filter(id=riid).values("quotation__vendor__pOrg", "meterial__stock__pGrp",
                                                              "meterial__id", "meterial__sloc","quantity",
-                                                                "deliveryDate","meterial__stock__name","quotation__collNo")
+                                                                "deliveryDate","meterial__stock__name")
+
 
         vendor =Vendor.objects.filter(vid=viid).values("score","vid","vname","city",
                                                        "address","postcode")
@@ -423,9 +426,19 @@ def rfqinfo2(request: HttpRequest, pk):
 
         vendor = list(vendor)
 
+
+
+        caigou = list(caigou)
+        for i in caigou:
+            i['collNo'] = colno
+        print(caigou)
+        while len(caigou)!=1:
+            caigou.pop()
         baojia = Quotation.objects.filter(id=pk).values("price","deadline")
         baojia = list(baojia)
         return render(request, '../templates/quotation/RFQ-info.html', locals())
+
+
 
 
 @csrf_exempt
