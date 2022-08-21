@@ -288,6 +288,7 @@ def vqcreate(request: HttpRequest, pk):
         print(materialitem)
         vendor = list(vendor)
         quotation = list(quotation)
+        print(quotation)
         print(materialitem)
         return render(request, '../templates/quotation/vq-create.html',locals())
     if request.method == "POST":
@@ -339,7 +340,16 @@ def poinfo(request: HttpRequest, pk):
                                                                  "deliveryDate","po__rfq__rej","currency","status")
         orderitems = list(orderitems)
         caigou= list(caigou)
-
+        print(orderitems)
+        for i in orderitems:
+            if i['status']=='0':
+                i['status']="货物未发出"
+            if i['status']=='1':
+                i['status']="货物已送达"
+            if i['status']=='2':
+                i['status']="已收到发票"
+            if i['status']=='3':
+                i['status']="已完成支付"
 
         xiangqing = PurchaseOrder.objects.filter(id = pk).values("id","euser_id","time","orderitem__currency")
         xiangqing = list(xiangqing)
@@ -376,8 +386,22 @@ def pomodifyinfo(request: HttpRequest, pk):
         vendor = list(vendor)
         orderitems  = OrderItem.objects.filter(po_id= pk).values("itemId","meterialItem__id","meterialItem__material__mname",
                                                                  "quantity","price","meterialItem__stock__id","meterialItem__sloc",
-                                                                 "deliveryDate","po__rfq__rej","currency")
+                                                                 "deliveryDate","status","currency")
         orderitems = list(orderitems)
+
+
+        for i in orderitems:
+            if i['status']=='0':
+                i['status']="货物未发出"
+            if i['status']=='1':
+                i['status']="货物已送达"
+            if i['status']=='2':
+                i['status']="已收到发票"
+            if i['status']=='3':
+                i['status']="已完成支付"
+
+
+
         caigou= list(caigou)
 
 
@@ -409,9 +433,23 @@ def pomodifyinfo(request: HttpRequest, pk):
         vendor = list(vendor)
         orderitems  = OrderItem.objects.filter(po_id= pk).values("itemId","meterialItem__id","meterialItem__material__mname",
                                                                  "quantity","price","meterialItem__stock__id","meterialItem__sloc",
-                                                                 "deliveryDate","po__rfq__rej")
+                                                                 "deliveryDate","status")
         orderitems = list(orderitems)
+
+        for i in orderitems:
+            if i['status']=='0':
+                i['status']="货物未发出"
+            if i['status']=='1':
+                i['status']="货物已送达"
+            if i['status']=='2':
+                i['status']="已收到发票"
+            if i['status']=='3':
+                i['status']="已完成支付"
+
+
+
         caigou= list(caigou)
+
 
 
         xiangqing = PurchaseOrder.objects.filter(id = pk).values("id","euser_id","time","orderitem__currency")
@@ -447,10 +485,6 @@ def pomodifyinfo(request: HttpRequest, pk):
 
 
 
-
-
-
-
 @csrf_exempt
 def pomodifyinfo2(request):
     if request.method == "POST":
@@ -473,6 +507,31 @@ def pomodifyinfo2(request):
                 "content": orderitem
             }
             return HttpResponse(json.dumps(datalist))
+
+
+
+@csrf_exempt
+def pomodifyinfo3(request):
+    if request.method == "POST":
+        data = request.POST.get("json")
+        data = eval(data)
+        print(data)
+        id = data[0]['id']
+        quantity = data[0]['quantity']
+        currency = data[0]['currency']
+        deliveryDate = getDate2(data[0]['deliveryDate'])
+        orderitem = OrderItem.objects.filter(id=id).update(quantity=quantity,
+                                                           currency = currency,
+                                                           deliveryDate =deliveryDate)
+        if orderitem:
+            print("xiugai")
+            print(data)
+            datalist = {
+                "message": "创建成功",
+                "content": orderitem
+            }
+            return HttpResponse(json.dumps(datalist))
+
 
 
 
