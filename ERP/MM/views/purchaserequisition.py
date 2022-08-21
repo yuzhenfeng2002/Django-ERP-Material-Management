@@ -336,7 +336,7 @@ def createsys(request: HttpRequest, pk):
                                                              price=i['price'],
                                                              currency=i['currency'],
                                                              quantity=i['quantity'],
-                                                             status="1",
+                                                             status="0",
                                                              itemId=i['itemId'],
                                                              deliveryDate=str1,
                                                                 po_id=prid)
@@ -345,6 +345,39 @@ def createsys(request: HttpRequest, pk):
             "content": prid
         }
         return HttpResponse(json.dumps(datalist))
+
+
+
+
+
+
+
+
+@csrf_exempt
+def createmanu(request: HttpRequest, pk):
+    if request.method == "GET":
+        return render(request, '../templates/purchaseorder/po-create_manual.html',locals())
+    if request.method == "POST":
+        quotation = Quotation.objects.filter(id = pk).values()
+        euser_id = quotation[0]['euser_id']
+        telephone = request.POST.get("telephone")
+        shippingAddress = request.POST.get("shippingAddress")
+        fax = request.POST.get("fax")
+        now_time = datetime.datetime.now()
+        vendor_id =  request.POST.get("ven")
+        pr =PurchaseOrder.objects.create(euser_id=euser_id, telephone=telephone,
+                                                 shippingAddress=shippingAddress, fax=fax,
+                                                 vendor_id=vendor_id, rfq_id=pk,time=now_time)
+        if pr:
+            print("1111")
+        datalist = {
+            "message": "创建成功",
+            "content": pr
+        }
+        return render(request, '../templates/purchaseorder/po-create_manual.html',locals())
+
+
+
 
 
 
