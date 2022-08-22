@@ -298,15 +298,17 @@ def vendor_modify_item(request: HttpRequest, pk):
 
 
 @csrf_exempt
-@login_required
-def makebyrq(request: HttpRequest, pk):
+
+def makebyrq(request: HttpRequest, pk,itemId):
     if request.method == "GET":
-        reque = RequisitionItem.objects.filter(id = pk).values("id",
+        reque = RequisitionItem.objects.filter(pr_id=pk,itemId=itemId).values("id",
                                                                "itemId",
                                                                "meterial__id",
                                                                "meterial__stock",
                                                                "meterial__sloc",
                                                                "meterial__stock__name")
+        reque = list(reque)
+        print(reque)
         return render(request, '../templates/quotation/RFQ-create.html', locals())
     if request.method =="POST":
         collNo = request.POST.get("collNo")
@@ -430,13 +432,13 @@ def searchqinggou(request):
 
 
 @csrf_exempt
-def rfqinfo(request: HttpRequest, pk,itemId):
+def rfqinfo(request: HttpRequest, pk):
     if request.method == "GET":
         quoatations = PurchaseRequisition.objects.filter(id = pk).values()
 
         quoatations = list(quoatations)
 
-        rq = RequisitionItem.objects.filter(pr_id=pk,itemId=itemId).values("meterial__stock__id","meterial__id",
+        rq = RequisitionItem.objects.filter(pr_id=pk).values("meterial__stock__id","meterial__id",
                                                              "itemId","meterial__sloc","meterial__stock__name")
 
         rq = list(rq)
