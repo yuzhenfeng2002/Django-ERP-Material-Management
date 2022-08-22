@@ -163,7 +163,7 @@ def getpqinfo(request: HttpRequest, pk):
         reuqe = RequisitionItem.objects.filter(pr_id=pk).values("itemId", "estimatedPrice", "currency",
                                                             "deliveryDate","quantity",
                                                             "meterial__id", "pr_id", "status","meterial__sloc","meterial__material__mname"
-                                                            ,"meterial__stock__id","meterial__material__mname")
+                                                            ,"meterial__stock__id","meterial__stock__name")
         reuqe = list(reuqe)
         for i in reuqe:
             if i['status']=='0':
@@ -422,7 +422,7 @@ def createsys(request: HttpRequest, pk):
 
 
 @csrf_exempt
-@login_required
+
 def createmanu(request):
     if request.method == "GET":
         return render(request, '../templates/purchaseorder/po-create_manual.html', locals())
