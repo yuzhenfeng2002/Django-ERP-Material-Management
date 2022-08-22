@@ -298,14 +298,14 @@ def vendor_modify_item(request: HttpRequest, pk):
 
 
 @csrf_exempt
-@login_required
 def makebyrq(request: HttpRequest, pk):
     if request.method == "GET":
         reque = RequisitionItem.objects.filter(id = pk).values("id",
                                                                "itemId",
                                                                "meterial__id",
                                                                "meterial__stock",
-                                                               "meterial__sloc")
+                                                               "meterial__sloc",
+                                                               "meterial__stock__name")
         return render(request, '../templates/quotation/RFQ-create.html', locals())
     if request.method =="POST":
         collNo = request.POST.get("collNo")
@@ -330,6 +330,43 @@ def makebyrq(request: HttpRequest, pk):
         if quotation:
             print("111111c")
         return render(request, '../templates/quotation/RFQ-create.html', locals())
+
+
+
+
+
+
+
+
+@csrf_exempt
+def rfqinfojiekou(request):
+    if request.method =="POST":
+        quantity = request.POST.get("quantity")
+        pk = request.POST.get("id")
+        deliveryDate = request.POST.get("deliveryDate")
+        deliveryDate = getDate2(deliveryDate)
+        collNo = request.POST.get("collNo")
+        deadline = request.POST.get("deadline")
+        deadline = getDate2(deadline)
+        data = request.POST.get("json")
+        data1 = eval(data)
+        now_time = datetime.datetime.now()
+        for i in data1:
+            vid = i['vid']
+            quotation = Quotation.objects.create(deadline=deadline,
+                                                 quantity=quantity,
+                                                 ri_id=pk,
+                                                 vendor_id=vid,
+                                                 euser_id=1,
+                                                 time=now_time,
+                                                 collNo=collNo,
+                                                 deliveryDate=deliveryDate,
+                                                 rej=1
+                                                 )
+            if quotation:
+                print("cjcg")
+        return HttpResponse(json.dumps(1))
+
 
 
 
