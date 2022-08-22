@@ -181,6 +181,55 @@ def getpqinfo(request: HttpRequest, pk):
 
 
 
+def getpqinfo2(request: HttpRequest, pk):
+    if request.method == "GET":
+        purchaseRequisition = PurchaseRequisition.objects.filter(id = pk).values()
+        reuqe = RequisitionItem.objects.filter(pr_id=pk).values("itemId", "estimatedPrice", "currency",
+                                                            "deliveryDate","quantity",
+                                                            "meterial__id", "pr_id", "status","meterial__sloc","meterial__material__mname"
+                                                            ,"meterial__stock__id","meterial__stock__name")
+        reuqe = list(reuqe)
+        for i in reuqe:
+            if i['status']=='0':
+                i['status'] = "已创建采购申请"
+            if i['status']=='1':
+                i['status'] = "已创建采购订单"
+        purchaseRequisition = list(purchaseRequisition)
+        print(reuqe)
+        return render(
+            request=request,
+            template_name='../templates/invoice/pr-info.html',
+            context={'reuqe': reuqe,'purchaseRequisition':purchaseRequisition}
+        )
+
+
+
+
+def getpqinfo3(request: HttpRequest, pk):
+    if request.method == "GET":
+        purchaseRequisition = PurchaseRequisition.objects.filter(id = pk).values()
+        reuqe = RequisitionItem.objects.filter(pr_id=pk).values("itemId", "estimatedPrice", "currency",
+                                                            "deliveryDate","quantity",
+                                                            "meterial__id", "pr_id", "status","meterial__sloc","meterial__material__mname"
+                                                            ,"meterial__stock__id","meterial__stock__name")
+        reuqe = list(reuqe)
+        for i in reuqe:
+            if i['status']=='0':
+                i['status'] = "已创建采购申请"
+            if i['status']=='1':
+                i['status'] = "已创建采购订单"
+        purchaseRequisition = list(purchaseRequisition)
+        print(reuqe)
+        return render(
+            request=request,
+            template_name='../templates/receipt/pr-info.html',
+            context={'reuqe': reuqe,'purchaseRequisition':purchaseRequisition}
+        )
+
+
+
+
+
 
 @csrf_exempt
 def getmodifyinfo(request: HttpRequest, pk):
@@ -422,10 +471,16 @@ def createsys(request: HttpRequest, pk):
 
 
 @csrf_exempt
-
+@login_required()
 def createmanu(request):
     if request.method == "GET":
         return render(request, '../templates/purchaseorder/po-create_manual.html', locals())
+
+
+
+@csrf_exempt
+@login_required()
+def creamanujiekou(request):
     if request.method == "POST":
         euser = request.user
         euserid = euser.pk
@@ -459,12 +514,12 @@ def createmanu(request):
                                                              itemId=i['itemId'],
                                                              deliveryDate=str1,
                                                                 po_id=prid)
-        return render(request, '../templates/purchaseorder/po-create_manual.html', locals())
-
-
-
-
-
+            print("chuangjiancg")
+        datalist = {
+            "message": "创建成功",
+            "content": prid
+        }
+        return HttpResponse(json.dumps(datalist))
 
 
 @csrf_exempt
