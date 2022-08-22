@@ -430,16 +430,17 @@ def searchqinggou(request):
 
 
 @csrf_exempt
-def rfqinfo(request: HttpRequest, pk):
+def rfqinfo(request: HttpRequest, pk,itemId):
     if request.method == "GET":
         quoatations = PurchaseRequisition.objects.filter(id = pk).values()
 
         quoatations = list(quoatations)
 
-        rq = RequisitionItem.objects.filter(pr_id=pk).values("meterial__stock__id","meterial__id",
+        rq = RequisitionItem.objects.filter(pr_id=pk,itemId=itemId).values("meterial__stock__id","meterial__id",
                                                              "itemId","meterial__sloc","meterial__stock__name")
 
         rq = list(rq)
+        print(rq)
         return render(request, '../templates/quotation/RFQ-create_info.html', locals())
 
 
@@ -471,9 +472,9 @@ def rfqinfo2(request: HttpRequest, pk):
         caigou = list(caigou)
         for i in caigou:
             i['collNo'] = colno
-        print(caigou)
         while len(caigou)!=1:
             caigou.pop()
+        print(caigou)
         baojia = Quotation.objects.filter(id=pk).values("price","deadline","currency")
         baojia = list(baojia)
         return render(request, '../templates/quotation/RFQ-info.html', locals())
