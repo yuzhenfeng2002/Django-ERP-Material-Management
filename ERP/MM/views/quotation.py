@@ -437,7 +437,7 @@ def rfqinfo(request: HttpRequest, pk):
         quoatations = list(quoatations)
 
         rq = RequisitionItem.objects.filter(pr_id=pk).values("meterial__stock__id","meterial__id",
-                                                             "itemId","meterial__sloc")
+                                                             "itemId","meterial__sloc","meterial__stock__name")
 
         rq = list(rq)
         return render(request, '../templates/quotation/RFQ-create_info.html', locals())
