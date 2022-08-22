@@ -97,6 +97,7 @@ urlpatterns = [
     path('purchaseorder/modifyinfo3/', purchaseorder.pomodifyinfo3, name='search_pur'),
     path('purchaseorder/cresys/<int:pk>/', purchaserequisition.createsys, name='search_pur'),
     path('purchaseorder/cremanu/', purchaserequisition.createmanu, name='search_pur'),
+    path('purchaseorder/cremanujiekou/', purchaserequisition.creamanujiekou, name='search_pur'),
     path('purchaseorder/quomodify/<int:pk>/', purchaserequisition.quomodify, name='search_pur'),
     path('quotation/makebyrq/<int:pk>/<int:itemId>', quotation.makebyrq, name='search_pur'),
     path('quotation/rfqinfo', quotation.rfqinfojiekou, name='search_pur'),
@@ -112,5 +113,6 @@ urlpatterns = [
     path('purchaseorder/getpurchaseorderbyid/<int:pk>/', purchaseorder.selectone, name='search_pur'),
     path('purchaseorder/modify/<int:pk>/', purchaseorder.modifyone, name='search_pur'),
     path('purchaseorder/shaixuan', purchaseorder.shaixuan, name='shaixuan'),
-
+    path('purchaseorder/searchjiekou', purchaseorder.searchjiekou, name='search_pur'),
+    path('purchaseorder/searchjiekouzhuanhua', purchaseorder.searchjiekouzhuanhua, name='search_pur'),
 ]
