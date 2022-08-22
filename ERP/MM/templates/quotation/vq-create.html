@@ -29,7 +29,7 @@
 
     <link href="{% static 'assets/css/purchase.css' %}" rel="stylesheet">
     <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
-
+    <link rel="stylesheet" href="{% static 'assets/fonts/icon/iconfont.css' %}">
 
 
   </head>
@@ -302,15 +302,14 @@ MAIN SIDEBAR MENU
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
+                        <td style="display:flex">
                             <label>报价：</label>
-                            <div class="form-group">
-                                <input  class="form-control" name="price" placeholder="报价数值">
+                            <div class="form-group" style="display:flex">
+                                <input  class="form-control" name="price" placeholder="报价数值"><input  class="form-control" placeholder="单位" onclick="currencyf()" name="currency" id="danwei" style="width:100px">
                             </div>
                         </td>
                         <td>
                             <label>报价有效期：</label>
-                            
                             <div class="form-group">
                                 <input  class="form-control"   name="validTime" placeholder="Valid to"  onclick="date(this)">
                             </div>
@@ -331,6 +330,40 @@ MAIN SIDEBAR MENU
 
                       
 
+ <!--结算货币modal-->
+ <div class="col-sm-12">
+    <div class="modal fade" id="myModalcurr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">货币</h4>
+            </div>
+            <div class="modal-body">
+            *双击填入货币
+            <table  class="table table-bordered table-striped table-condensed">
+                <thead>
+                    <!-- tr 指定表行标签-->
+                    <tr>
+                        <!-- th 设置表头内容，默认加粗-->
+                        <th style="width: 100px;">序号</th>
+                        <th style="width: 120px;">货币</th>
+                        <th>名称</th>
+                    </tr>
+                </thead>
+                <tbody id="currDiv">
+
+                </tbody>
+            </table>
+
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    <!--结算货币modal-->
 
                             
                           </section>
@@ -391,6 +424,49 @@ MAIN SIDEBAR MENU
             var datepicker = new TheDatepicker.Datepicker(time);
             datepicker.render();
             }
+    </script>
+    <script>
+
+        $(document).ready(function() {
+            
+            $.ajax(
+            {
+                type: "post",
+                url: "{% url 'MM:ajax_load_currency' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<tr><td>'+ i + '</td><td>' +dataObj[i].Currency + '</td><td>' + dataObj[i].Name +'</td><tr>';
+                            //out += '<option value=' + +'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    document.getElementById("currDiv").innerHTML=out;
+                    
+                },
+                failure: function() {
+
+                }
+            })
+        });
+        $("table").on("dblclick","tr",function(e){
+            
+            document.getElementById("danwei").value=$(this).find('td').eq(1).text();
+            $('#myModalcurr').modal('hide')
+            
+        });
+        function currencyf() {
+            console.log(1);
+
+            //弹出模态框
+            
+            $("#myModalcurr").modal("show")
+        }
+      
+
     </script>
 <script>
 function create(){
