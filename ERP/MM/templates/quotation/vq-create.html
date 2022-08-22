@@ -156,7 +156,6 @@ MAIN SIDEBAR MENU
                                 <thead>
                                     <tr>
                                         <th>报价申请信息</th>
-                                       
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -175,12 +174,12 @@ MAIN SIDEBAR MENU
                                           
                                             <td>
                                                 <label>询价单的截止日期：</label>
-                                                <label id="duedate">{{ c.deadline }}</label>
+                                                <label id="duedate">{{ c.deadline.day }}. {{ c.deadline.month }}. {{ c.deadline.year }}</label>
                                             </td>
                                             
                                             <td>
                                                 <label>创建时间：</label>
-                                                <label>{{ c.time }}</label>
+                                                <label>{{ c.time.day }}. {{ c.time.month }}. {{ c.time.year }}</label>
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -323,7 +322,15 @@ MAIN SIDEBAR MENU
                 <button type="submit" class="btn btn-primary btn-lg btn-block" >添加供应商报价</button>
         </div>
             </form>
-                                                {{insertmessage}}
+            
+            {% if insertmessage %}
+                                     <script>
+                                        mes = "{{insertmessage}}";
+                                        if (!mes.match("insertmessage"))
+                                        alert(mes)
+                                      //  showMessage({text: mes,type: 'success'})  //成功
+                                     </script>      
+               {% endif %}     
             </div><!-- /form-panel -->
         </div><!-- /col-lg-12 -->
     </div><!-- /row -->

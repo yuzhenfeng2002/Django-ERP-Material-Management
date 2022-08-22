@@ -358,7 +358,7 @@
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.estimatedPrice}}"></td>
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.currency}}"></td>
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.quantity}}"></td>
-                                          <td class="td-text"> <input type="text" class="form-control td-text-modify"  value="{{c.deliveryDate}}"onclick="date(this)"></td>
+                                          <td class="td-text"> <input type="text" class="form-control td-text-modify"  value="{{c.deliveryDate.day}}. {{c.deliveryDate.month}}. {{c.deliveryDate.year}}"onclick="date(this)"></td>
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.meterial__material__mname}}"></td>
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.meterial__sloc}}"></td>
                                           <td class="td-text" id="state">{{c.status}}</td>
@@ -491,7 +491,7 @@
           },
             success: function (data) {
                 alert(1);
-                showMessage({text: '保存商品信息成功！',type: 'success'})
+                showMessage({text: '创建成功！编号：',type: 'success',showClose: true, autoClose: false})
            
          }   
       })

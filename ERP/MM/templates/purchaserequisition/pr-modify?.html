@@ -321,7 +321,7 @@
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">备注</label>
                           <div class="col-sm-10">
-                              <textarea rows="3" type="text" class="form-control" value="{{c.text}}"></textarea>
+                              <input type="text" class="form-control" value="{{c.text}}">
                           </div>
                       </div>
                       {%endfor%}
@@ -356,7 +356,7 @@
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.estimatedPrice}}"></td>
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.currency}}"></td>
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.quantity}}"></td>
-                                          <td class="td-text"> <input type="text" class="form-control td-text-modify"  value="{{c.deliveryDate}}"onclick="date(this)"></td> 
+                                          <td class="td-text"> <input type="text" class="form-control td-text-modify"  value="{{c.deliveryDate.day}}. {{c.deliveryDate.month}}. {{c.deliveryDate.year}}"onclick="date(this)"></td> 
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.meterial__material__mname}}"></td>
                                           <td class="td-text"> <input type="text" class="form-control td-text-modify" value="{{c.meterial__sloc}}"></td>
                                           <td class="td-text" id="state">{{c.status}}</td>

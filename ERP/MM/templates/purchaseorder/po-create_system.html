@@ -335,7 +335,7 @@ MAIN SIDEBAR MENU
                         <td id="danwei-po">{{c.currency }}</td>
                         <td id="factory-po">{{c.meterial__stock__name }}</td>
                         <td id="clocation-po">{{c.meterial__sloc }}</td>
-                        <td class="text-po-create"><input class="form-control po-create-td" value="{{c.deliveryDate }}" onclick="date(this)" id="deliveryDate"></td>
+                        <td class="text-po-create"><input class="form-control po-create-td" value="{{c.deliveryDate.day}}. {{c.deliveryDate.month}}. {{c.deliveryDate.year}}" onclick="date(this)" id="deliveryDate"></td>
                     </tr>
                   {% endfor %}
                 </tbody>
