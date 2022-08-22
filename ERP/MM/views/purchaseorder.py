@@ -754,6 +754,94 @@ def searchpo(request):
 
 
 
+
+@csrf_exempt
+def searchpo2(request):
+    if request.method == "GET":
+        vendorid =  PurchaseOrder.objects.all().values('rfq__quantity','rfq__price','id','rfq__ri__meterial_id',
+                                                       'euser_id','time','rfq__rej','vendor_id','rfq__collNo','rfq__ri__itemId',
+                                                       'rfq__ri__currency','rfq__ri__status')
+        for i in vendorid:
+            i['sum'] = i['rfq__quantity']*i['rfq__price']
+        for i in vendorid:
+            if i['rfq__ri__status']=='0':
+                i['rfq__ri__status'] = "已创建采购申请"
+            if i['rfq__ri__status']=='1':
+                i['rfq__ri__status'] = "已创建采购订单"
+        vendorid = list(vendorid)
+        print(vendorid)
+        return render(request, '../templates/receipt/purchase_order.html', locals())
+    if request.method == "POST":
+        id = request.POST.get("id")
+        ven = request.POST.get("ven")
+        mate = request.POST.get("mate")
+        eu = request.POST.get("euser")
+        vendorid = PurchaseOrder.objects.filter(id=id,vendor_id=ven,
+                                                rfq__ri__meterial=mate,
+                                                euser_id=eu,
+                                                ).values('rfq__quantity', 'rfq__price', 'id', 'rfq__ri__meterial_id',
+                                                      'euser_id', 'time', 'rfq__rej', 'vendor_id', 'rfq__collNo','rfq__ri__itemId',
+                                                         'rfq__ri__currency','rfq__ri__status')
+        print(vendorid)
+        for i in vendorid:
+            i['sum'] = i['rfq__quantity']*i['rfq__price']
+        for i in vendorid:
+            if i['rfq__ri__status']=='0':
+                i['rfq__ri__status'] = "已创建采购申请"
+            if i['rfq__ri__status']=='1':
+                i['rfq__ri__status'] = "已创建采购订单"
+        vendorid = list(vendorid)
+        return render(request, '../templates/receipt/purchase_order.html', locals())
+
+
+
+
+
+
+
+@csrf_exempt
+def searchpo3(request):
+    if request.method == "GET":
+        vendorid =  PurchaseOrder.objects.all().values('rfq__quantity','rfq__price','id','rfq__ri__meterial_id',
+                                                       'euser_id','time','rfq__rej','vendor_id','rfq__collNo','rfq__ri__itemId',
+                                                       'rfq__ri__currency','rfq__ri__status')
+        for i in vendorid:
+            i['sum'] = i['rfq__quantity']*i['rfq__price']
+        for i in vendorid:
+            if i['rfq__ri__status']=='0':
+                i['rfq__ri__status'] = "已创建采购申请"
+            if i['rfq__ri__status']=='1':
+                i['rfq__ri__status'] = "已创建采购订单"
+        vendorid = list(vendorid)
+        print(vendorid)
+        return render(request, '../templates/invoice/purchase_order.html', locals())
+    if request.method == "POST":
+        id = request.POST.get("id")
+        ven = request.POST.get("ven")
+        mate = request.POST.get("mate")
+        eu = request.POST.get("euser")
+        vendorid = PurchaseOrder.objects.filter(id=id,vendor_id=ven,
+                                                rfq__ri__meterial=mate,
+                                                euser_id=eu,
+                                                ).values('rfq__quantity', 'rfq__price', 'id', 'rfq__ri__meterial_id',
+                                                      'euser_id', 'time', 'rfq__rej', 'vendor_id', 'rfq__collNo','rfq__ri__itemId',
+                                                         'rfq__ri__currency','rfq__ri__status')
+        print(vendorid)
+        for i in vendorid:
+            i['sum'] = i['rfq__quantity']*i['rfq__price']
+        for i in vendorid:
+            if i['rfq__ri__status']=='0':
+                i['rfq__ri__status'] = "已创建采购申请"
+            if i['rfq__ri__status']=='1':
+                i['rfq__ri__status'] = "已创建采购订单"
+        vendorid = list(vendorid)
+        return render(request, '../templates/invoice/purchase_order.html', locals())
+
+
+
+
+
+
 @csrf_exempt
 def searchjiekou(request):
     if request.method == "POST":
