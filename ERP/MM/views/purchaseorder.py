@@ -588,7 +588,7 @@ def vreview(request: HttpRequest):
             i['ontimeScore'] = round(ontimeScore, 1)
             i['sum'] = sum
             i['avgscore'] = round((quantityScore + serviceScore + quantityScore + ontimeScore) / 4, 1)
-        quotation.sort(key=lambda x: x["avgscore"])
+        quotation.sort(key=lambda x: x["avgscore"], reverse=True)
         for i in range(len(quotation)):
             quotation[i]['paiming'] = i+1
         print(quotation)
@@ -634,7 +634,7 @@ def vreview(request: HttpRequest):
             i['ontimeScore'] = round(ontimeScore,1)
             i['sum'] = sum
             i['avgscore'] = round((quantityScore + serviceScore + quantityScore + ontimeScore) / 4,1)
-        quotation.sort(key=lambda x: x["avgscore"])
+        quotation.sort(key=lambda x: x["avgscore"], reverse=True)
         for i in range(len(quotation)):
             quotation[i]['paiming'] = i+1
         return render(request, '../templates/quotation/vq-value.html', locals())
