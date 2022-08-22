@@ -301,13 +301,20 @@ def vendor_modify_item(request: HttpRequest, pk):
 
 def makebyrq(request: HttpRequest, pk,itemId):
     if request.method == "GET":
-        reque = RequisitionItem.objects.filter(pr_id=pk,itemId=itemId).values("id",
-                                                               "itemId",
-                                                               "meterial__id",
-                                                               "meterial__stock",
-                                                               "meterial__sloc",
-                                                               "meterial__stock__name")
+        reque = PurchaseRequisition.objects.filter(id=pk,requisitionitem__itemId=itemId).values("id",
+                                                               "requisitionitem__itemId",
+                                                               "requisitionitem__meterial__id",
+                                                               "requisitionitem__meterial__stock",
+                                                               "requisitionitem__meterial__sloc",
+                                                               )
         reque = list(reque)
+        stoid = reque[0]['requisitionitem__meterial__stock']
+        stoname = Stock.objects.filter(id = stoid).values()
+        print(stoname)
+        stoname = list(stoname)
+        print(stoname)
+        name = stoname[0]['name']
+        reque[0]['stockname'] = name
         print(reque)
         return render(request, '../templates/quotation/RFQ-create.html', locals())
     if request.method =="POST":
