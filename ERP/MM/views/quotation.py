@@ -298,6 +298,7 @@ def vendor_modify_item(request: HttpRequest, pk):
 
 
 @csrf_exempt
+@login_required
 def makebyrq(request: HttpRequest, pk):
     if request.method == "GET":
         reque = RequisitionItem.objects.filter(id = pk).values("id",
