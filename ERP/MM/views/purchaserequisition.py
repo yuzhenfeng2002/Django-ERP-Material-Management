@@ -503,23 +503,57 @@ def quomodify(request: HttpRequest, pk):
         print(vendor)
         print(requisitionItem)
         print(zuoceinfo)
-        return render(request, '../templates/quotation/vq-modify.html',locals())
+        return render(request, '../templates/quotation/vq-modify.html', locals())
     if request.method == "POST":
-        quotation = Quotation.objects.filter(id = pk).values()
         deadline = request.POST.get("deadline")
         deliverDate = request.POST.get("deliverDate")
+        deliverDate = getDate2(deliverDate)
+        deadline = getDate2(deadline)
         quantity = request.POST.get("quantity")
         collNo = request.POST.get("collNo")
         print(collNo)
-        print(deadline)
+        print("dead:",deadline)
+        print("deliv:",deliverDate)
         quo = Quotation.objects.filter(id=pk).update(deadline = deadline,
                                                      quantity=quantity,collNo=collNo,deliveryDate=deliverDate)
         print(collNo)
         print(deadline)
         if quo:
-            print("111111")
+            print("修改成功")
         datalist = {
             "message": "创建成功",
             "content": quo
         }
+        quotation = Quotation.objects.filter(id=pk).values()
+        vendorid = quotation[0]['vendor_id']
+        riid = quotation[0]['ri_id']
+        price = quotation[0]['price']
+        vendor = Vendor.objects.filter(vid=vendorid).values()
+        requisitionItem = RequisitionItem.objects.filter(id=riid).values("currency", "meterial__sloc",
+                                                                         "id", "itemId", "meterial__material__mname",
+                                                                         "meterial__stock__id", "meterial__id",
+                                                                         "quantity", "deliveryDate",
+                                                                         "meterial__stock__name"
+                                                                         )
+        collno = quotation[0]['collNo']
+        zuoceinfo = Quotation.objects.filter(collNo=collno).values("id", "rej")
+        zuoceinfo = list(zuoceinfo)
+        caigou = RequisitionItem.objects.filter(id=riid).values("meterial__stock__id", "meterial__stock__pOrg",
+                                                                "meterial__stock__pGrp", "meterial__material__id",
+                                                                "meterial__stock__name", "meterial__sloc")
+
+        vendor = list(vendor)
+        baojia = Quotation.objects.filter(id=pk).values("price", "validTime")
+        baojia = list(baojia)
+        caigou = list(caigou)
+        quotation = list(quotation)
+        for i in requisitionItem:
+            i['price'] = price
+            i['sum'] = i['quantity'] * i['price']
+        requisitionItem = list(requisitionItem)
+        quotation = list(quotation)
+        print(caigou)
+        print(vendor)
+        print(requisitionItem)
+        print(zuoceinfo)
         return render(request, '../templates/quotation/vq-modify.html', locals())
