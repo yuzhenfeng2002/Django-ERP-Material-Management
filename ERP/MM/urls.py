@@ -99,6 +99,7 @@ urlpatterns = [
     path('purchaseorder/cremanu/', purchaserequisition.createmanu, name='search_pur'),
     path('purchaseorder/quomodify/<int:pk>/', purchaserequisition.quomodify, name='search_pur'),
     path('quotation/makebyrq/<int:pk>/', quotation.makebyrq, name='search_pur'),
+    path('quotation/rfqinfo', quotation.rfqinfojiekou, name='search_pur'),
     path('purchaseorder/searchpo', purchaseorder.searchpo, name='search_pur'),
     path('purchaseorder/choose', purchaseorder.choose, name='search_pur'),
     path('quotation/searchqo', purchaseorder.searchqo, name='search_pur'),
@@ -111,4 +112,5 @@ urlpatterns = [
     path('purchaseorder/getpurchaseorderbyid/<int:pk>/', purchaseorder.selectone, name='search_pur'),
     path('purchaseorder/modify/<int:pk>/', purchaseorder.modifyone, name='search_pur'),
     path('purchaseorder/shaixuan', purchaseorder.shaixuan, name='shaixuan'),
+
 ]
