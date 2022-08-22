@@ -182,7 +182,7 @@ MAIN SIDEBAR MENU
                                     <tr>
                                         <td  class="vq-modify-td">
                                             <label>询价单的截止日期：</label>
-                                            <input type="text" name="deadline" class="form-control vqm-text" onclick="date(this)" value="{{a.deadline}}">
+                                            <input type="text" name="deadline" class="form-control vqm-text" onclick="date(this)" value="{{a.deadline.day}}. {{a.deadline.month}}. {{a.deadline.year}}">
                                         </td>
 
                                         <td>
@@ -199,21 +199,7 @@ MAIN SIDEBAR MENU
                                 </thead>
 
                             </table>
-<script>
-    function deny()
-{
-    //    console.log($('#jujue').prop('checked'))
-    var strA = {{a.rej}}
-    var strB = 'True'
-    var a = typeof strA;  
-    var b = typeof strB;  
-    alert(strA == 'True'); //true
-    if(strA == strB)
-    $("#jujue").prop("checked",true); //勾选
-    //else $("#deny").prop("checked",false);//取消勾选*/
-}
-    
-</script>
+
 
 
 
@@ -255,7 +241,7 @@ MAIN SIDEBAR MENU
 
                                         <td  class="vq-modify-td">
                                             <label>送货时间：</label>
-                                            <input type="text"  name="deliverDate" class="form-control vqm-text" onclick="date(this)" value="{{a.deliveryDate}}">
+                                            <input type="text"  name="deliverDate" class="form-control vqm-text" onclick="date(this)" value="{{a.deliveryDate.day}}. {{a.deliveryDate.month}}. {{a.deliveryDate.year}}">
                                         </td>
                                         <td>
                                             <label>存储位置：</label>
