@@ -290,13 +290,15 @@ def vqcreate(request: HttpRequest, pk):
         quotation = list(quotation)
         print(quotation)
         print(materialitem)
-        return render(request, '../templates/quotation/vq-create.html',locals())
+        return render(request, '../templates/quotation/vq-create.html', locals())
     if request.method == "POST":
         pk = str(int(pk))
         print("pk:", pk)
         price = request.POST.get("price")
+        currency = request.POST.get("currency")
         validTime = request.POST.get("validTime")
-        quotation1 = Quotation.objects.filter(id=pk).update(price=price,  validTime=validTime)
+        validTime = getDate2(validTime)
+        quotation1 = Quotation.objects.filter(id=pk).update(price=price,  validTime=validTime,currency=currency)
         quotation = Quotation.objects.filter(id=pk).values()
         vendorid = quotation[0]['vendor_id']
         riid = quotation[0]['ri_id']
@@ -314,10 +316,10 @@ def vqcreate(request: HttpRequest, pk):
         quotation = list(quotation)
         if quotation1:
             insertmessage = "修改成功"
-            return render(request,  '../templates/quotation/vq-create.html', locals())
+            return render(request, '../templates/quotation/vq-create.html', locals())
         else:
             insertmessage = "修改失败"
-            return render(request,  '../templates/quotation/vq-create.html', locals())
+            return render(request, '../templates/quotation/vq-create.html', locals())
 
 
 
@@ -550,7 +552,7 @@ def pomodifyinfo3(request):
 def vreview(request: HttpRequest):
     if request.method == "GET":
         quotation= Quotation.objects.all().values("id","vendor_id","collNo","ri__meterial__material_id",
-                                                  "ri__quantity","vendor__vname","price")
+                                                  "ri__quantity","vendor__vname","price","euser__material__mname")
         quotation = list(quotation)
         for i in quotation:
             vendorid = i['vendor_id']
@@ -579,12 +581,12 @@ def vreview(request: HttpRequest):
                 quantityScore+=p['quantityScore']*quanzhong
                 serviceScore+=p['serviceScore']*quanzhong
                 qualityScore+=p['qualityScore']*quanzhong
-            i['qualityScore'] = qualityScore
-            i['serviceScore'] = serviceScore
-            i['quantityScore'] = quantityScore
-            i['ontimeScore']=ontimeScore
+            i['qualityScore'] = round(qualityScore, 1)
+            i['serviceScore'] = round(serviceScore, 1)
+            i['quantityScore'] = round(quantityScore, 1)
+            i['ontimeScore'] = round(ontimeScore, 1)
             i['sum'] = sum
-            i['avgscore'] = (quantityScore+serviceScore+quantityScore+ontimeScore)/4
+            i['avgscore'] = round((quantityScore + serviceScore + quantityScore + ontimeScore) / 4, 1)
         quotation.sort(key=lambda x: x["avgscore"])
         for i in range(len(quotation)):
             quotation[i]['paiming'] = i+1
@@ -596,7 +598,7 @@ def vreview(request: HttpRequest):
         print(a)
         print(b)
         quotation = Quotation.objects.filter(ri__meterial__sOrg=a,collNo=b).values("id", "vendor_id", "collNo", "ri__meterial__material_id",
-                                                   "ri__quantity", "vendor__vname", "price")
+                                                   "ri__quantity", "vendor__vname", "price","euser__material__mname")
         quotation = list(quotation)
         for i in quotation:
             vendorid = i['vendor_id']
@@ -611,17 +613,26 @@ def vreview(request: HttpRequest):
             for j in orderitem:
                 sum += j['price'] * j['quantity']
             for p in orderitem:
+                print(p['ontimeScore'])
+                if p['ontimeScore'] == None:
+                    p['ontimeScore'] = 0
+                if p['quantityScore'] == None:
+                    p['quantityScore'] = 0
+                if p['serviceScore'] == None:
+                    p['serviceScore'] = 0
+                if p['qualityScore'] == None:
+                    p['qualityScore'] = 0
                 quanzhong = p['price'] * p['quantity'] / sum
                 ontimeScore += p['ontimeScore'] * quanzhong
                 quantityScore += p['quantityScore'] * quanzhong
                 serviceScore += p['serviceScore'] * quanzhong
                 qualityScore += p['qualityScore'] * quanzhong
-            i['qualityScore'] = qualityScore
-            i['serviceScore'] = serviceScore
-            i['quantityScore'] = quantityScore
-            i['ontimeScore'] = ontimeScore
+            i['qualityScore'] = round(qualityScore,1)
+            i['serviceScore'] = round(serviceScore,1)
+            i['quantityScore'] = round(quantityScore,1)
+            i['ontimeScore'] = round(ontimeScore,1)
             i['sum'] = sum
-            i['avgscore'] = (quantityScore + serviceScore + quantityScore + ontimeScore) / 4
+            i['avgscore'] = round((quantityScore + serviceScore + quantityScore + ontimeScore) / 4,1)
         quotation.sort(key=lambda x: x["avgscore"])
         for i in range(len(quotation)):
             quotation[i]['paiming'] = i+1
