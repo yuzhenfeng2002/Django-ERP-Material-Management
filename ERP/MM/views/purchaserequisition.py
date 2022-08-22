@@ -145,12 +145,12 @@ def getpq(request):
         id = request.POST.get("id")
         euserid = request.POST.get("euserid")
         purchaser = PurchaseRequisition.objects.filter(id = id,euser_id=euserid).values()
-        purchaser = list(purchaser)
-        print(purchaser)
+        purc = list(purchaser)
+        print(purc)
         return render(
             request=request,
             template_name='../templates/purchaserequisition/purchase_request.html',
-            context={'purchaser': purchaser}
+            context={'purc': purc}
         )
 
 
@@ -163,7 +163,7 @@ def getpqinfo(request: HttpRequest, pk):
         reuqe = RequisitionItem.objects.filter(pr_id=pk).values("itemId", "estimatedPrice", "currency",
                                                             "deliveryDate","quantity",
                                                             "meterial__id", "pr_id", "status","meterial__sloc","meterial__material__mname"
-                                                            ,"meterial__stock__id")
+                                                            ,"meterial__stock__id","meterial__material__mname")
         reuqe = list(reuqe)
         for i in reuqe:
             if i['status']=='0':
@@ -192,25 +192,77 @@ def getmodifyinfo(request: HttpRequest, pk):
                                                                 "meterial__sloc", "meterial__material__mname"
                                                                 , "meterial__stock__id")
         reuqe = list(reuqe)
+        for i in reuqe:
+            if i['status']=='0':
+                i['status'] = "已创建采购申请"
+            if i['status']=='1':
+                i['status'] = "已创建采购订单"
         purchaseRequisition = list(purchaseRequisition)
         print(reuqe)
         return render(
             request=request,
-            template_name='../templates/purchaserequisition/pr-modify.html',
+            template_name='../templates/purchaserequisition/pr-modify(1).html',
             context={'reuqe': reuqe, 'purchaseRequisition': purchaseRequisition}
         )
     if request.method == "POST":
         beizhu = request.POST.get("beizhu")
         PurchaseRequisition.objects.filter(id=pk).update(text = beizhu)
         message = "修改成功"
+        print(message)
+        purchaseRequisition = PurchaseRequisition.objects.filter(id=pk).values()
+        reuqe = RequisitionItem.objects.filter(pr_id=pk).values("itemId", "estimatedPrice", "currency",
+                                                                "deliveryDate", "quantity",
+                                                                "meterial__id", "pr_id", "status",
+                                                                "meterial__sloc", "meterial__material__mname"
+                                                                , "meterial__stock__id")
+        reuqe = list(reuqe)
+        for i in reuqe:
+            if i['status']=='0':
+                i['status'] = "已创建采购申请"
+            if i['status']=='1':
+                i['status'] = "已创建采购订单"
+        purchaseRequisition = list(purchaseRequisition)
         return render(
             request=request,
-            template_name='../templates/purchaserequisition/pr-modify.html',
-
+            template_name='../templates/purchaserequisition/pr-modify(1).html',
+            context={'reuqe': reuqe, 'purchaseRequisition': purchaseRequisition}
         )
 
 
 
+
+
+
+
+
+
+@csrf_exempt
+def getmodifyinfo2(request):
+    if request.method == "POST":
+        data = request.POST.get("rid")
+        rid = eval(data)
+        data1 = request.POST.get("itemId")
+        itemId = eval(data1)
+        data2 = request.POST.get("estimatedPrice")
+        estimatedPrice = eval(data2)
+        data3 = request.POST.get("currency")
+        currency = eval(data3)
+        data4 = request.POST.get("quantity")
+        quantity = eval(data4)
+        data5 = request.POST.get("deliveryDate")
+        print(data5)
+        deliveryDate = getDate2(data5)
+        data6 = request.POST.get("meterial__id")
+        meterial_id = eval(data6)
+        reque = RequisitionItem.objects.filter(id=rid).update(itemId = itemId,
+                                                      estimatedPrice=estimatedPrice,
+                                                      quantity=quantity,
+                                                      deliveryDate=deliveryDate,
+                                                      currency=currency,
+                                                      meterial_id=meterial_id
+                                                      )
+        print(rid)
+        return HttpResponse(json.dumps(reque))
 
 
 
