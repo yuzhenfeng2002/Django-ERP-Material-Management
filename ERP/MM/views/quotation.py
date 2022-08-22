@@ -298,6 +298,7 @@ def vendor_modify_item(request: HttpRequest, pk):
 
 
 @csrf_exempt
+@login_required
 def makebyrq(request: HttpRequest, pk):
     if request.method == "GET":
         reque = RequisitionItem.objects.filter(id = pk).values("id",
@@ -313,12 +314,8 @@ def makebyrq(request: HttpRequest, pk):
         deliveryDate = request.POST.get("deliveryDate")
         vendorvid = request.POST.get("vendorvid")
         print(quantity)
-        euser =RequisitionItem.objects.filter(id = pk).values("id","pr__euser_id",
-                                                               "itemId",
-                                                               "meterial__id",
-                                                               "meterial__stock",
-                                                               "meterial__sloc")
-        euserid = euser[0]['pr__euser_id']
+        euser = request.user
+        euserid = euser.pk
         now_time = datetime.datetime.now()
         quotation = Quotation.objects.create(deadline=deadline,
                                              quantity=quantity,
@@ -342,6 +339,7 @@ def getall(request):
     if request.method == "GET":
         quoatations = Quotation.objects.all().values()
         quoatations = list(quoatations)
+        print(quoatations)
         return render(request, '../templates/quotation/RFQ.html',locals())
     if request.method == "POST":
         id = request.POST.get("id")
@@ -355,6 +353,7 @@ def getall(request):
                                              euser_id=euserid,
                                              collNo=collNo
                                              ).values()
+        print(quoatations)
         if quoatations:
             quoatations = list(quoatations)
             return render(request, '../templates/quotation/RFQ.html', locals())
