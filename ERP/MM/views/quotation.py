@@ -339,8 +339,11 @@ def makebyrq(request: HttpRequest, pk):
 
 
 @csrf_exempt
+@login_required
 def rfqinfojiekou(request):
     if request.method =="POST":
+        euser = request.user
+        euserid = euser.pk
         quantity = request.POST.get("quantity")
         pk = request.POST.get("id")
         deliveryDate = request.POST.get("deliveryDate")
@@ -357,7 +360,7 @@ def rfqinfojiekou(request):
                                                  quantity=quantity,
                                                  ri_id=pk,
                                                  vendor_id=vid,
-                                                 euser_id=1,
+                                                 euser_id=euserid,
                                                  time=now_time,
                                                  collNo=collNo,
                                                  deliveryDate=deliveryDate,
