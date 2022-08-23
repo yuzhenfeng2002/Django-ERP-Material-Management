@@ -121,4 +121,15 @@ urlpatterns = [
     path('purchaseorder/shaixuan', purchaseorder.shaixuan, name='shaixuan'),
     path('purchaseorder/searchjiekou', purchaseorder.searchjiekou, name='search_pur'),
     path('purchaseorder/searchjiekouzhuanhua', purchaseorder.searchjiekouzhuanhua, name='search_pur'),
+    path('purchaseorder/searchjiekouzhuanhua', purchaseorder.searchjiekouzhuanhua, name='search_pur'),
+    path('purchaseorder/searchjiekouzhuanhua', purchaseorder.searchjiekouzhuanhua, name='search_pur'),
+    path('purchaseorder/searchjiekouzhuanhua', purchaseorder.searchjiekouzhuanhua, name='search_pur'),
+    path('purchaserequisition/pomanage', purchaserequisition.pomanage, name='search_pur'),
+    path('purchaserequisition/poindex', purchaserequisition.poindex, name='search_pur'),
+    path('purchaserequisition/prmanage', purchaserequisition.prmanage, name='search_pur'),
+    path('purchaserequisition/quoma', purchaserequisition.quoma, name='search_pur'),
+
+
+
+
 ]
