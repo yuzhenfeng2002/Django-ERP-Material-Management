@@ -23,12 +23,16 @@ urlpatterns = [
     path('receipt/display/', receipt.display_receipt, name='display_receipt'),
     path('receipt/search/', receipt.search_receipt, name='search_receipt'),
     path('receipt/create2/', receipt.load_order_item, name='load_order_item_receipt'),
+    path('receipt/getpqinfo/<int:pk>/', purchaserequisition.getpqinfo3, name='insert_pur'),
+    path('receipt/searchpo', purchaseorder.searchpo2, name='search_pur'),
     # invoice
     path('invoice/create/', invoice.create_invoice, name='create_invoice'),
     path('invoice/create2/', invoice.load_order_item, name='load_order_item_invoice'),
     path('invoice/search/', invoice.search_invoice, name='search_invoice'),
     path('invoice/display/', invoice.display_invoice, name='display_invoice'),
     path('invoice/payment/', invoice.payment, name='pay_invoice'),
+    path('invoice/getpqinfo/<int:pk>/', purchaserequisition.getpqinfo2, name='insert_pur'),
+    path('invoice/searchpo', purchaseorder.searchpo3, name='search_pur'),
     # ajax
     ## user
     path('api/user/loadAll/', user_api.load_user, name='ajax_load_user'),
@@ -97,6 +101,7 @@ urlpatterns = [
     path('purchaseorder/modifyinfo3/', purchaseorder.pomodifyinfo3, name='search_pur'),
     path('purchaseorder/cresys/<int:pk>/', purchaserequisition.createsys, name='search_pur'),
     path('purchaseorder/cremanu/', purchaserequisition.createmanu, name='search_pur'),
+    path('purchaseorder/cremanujiekou/', purchaserequisition.creamanujiekou, name='search_pur'),
     path('purchaseorder/quomodify/<int:pk>/', purchaserequisition.quomodify, name='search_pur'),
     path('quotation/makebyrq/<int:pk>/<int:itemId>', quotation.makebyrq, name='search_pur'),
     path('quotation/rfqinfo', quotation.rfqinfojiekou, name='search_pur'),
@@ -112,5 +117,6 @@ urlpatterns = [
     path('purchaseorder/getpurchaseorderbyid/<int:pk>/', purchaseorder.selectone, name='search_pur'),
     path('purchaseorder/modify/<int:pk>/', purchaseorder.modifyone, name='search_pur'),
     path('purchaseorder/shaixuan', purchaseorder.shaixuan, name='shaixuan'),
-
+    path('purchaseorder/searchjiekou', purchaseorder.searchjiekou, name='search_pur'),
+    path('purchaseorder/searchjiekouzhuanhua', purchaseorder.searchjiekouzhuanhua, name='search_pur'),
 ]
