@@ -210,6 +210,7 @@ MAIN SIDEBAR MENU
                          
                             </tr>
                             </thead>
+                            {{quotation}}
                             <tbody>
                {%  for c in quotation  %}
                             <tr class="vq-value-tr">
@@ -222,7 +223,7 @@ MAIN SIDEBAR MENU
                                 <td>{{ c.collNo }}</td>
                                 <td>{{ c.ri__meterial__material_id }}
                                     <br>
-                                    {{ c.ri__meterial__material_name }}
+                                    {{ c.euser__material__mname }}
                                 </td>
                                 <td>{{ c.ri__quantity }}</td>
                                 <td>{{ c.price }}</td>

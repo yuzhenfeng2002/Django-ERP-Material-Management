@@ -202,18 +202,18 @@ MAIN SIDEBAR MENU
                                         <th>存储位置</th>
                                         <th>状态</th>
                                     </tr>
-                                    </thead>{{reuqe}}
+                                    </thead>
                                     <tbody id="gooddiv">
                                         {% for c in reuqe %}
                                         <tr>
                                             <td>{{ c.itemId }}</td>
                                             <td>{{ c.meterial__id }}</td>
-                                            <td>{{ c. }}</td>
+                                            <td>{{ c.meterial__material__mname }}</td>
                                             <td>{{ c.estimatedPrice }}</td>
                                             <td>{{ c.currency }}</td>
                                             <td>{{ c.quantity }}</td>
                                             <td>{{ c.deliveryDate }}</td>
-                                            <td>{{ c.meterial__material__mname }}</td>
+                                            <td>{{ c.meterial__stock__name }}</td>
                                             <td>{{ c.meterial__sloc }}</td>
                                             <td>{{ c.status }}</td>
                                         </tr>
