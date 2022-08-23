@@ -182,7 +182,7 @@ MAIN SIDEBAR MENU
                                     <tr>
                                         <td  class="vq-modify-td">
                                             <label>询价单的截止日期：</label>
-                                            <input type="text" name="deadline" class="form-control vqm-text" onclick="date(this)" value="{{a.deadline.day}}. {{a.deadline.month}}. {{a.deadline.year}}">
+                                            <input type="text" name="deadline" class="form-control vqm-text" onclick="date(this)" value="{{a.deadline.day}}. {{a.deadline.month}}. {{a.deadline.year}}" id="deadline">
                                         </td>
 
                                         <td>
@@ -230,7 +230,7 @@ MAIN SIDEBAR MENU
                                         </td>
                                         <td  class="vq-modify-td">
                                             <label>数量：</label>
-                                            <input type="text" name ="quantity" class="form-control vqm-text" value="{{a.quantity}}" >
+                                            <input type="text" name ="quantity" class="form-control vqm-text" value="{{a.quantity}}" id="quantity">
                                         </td>
                                         <td>
                                             <label>工厂：</label>
@@ -241,7 +241,7 @@ MAIN SIDEBAR MENU
 
                                         <td  class="vq-modify-td">
                                             <label>送货时间：</label>
-                                            <input type="text"  name="deliverDate" class="form-control vqm-text" onclick="date(this)" value="{{a.deliveryDate.day}}. {{a.deliveryDate.month}}. {{a.deliveryDate.year}}">
+                                            <input type="text"  name="deliverDate" class="form-control vqm-text" onclick="date(this)" value="{{a.deliveryDate.day}}. {{a.deliveryDate.month}}. {{a.deliveryDate.year}}" id="deliveryDate">
                                         </td>
                                         <td>
                                             <label>存储位置：</label>
@@ -249,7 +249,7 @@ MAIN SIDEBAR MENU
                                         </td>
                                         <td  class="vq-modify-td">
                                             <label>集合码：</label>
-                                            <input type="text"  name = "collNo" class="form-control vqm-text" value="{{a.collNo}}">
+                                            <input type="text"  name = "collNo" class="form-control vqm-text" value="{{a.collNo}}" id="collNo">
                                         </td>
                                     </tr>
                                     <tr>
@@ -399,12 +399,21 @@ MAIN SIDEBAR MENU
 
     function save(){
        var rid=document.getElementById("rid").innerHTML
+       var deadline=$("#deadline").val()
+       var deliveryDate=$("#deliveryDate").val()
+       var quantity=$("#quantity").val()
+       var collNo=$("#collNo").val()
+       console.log(rid,deadline,deliveryDate,quantity,collNo)
         $.ajax({
             type: 'post',
             url: '',
             data:{
-                id: rid,
-                rej: $('#jujue').prop('checked')
+                "id": rid,
+                "deadline": deadline,
+                "deliveryDate": deliveryDate,
+                "quantity": quantity
+                "collNo": collNo
+                "rej": $('#jujue').prop('checked')
             },
             success: function (data) {
                 let a = JSON.parse(data)
