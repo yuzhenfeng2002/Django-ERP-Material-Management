@@ -537,7 +537,7 @@ def pcs(request):
                                                      "currency","rej")
         quoatations = list(quoatations)
         print(quoatations)
-        return render(request, '../templates/purchaseorder/po-create_search(1).html',locals())
+        return render(request, '../templates/purchaseorder/po-create_search.html', locals())
     if request.method == "POST":
         id = request.POST.get("id")
         mete= request.POST.get("mete")
@@ -548,10 +548,10 @@ def pcs(request):
                                                      "currency","rej")
         if quoatations:
             quoatations = list(quoatations)
-            return render(request, '../templates/purchaseorder/po-create_search(1).html', locals())
+            return render(request, '../templates/purchaseorder/po-create_search.html', locals())
         else:
             insertmessage = "创建失败"
-            return render(request, '../templates/purchaseorder/po-create_search(1).html', locals())
+            return render(request, '../templates/purchaseorder/po-create_search.html', locals())
 
 
 
