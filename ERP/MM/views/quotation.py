@@ -364,6 +364,7 @@ def rfqinfojiekou(request):
         data = request.POST.get("json")
         data1 = eval(data)
         now_time = datetime.datetime.now()
+        quolist = []
         for i in data1:
             vid = i['vid']
             quotation = Quotation.objects.create(deadline=deadline,
@@ -376,9 +377,11 @@ def rfqinfojiekou(request):
                                                  deliveryDate=deliveryDate,
                                                  rej=1
                                                  )
+            quoid = quotation.id
+            quolist.append(quoid)
             if quotation:
                 print("cjcg")
-        return HttpResponse(json.dumps(1))
+        return HttpResponse(json.dumps(quolist))
 
 
 
@@ -528,7 +531,8 @@ def pcs(request):
                                                      "ri_id","quantity","collNo","price",
                                                      "currency","rej")
         quoatations = list(quoatations)
-        return render(request, '../templates/purchaseorder/po-create_search.html',locals())
+        print(quoatations)
+        return render(request, '../templates/purchaseorder/po-create_search(1).html',locals())
     if request.method == "POST":
         id = request.POST.get("id")
         mete= request.POST.get("mete")
@@ -539,10 +543,10 @@ def pcs(request):
                                                      "currency","rej")
         if quoatations:
             quoatations = list(quoatations)
-            return render(request, '../templates/purchaseorder/po-create_search.html', locals())
+            return render(request, '../templates/purchaseorder/po-create_search(1).html', locals())
         else:
             insertmessage = "创建失败"
-            return render(request, '../templates/purchaseorder/po-create_search.html', locals())
+            return render(request, '../templates/purchaseorder/po-create_search(1).html', locals())
 
 
 
