@@ -55,7 +55,7 @@
            // console.log($(itempk).html());
             if($(bid).html()=='未结算'){
                 $(bid).html('正在结算');
-                
+
             }else{
                 $(bid).html('未结算');
             }
@@ -328,6 +328,11 @@
                         var dataObj = eval("("+data+")");
                        // var content=dataObj[0].gr;
                         //console.log(dataObj.gr[0].pk);
+                        if(dataObj.status==1){
+                            showMessage({text: dataObj.message ,type: 'success'});
+                        }else{
+                            showMessage({text: dataObj.message ,type: 'error'});
+                        }
                        var out='';
                         for(i = 0; i < dataObj.gr.length; i++) {
                             content2 =dataObj.gr[i].fields;
