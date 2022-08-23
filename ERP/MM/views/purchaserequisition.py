@@ -288,6 +288,7 @@ def getmodifyinfo(request: HttpRequest, pk):
 @csrf_exempt
 def getmodifyinfo2(request):
     if request.method == "POST":
+        print("111111111111")
         data = request.POST.get("rid")
         rid = eval(data)
         data1 = request.POST.get("itemId")
@@ -303,7 +304,9 @@ def getmodifyinfo2(request):
         deliveryDate = getDate2(data5)
         data6 = request.POST.get("meterial__id")
         meterial_id = eval(data6)
-        reque = RequisitionItem.objects.filter(id=rid).update(itemId = itemId,
+        print(rid)
+        print(itemId)
+        reque = RequisitionItem.objects.filter(pr_id=rid,itemId=itemId).update(
                                                       estimatedPrice=estimatedPrice,
                                                       quantity=quantity,
                                                       deliveryDate=deliveryDate,
