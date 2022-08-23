@@ -14,7 +14,6 @@ urlpatterns = [
     # vendor
     path('vendor/create/', vendor.create, name='create_vendor'),
     path('vendor/search/', vendor.search, name='search_vendor'),
-    path('vendor/history/', vendor.history, name='search_vendor_history'),
     # material
     path('material/search/', material.search_material, name='search_material'),
     path('material/item/create/', material.create_item, name='create_item'),
@@ -104,6 +103,7 @@ urlpatterns = [
     path('purchaseorder/cremanu/', purchaserequisition.createmanu, name='search_pur'),
     path('purchaseorder/cremanujiekou/', purchaserequisition.creamanujiekou, name='search_pur'),
     path('purchaseorder/quomodify/<int:pk>/', purchaserequisition.quomodify, name='search_pur'),
+    path('purchaseorder/quomodifyjiekou/', purchaserequisition.quomodifyjiekou, name='search_pur'),
     path('quotation/makebyrq/<int:pk>/<int:itemId>', quotation.makebyrq, name='search_pur'),
     path('quotation/rfqinfo', quotation.rfqinfojiekou, name='search_pur'),
     path('purchaseorder/searchpo', purchaseorder.searchpo, name='search_pur'),
