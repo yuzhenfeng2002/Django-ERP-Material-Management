@@ -435,7 +435,7 @@ def pomodifyinfo(request: HttpRequest, pk):
         vendor = list(vendor)
         orderitems  = OrderItem.objects.filter(po_id= pk).values("itemId","meterialItem__id","meterialItem__material__mname",
                                                                  "quantity","price","meterialItem__stock__id","meterialItem__sloc",
-                                                                 "deliveryDate","status")
+                                                                 "deliveryDate","status","currency")
         orderitems = list(orderitems)
 
         for i in orderitems:
@@ -718,6 +718,10 @@ def searchpo(request):
                                                        'euser_id','time','rfq__rej','vendor_id','rfq__collNo','rfq__ri__itemId',
                                                        'rfq__ri__currency','rfq__ri__status')
         for i in vendorid:
+            if i['rfq__quantity']==None:
+                i['rfq__quantity']=0
+            if i['rfq__price']==None:
+                i['rfq__price'] =0
             i['sum'] = i['rfq__quantity']*i['rfq__price']
         for i in vendorid:
             if i['rfq__ri__status']=='0':
