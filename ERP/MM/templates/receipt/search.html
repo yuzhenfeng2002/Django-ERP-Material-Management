@@ -438,11 +438,11 @@
                                 }else{
                                     showMessage({text: dataObj.message ,type: 'error'});
                                 }
-                                
+                                var out='';
                                 for(i = 0; i < dataObj.gr.length; i++) {
                                     content2 =dataObj.gr[i].fields
                                     //": 10, "sType": "1", "time": "2022-08-18T10:05:04.605Z", "postTime": "2022-08-18T10:03:52Z", "orderItem": 1, "euser": 1}, "user": {"id": 2,
-                                    var out='';
+                                    
                                      out += '<tr><td>'+ dataObj.gr[i].pk+ '</td><td id="itempk'+i+'">' + dataObj.gr[i].po.id + '</td><td id="orpk'+i+'">' + dataObj.gr[i].orderItem.itemId+ '</td><td>' + dataObj.gr[i].material.mname+ '</td><td>'+ dataObj.gr[i].orderItem.quantity+ '</td><td>'+ content2.actualQnty+ '</td><td>'+ content2.time.substr(0,10) +'</td><td><button class="btn btn-success btn-xs" onclick="submitpk(this.id)" id="bid'+i+'"><i class="fa fa-search-plus"></i></button></td></tr>';
                                  }
                                  document.getElementById("searchDiv").innerHTML=out;

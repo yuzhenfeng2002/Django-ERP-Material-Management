@@ -198,7 +198,7 @@ def getpqinfo2(request: HttpRequest, pk):
         print(reuqe)
         return render(
             request=request,
-            template_name='../templates/invoice/po-info.html',
+            template_name='../templates/invoice/pr-info.html',
             context={'reuqe': reuqe,'purchaseRequisition':purchaseRequisition}
         )
 
@@ -222,7 +222,7 @@ def getpqinfo3(request: HttpRequest, pk):
         print(reuqe)
         return render(
             request=request,
-            template_name='../templates/receipt/po-info.html',
+            template_name='../templates/receipt/pr-info.html',
             context={'reuqe': reuqe,'purchaseRequisition':purchaseRequisition}
         )
 

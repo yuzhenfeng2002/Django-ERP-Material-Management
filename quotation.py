@@ -298,13 +298,24 @@ def vendor_modify_item(request: HttpRequest, pk):
 
 
 @csrf_exempt
-def makebyrq(request: HttpRequest, pk):
+
+def makebyrq(request: HttpRequest, pk,itemId):
     if request.method == "GET":
-        reque = RequisitionItem.objects.filter(id = pk).values("id",
-                                                               "itemId",
-                                                               "meterial__id",
-                                                               "meterial__stock",
-                                                               "meterial__sloc")
+        reque = PurchaseRequisition.objects.filter(id=pk,requisitionitem__itemId=itemId).values("id",
+                                                               "requisitionitem__itemId",
+                                                               "requisitionitem__meterial__id",
+                                                               "requisitionitem__meterial__stock",
+                                                               "requisitionitem__meterial__sloc",
+                                                               )
+        reque = list(reque)
+        stoid = reque[0]['requisitionitem__meterial__stock']
+        stoname = Stock.objects.filter(id = stoid).values()
+        print(stoname)
+        stoname = list(stoname)
+        print(stoname)
+        name = stoname[0]['name']
+        reque[0]['stockname'] = name
+        print(reque)
         return render(request, '../templates/quotation/RFQ-create.html', locals())
     if request.method =="POST":
         collNo = request.POST.get("collNo")
@@ -313,12 +324,8 @@ def makebyrq(request: HttpRequest, pk):
         deliveryDate = request.POST.get("deliveryDate")
         vendorvid = request.POST.get("vendorvid")
         print(quantity)
-        euser =RequisitionItem.objects.filter(id = pk).values("id","pr__euser_id",
-                                                               "itemId",
-                                                               "meterial__id",
-                                                               "meterial__stock",
-                                                               "meterial__sloc")
-        euserid = euser[0]['pr__euser_id']
+        euser = request.user
+        euserid = euser.pk
         now_time = datetime.datetime.now()
         quotation = Quotation.objects.create(deadline=deadline,
                                              quantity=quantity,
@@ -337,11 +344,55 @@ def makebyrq(request: HttpRequest, pk):
 
 
 
+
+
+
+
+@csrf_exempt
+@login_required
+def rfqinfojiekou(request):
+    if request.method =="POST":
+        euser = request.user
+        euserid = euser.pk
+        quantity = request.POST.get("quantity")
+        pk = request.POST.get("id")
+        deliveryDate = request.POST.get("deliveryDate")
+        deliveryDate = getDate2(deliveryDate)
+        collNo = request.POST.get("collNo")
+        deadline = request.POST.get("deadline")
+        deadline = getDate2(deadline)
+        data = request.POST.get("json")
+        data1 = eval(data)
+        now_time = datetime.datetime.now()
+        quolist = []
+        for i in data1:
+            vid = i['vid']
+            quotation = Quotation.objects.create(deadline=deadline,
+                                                 quantity=quantity,
+                                                 ri_id=pk,
+                                                 vendor_id=vid,
+                                                 euser_id=euserid,
+                                                 time=now_time,
+                                                 collNo=collNo,
+                                                 deliveryDate=deliveryDate,
+                                                 rej=1
+                                                 )
+            quoid = quotation.id
+            quolist.append(quoid)
+            if quotation:
+                print("cjcg")
+        return HttpResponse(json.dumps(quolist))
+
+
+
+
+
 @csrf_exempt
 def getall(request):
     if request.method == "GET":
         quoatations = Quotation.objects.all().values()
         quoatations = list(quoatations)
+        print(quoatations)
         return render(request, '../templates/quotation/RFQ.html',locals())
     if request.method == "POST":
         id = request.POST.get("id")
@@ -355,6 +406,7 @@ def getall(request):
                                              euser_id=euserid,
                                              collNo=collNo
                                              ).values()
+        print(quoatations)
         if quoatations:
             quoatations = list(quoatations)
             return render(request, '../templates/quotation/RFQ.html', locals())
@@ -397,9 +449,10 @@ def rfqinfo(request: HttpRequest, pk):
         quoatations = list(quoatations)
 
         rq = RequisitionItem.objects.filter(pr_id=pk).values("meterial__stock__id","meterial__id",
-                                                             "itemId","meterial__sloc")
+                                                             "itemId","meterial__sloc","meterial__stock__name")
 
         rq = list(rq)
+        print(rq)
         return render(request, '../templates/quotation/RFQ-create_info.html', locals())
 
 
@@ -431,9 +484,9 @@ def rfqinfo2(request: HttpRequest, pk):
         caigou = list(caigou)
         for i in caigou:
             i['collNo'] = colno
-        print(caigou)
         while len(caigou)!=1:
             caigou.pop()
+        print(caigou)
         baojia = Quotation.objects.filter(id=pk).values("price","deadline","currency")
         baojia = list(baojia)
         return render(request, '../templates/quotation/RFQ-info.html', locals())
@@ -478,7 +531,8 @@ def pcs(request):
                                                      "ri_id","quantity","collNo","price",
                                                      "currency","rej")
         quoatations = list(quoatations)
-        return render(request, '../templates/purchaseorder/po-create_search.html',locals())
+        print(quoatations)
+        return render(request, '../templates/purchaseorder/po-create_search.html', locals())
     if request.method == "POST":
         id = request.POST.get("id")
         mete= request.POST.get("mete")
