@@ -428,7 +428,7 @@
                                 <div class="pull-right">商品编号</div>
                             </label>
                             <div class="col-sm-2">
-                                <input class="form-control" id="materialInput1" name='pk' type="text"  placeholder="请输入商品编号" required>
+                                <input class="form-control" id="materialInput1" type="text"  placeholder="请输入商品编号" required>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -437,9 +437,9 @@
                                 </label>
                                 <div class="col-sm-2">
                                     <select id="materialInput2" class="form-control">
-                                        <option value='1'>全部</option>
+                                        <option value='0'>全部</option>
                                         <option value='2'>近三月</option>
-                                        <option value='3'>近半年</option>
+                                        <option value='1'>近半年</option>
                                         
                                       </select>
                                 </div>
@@ -702,7 +702,7 @@
         <!--footer end-->
     </section>
 
-        {% comment %} <textarea id="item_result"></textarea> {% endcomment %}
+        <textarea id="item_result"></textarea>
 
         <script>
             //收据搜索 不限制三项内容是否填写默认返回全部
@@ -716,9 +716,12 @@
                         dataType: "json",
                         csrfmiddlewaretoken: '{{ csrf_token }}',
                         //输入2个搜索框的值+4个权值
-                        //uid: $("#cjzcode").val(),
-                       // pk: $("#sjcode").val(),
-                      //  date: $("#my-input").val(),
+                        range: $("#materialInput2").val(),
+                        mid: $("#materialInput1").val(),
+                        w1: $("#slider1").slider("value"),
+                        w2: $("#slider2").slider("value"),
+                        w3: $("#slider3").slider("value"),
+                        w4: $("#slider4").slider("value"),
                     },
                     success: function(data) {
                         $('#item_result').text(data);
@@ -726,12 +729,7 @@
                         
                         //console.log(dataObj.gr[0].pk);
                         
-                        for(i = 0; i < dataObj.gr.length; i++) {
-                           content2 =dataObj.gr[i].fields;
-                           var out='';
-                            out += '<tr><td>'+ dataObj.gr[i].pk+ '</td><td>' + content2.fiscal + '</td><td>' + dataObj.gr[i].material.mname + '</td><td>'+ dataObj.gr[i].orderItem.quantity+ '</td><td>'+ dataObj.gr[i].goodReceipt.actualQnty+ '</td><td>'+ content2.sumAmount + content2.currency +'</td><td><button class="btn btn-success btn-xs" onclick="submitpk(this.id)" id="bid'+i+'"><i class="fa fa-search-plus"></i></button></td></tr>';
-                        }
-                        document.getElementById("searchDiv").innerHTML=out;
+                        
                     },
                     failure: function() {
 
