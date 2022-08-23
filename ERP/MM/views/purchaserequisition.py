@@ -654,3 +654,35 @@ def quomodifyjiekou(request):
             "content": quo
         }
         return HttpResponse(json.dumps(datalist))
+
+
+
+
+
+
+
+
+@csrf_exempt
+def pomanage(request):
+    return render(request, '../templates/purchaseorder/po_manage.html', locals())
+
+
+
+
+@csrf_exempt
+def poindex(request):
+    return render(request, '../templates/purchaseorder/purchase_index.html', locals())
+
+
+
+@csrf_exempt
+def prmanage(request):
+    return render(request, '../templates/purchaserequisition/pr_manage.html', locals())
+
+
+
+@csrf_exempt
+def quoma(request):
+    return render(request, '../templates/quotation/quo_manage.html', locals())
+
+
