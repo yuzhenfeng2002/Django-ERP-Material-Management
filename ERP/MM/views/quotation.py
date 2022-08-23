@@ -365,6 +365,9 @@ def rfqinfojiekou(request):
         data1 = eval(data)
         now_time = datetime.datetime.now()
         quolist = []
+        venlength = len(data1)
+        xuhao = range(venlength)
+        Dt = {}
         for i in data1:
             vid = i['vid']
             quotation = Quotation.objects.create(deadline=deadline,
@@ -381,7 +384,9 @@ def rfqinfojiekou(request):
             quolist.append(quoid)
             if quotation:
                 print("cjcg")
-        return HttpResponse(json.dumps(quolist))
+        for k, v in zip(xuhao, quolist):
+            Dt[k] = v
+        return HttpResponse(json.dumps(Dt))
 
 
 
