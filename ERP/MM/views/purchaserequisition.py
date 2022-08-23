@@ -571,13 +571,14 @@ def quomodify(request: HttpRequest, pk):
         print("deliv:",deliverDate)
         quo = Quotation.objects.filter(id=pk).update(deadline = deadline,
                                                      quantity=quantity,collNo=collNo,deliveryDate=deliverDate)
+        quoid= quo.id
         print(collNo)
         print(deadline)
         if quo:
             print("修改成功")
         datalist = {
             "message": "创建成功",
-            "content": quo
+            "content": quoid
         }
         quotation = Quotation.objects.filter(id=pk).values()
         vendorid = quotation[0]['vendor_id']
@@ -612,3 +613,44 @@ def quomodify(request: HttpRequest, pk):
         print(requisitionItem)
         print(zuoceinfo)
         return render(request, '../templates/quotation/vq-modify.html', locals())
+
+
+
+
+
+
+@csrf_exempt
+def quomodifyjiekou(request):
+    if request.method == "POST":
+        pk = request.POST.get("id")
+        deadline = request.POST.get("deadline")
+        deliverDate = request.POST.get("deliveryDate")
+        deliverDate = getDate2(deliverDate)
+        deadline = getDate2(deadline)
+        quantity = request.POST.get("quantity")
+        collNo = request.POST.get("collNo")
+        rej = request.POST.get("rej")
+        print(deliverDate)
+        print(deadline)
+        print(quantity)
+        print(rej)
+        if rej=="true":
+            rej =True
+        if rej=="false":
+            rej =False
+        print(collNo)
+        print(pk)
+        print("dead:",deadline)
+        print("deliv:",deliverDate)
+        quo = Quotation.objects.filter(id=pk).update(deadline = deadline,
+                                                     quantity=quantity,collNo=collNo,deliveryDate=deliverDate,
+                                                     rej = rej)
+        print(collNo)
+        print(deadline)
+        if quo:
+            print("修改成功")
+        datalist = {
+            "message": "创建成功",
+            "content": quo
+        }
+        return HttpResponse(json.dumps(datalist))
