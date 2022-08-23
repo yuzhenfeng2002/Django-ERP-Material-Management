@@ -459,23 +459,28 @@ MAIN SIDEBAR MENU
                         $.ajax(
                         {
                             type: "POST",
-                            url: ,
+                            url: "/mm/purchaseorder/searchjiekou",
                             data:{
-                                $("#cname").val(),
-                                $("#ctime").val(),
-                                $("#gcode").val(),
+                                cname:$("#cname").val(),
+                                ctime:$("#ctime").val(),
+                                gcode:$("#gcode").val(),
                                 csrfmiddlewaretoken: '{{ csrf_token }}',
                                 dataType: "json"
                             },
                             success: function(data) {
-                              //  $('#material_result').text(data);
-                                var dataObj=eval("("+data+")");
+                        //        $('#material_result').text(data);
+                        var dataObj = eval("("+data+")");
                                 var out = "";
                                 var i;
-                                //"pk": 1, "fields": {"mname": "CHLK", "mType": "HALB", "mGroup": "AS", "meaunit": "ABC", "netWeight": 1, "weightUnit": "ABC", "transGrp": "T", "loadingGrp": "L", "industrySector": "I"}
                                 for(i = 0; i < dataObj.length; i++) {
+                                    pr_id = dataObj[i].pr_id
+                               
+                                    pr__euser_id = dataObj[i].pr__euser_id
+                                    deliveryDate = dataObj[i].deliveryDate
+                                    meterial__id = dataObj[i].meterial__id
+                                    itemId = dataObj[i].itemId
                                     //out += '<p '+ dataObj[i].fields.mname + '>' + '</p><br>';<a href="basic_table.html#">Company Ltd</a>
-                                    out += '<tr><td>'+ /*采购申请编码*/+ '</td><td>' + /*创建者编码*/ + '</td><td>' + /*创建时间*/+ '</td><td>' + /*物料编码*/+ '</td><td>' + /*条目编码*/+'</td><tr>';
+                                    out += '<tr><td>'+ pr_id + '</td><td>' + pr__euser_id + '</td><td>' + deliveryDate + '</td><td>' + meterial__id + '</td><td>' + itemId +'</td><tr>';
                                 }
                                 document.getElementById("prDiv").innerHTML=out;
                             },
