@@ -1,0 +1,37 @@
+{
+  "id": "3548014",
+  "name": "xxq",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3137960",
+      "name": " 修改订单",
+      "font_class": "xiugaidingdan",
+      "unicode": "e8f2",
+      "unicode_decimal": 59634
+    },
+    {
+      "icon_id": "4251753",
+      "name": "商品",
+      "font_class": "shangpin",
+      "unicode": "e64b",
+      "unicode_decimal": 58955
+    },
+    {
+      "icon_id": "6172052",
+      "name": "待收货",
+      "font_class": "daishouhuo",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "22779611",
+      "name": "数译_供应商管理",
+      "font_class": "shuyi_gongyingshangguanli",
+      "unicode": "e65e",
+      "unicode_decimal": 58974
+    }
+  ]
+}
