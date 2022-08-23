@@ -369,13 +369,13 @@
                       <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">结算货币</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="danwei-pocm" onclick="currency()">
+                            <input type="text" class="form-control" id="danwei-pocm" onclick="currencyf()">
                         </div>
                     </div>
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">工厂</label>
                           <div class="col-sm-10">
-                              <input type="text"  class="form-control" id="factory-pocm">
+                              <input class="form-control" id="factory-pocm"></input>
                           </div>
                       </div>
                       <div class="form-group">
@@ -467,19 +467,19 @@
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">供应商名称</label><!--输入供应商编码后自动显示-->
                           <div class="col-sm-10">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vdname">
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">城市</label><!--输入供应商编码后自动显示-->
                           <div class="col-sm-10">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vdcity">
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">街区地址</label><!--输入供应商编码后自动显示-->
                           <div class="col-sm-10">
-                              <input type="text"  class="form-control" >
+                              <input type="text"  class="form-control" id="vdadress">
                           </div>
                       </div>
                       <h5 class="mb"><i class="fa fa-angle-right"></i> 采购方信息</h5>
@@ -603,7 +603,7 @@
                       <div class="pull-right">公司编码：</div>
                       </label>
                   <div class="col-sm-5">
-                      <select class="form-control"  name="company" id="company"></select>
+                      <select class="form-control"  name="company1" id="company"></select>
                   </div>
                   <div class="col-sm-2">
                   <input type="submit"  class="btn btn-theme02">
@@ -661,8 +661,8 @@
      $("table").on("dblclick","tr",function(e){
         document.getElementById("gyscode").value=$(this).find('td').eq(0).text();
         document.getElementById("vdname").value=$(this).find('td').eq(1).text();
-        document.getElementById("city").value=$(this).find('td').eq(2).text();
-        document.getElementById("location").value=$(this).find('td').eq(3).text();
+        document.getElementById("vdcity").value=$(this).find('td').eq(2).text();
+        document.getElementById("vdadress").value=$(this).find('td').eq(3).text();
         $('#myModalgys').modal('hide');
     });
             </script>
@@ -678,74 +678,43 @@
     
     <!--搜索供应商编码modal-->
 
+    
 
+<!--结算货币modal-->
+<div class="col-sm-12">
+    <div class="modal fade" id="myModalcurr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">货币</h4>
+            </div>
+            <div class="modal-body">
+            *双击填入货币
+            <table  class="table table-bordered table-striped table-condensed">
+                <thead>
+                    <!-- tr 指定表行标签-->
+                    <tr>
+                        <!-- th 设置表头内容，默认加粗-->
+                        <th style="width: 100px;">序号</th>
+                        <th style="width: 120px;">货币</th>
+                        <th>名称</th>
+                    </tr>
+                </thead>
+                <tbody id="currDiv">
 
-                <!--结算货币modal--> 
-                <div class="col-sm-12">
-                    <div class="modal fade" id="myModalcurr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                              <h4 class="modal-title" id="myModalLabel">货币</h4>
-                            </div>
-                            <div class="modal-body">
-                              
-                            <table  class="table table-bordered table-striped table-condensed">
-                                <thead>
-                                    <!-- tr 指定表行标签-->
-                                    <tr>
-                                        <!-- th 设置表头内容，默认加粗-->
-                                        <th style="width: 100px;">序号</th>
-                                        <th style="width: 120px;">货币</th>
-                                        <th>名称</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="currDiv">
-                
-                                </tbody>
-                            </table>
-                
-                            <script>   //不需要提交表单，点击input框加载modal直接列出
-                                $('').on('', function(e) {
-                                    e.preventDefault();
-                                    $.ajax(
-                                    {
-                                        type: 
-                                        url: 
-                                        data:{
-                                           
-                                        },
-                                        success: function() {
-                                          var i=0 //序号
-                                            for() {
-                                                i++
-                                                out += '<tr><td>'+ i + '</td><td>' + /* 货币 */ + '</td><td>' + /* 名称 */ +'</td><tr>';
-                                            }
-                                            document.getElementById("currDiv").innerHTML=out;
-                                        },
-                                        failure: function() {
-                    
-                                        }
-                                    })
-                                });
-                                $("table").on("dblclick","tr",function(e){
-                                    
-                                    document.getElementById("danwei-pocm").value=$(this).find('td').eq(0).text();
-                                    $('#myModalcurr').modal('hide')
-                                    
-                                })
-                                
-                            </script>
-                            
-                            </div>
-                            <div class="modal-footer">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                <!--结算货币modal-->
+                </tbody>
+            </table>
+
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    <!--结算货币modal-->
+
                 
 
 
@@ -773,8 +742,75 @@
             datepicker.render();
             }
     </script>
+<script>
+    
+$(document).ready(function() {
+            
+    $.ajax(
+    {
+        type: "post",
+        url: "{% url 'MM:ajax_load_currency' %}",
+        data:{
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        success: function(data) {
+            var dataObj = eval("("+data+")");
+            var out = "";
+            var i;
+            for(i = 0; i < dataObj.length; i++) {
+                out += '<tr><td>'+ i + '</td><td>' +dataObj[i].Currency + '</td><td>' + dataObj[i].Name +'</td><tr>';
+                    //out += '<option value=' + +'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
+            }
+            document.getElementById("currDiv").innerHTML=out;
+            
+        },
+        failure: function() {
 
+        }
+    })
+});
+$("table").on("dblclick","tr",function(e){
+    
+    document.getElementById("danwei").value=$(this).find('td').eq(1).text();
+    $('#myModalcurr').modal('hide')
+    
+});
+function currencyf() {
+    console.log(1);
+
+    //弹出模态框
+    
+    $("#myModalcurr").modal("show")
+}
+
+
+</script>
         <script>  
+           
+
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_country' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择国家</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Country+'>'+ dataObj[i].ChineseName + '--' + dataObj[i].EnglishName + '</option>' ;
+                    }
+                    var items=document.getElementsByName("country");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                        
+                    },
+                failure: function() {
+
+                }
+            });
             $.ajax({
                 type: "post",
                 url: "{% url 'MM:ajax_load_company' %}",
@@ -885,14 +921,6 @@ showMessage({text: '创建成功！采购订单编号：'+a.content ,type: 'succ
         })
 }
 
-
-function currency() {
-
-//弹出模态框
-
-$("#myModalcurr").modal("show")
-
-}
 
         </script>
 
