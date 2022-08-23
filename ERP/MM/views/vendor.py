@@ -29,3 +29,13 @@ def search(request: HttpRequest):
         )
     else:
         return HttpResponse(status=405)
+
+@login_required
+def history(request: HttpRequest):
+    if request.method == 'GET':
+        return render(
+            request=request,
+            template_name='../templates/vendor/history.html'
+        )
+    else:
+        return HttpResponse(status=405)
