@@ -155,4 +155,4 @@ def create_receipt(request: HttpRequest):
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
     accountDetail1.save()
     accountDetail2.save()
-    return HttpResponse(json.dumps({'status':1, 'message':"收据创建成功!"}))
+    return HttpResponse(json.dumps({'status':1, 'message':"商品收据创建成功！收据编号为"+str(new_gr.id)+"。"}))

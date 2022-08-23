@@ -58,12 +58,12 @@ def search_invoice(request: HttpRequest):
             results_list[i]['stock'] = model_to_dict(stock)
             results_list[i]['material'] = model_to_dict(material)
             results_list[i]['goodReceipt'] = model_to_dict(gr)
-        return HttpResponse(json.dumps({'status':1, 'message':"发票收据检索成功！", 'gr':results_list}, default=str))
+        return HttpResponse(json.dumps({'status':1, 'message':"发票检索成功！", 'gr':results_list}, default=str))
     else:
         pk = getPkExact(pk, 'GR')
         results: QuerySet = Invoice.objects.filter(pk__exact=pk)
         if len(results) != 1:
-            return HttpResponse(json.dumps({'status':0, 'message':"发票收据相关信息错误！"}))
+            return HttpResponse(json.dumps({'status':0, 'message':"发票编号错误！"}))
         else:
             results_list = json.loads(serializers.serialize('json', list(results)))
             for i, r in enumerate(results):
@@ -81,7 +81,7 @@ def search_invoice(request: HttpRequest):
                 results_list[i]['stock'] = model_to_dict(stock)
                 results_list[i]['material'] = model_to_dict(material)
                 results_list[i]['goodReceipt'] = model_to_dict(gr)
-            return HttpResponse(json.dumps({'status':1, 'message':"发票收据检索成功！", 'gr':results_list}, default=str))
+            return HttpResponse(json.dumps({'status':1, 'message':"发票检索成功！", 'gr':results_list}, default=str))
 
 @login_required
 def create_invoice(request: HttpRequest):
@@ -102,7 +102,7 @@ def create_invoice(request: HttpRequest):
     goodReceipt = goodReceipts.last()
     actualAmount = goodReceipt.actualQnty * orderItem.price
     if sumAmount != actualAmount:
-        return HttpResponse(json.dumps({'status':0, 'message':"表单总价填写错误！"+str(actualAmount), 'fields':['sumAmount']}))
+        return HttpResponse(json.dumps({'status':0, 'message':"表单总价填写错误，应为"+str(actualAmount)+"。", 'fields':['sumAmount']}))
     new_invoice = Invoice(
         fiscal=fiscal, sumAmount=sumAmount, currency=currency, text=text, invoiceDate=invoiceDate, postDate=postDate, orderItem=orderItem, euser=euser
     )
@@ -137,7 +137,7 @@ def create_invoice(request: HttpRequest):
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
     accountDetail1.save()
     accountDetail2.save()
-    return HttpResponse(json.dumps({'status':1, 'message':"发票创建成功!"}))
+    return HttpResponse(json.dumps({'status':1, 'message':"发票创建成功!发票编号为"+str(new_invoice.id)+"。"}))
 
 @login_required
 def search_unpaied_invoice(request: HttpRequest):
@@ -158,7 +158,7 @@ def search_unpaied_invoice(request: HttpRequest):
         results_list[i]['orderItem'] = model_to_dict(orderItem)
         results_list[i]['po'] = model_to_dict(po)
         results_list[i]['vendor'] = model_to_dict(vendor)
-    return HttpResponse(json.dumps({'status':1, 'message':"商品收据检索成功！", 'gr':results_list}, default=str))
+    return HttpResponse(json.dumps({'status':1, 'message':"发票检索成功！", 'gr':results_list}, default=str))
 
 @login_required
 def pay(request: HttpRequest):

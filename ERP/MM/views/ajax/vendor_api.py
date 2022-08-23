@@ -46,7 +46,7 @@ def create_vendor(request: HttpRequest):
         error_fields = list(e.error_dict.keys())
         return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
     new_vendor.save()
-    return HttpResponse(json.dumps({'status':1, 'message':"供应商创建成功！", 'vendor':model_to_dict(new_vendor)}))
+    return HttpResponse(json.dumps({'status':1, 'message':"供应商创建成功！供应商编号为"+str(new_vendor.id)+"。", 'vendor':model_to_dict(new_vendor)}))
 
 @login_required
 def search_vendor_history(request: HttpRequest):
