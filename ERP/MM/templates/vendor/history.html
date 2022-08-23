@@ -735,7 +735,7 @@
                         //console.log(dataObj.gr[0].pk);
                         
                         if(dataObj.length==0){
-                            showMessage({text: '1' ,type: 'error'});
+                            showMessage({text: '无符合条件的商品！' ,type: 'error'});
                         }else{
                             var out='';
                             for(i = 0; i < dataObj.length; i++) {
@@ -745,7 +745,7 @@
                                  out += '<tr><td>'+ dataObj[0].vendor.vid+ '</td><td>' + dataObj[0].vendor.vname + '</td><td >' + dataObj[0].quan+ '</td><td>' + dataObj[0].num+ '</td><td>'+ dataObj[0].score+ '</td></tr>';
                              }
                              document.getElementById("searchDiv2").innerHTML=out;
-                            showMessage({text: '2' ,type: 'success'});
+                            showMessage({text: '搜索成功！' ,type: 'success'});
                         }
                         
                         
