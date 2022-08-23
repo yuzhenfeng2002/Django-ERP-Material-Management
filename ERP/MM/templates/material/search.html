@@ -803,6 +803,12 @@
                     success: function(data) {
                         $('#item_result').text(data);
                         var dataObj = eval("("+data+")");
+                        if(dataObj==''){
+                            showMessage({text: dataObj.message ,type: 'error'});
+                        }else{
+                            showMessage({text: dataObj.message ,type: 'success'});
+                        }
+                        
                         //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
                         //根据status写。。。
                     },

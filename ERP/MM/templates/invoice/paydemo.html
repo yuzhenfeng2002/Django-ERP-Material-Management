@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <head>Material Search</head>
+    <body>
+        <!-- 搜索供应商 -->
+        <form id="material1" method="post">
+            <fieldset>
+                <input id="materialInput1" name='pk' type="text"  placeholder="请输入供应商编号">
+                
+            </fieldset>
+            
+            <button type="submit" formmethod="post">Submit</button>
+        </form>
+
+        <form id="material5" method="post">
+        <table >
+            <thead>
+            <tr>
+                <th></th>
+                <script>
+                    function submitpk(clicked_id){
+                        var bid='#bid'+clicked_id[3];
+                       // console.log($(itempk).html());
+                        if($(bid).html()=='未结算'){
+                            $(bid).html('正在结算');
+                        }else{
+                            $(bid).html('未结算');
+                        }
+                        
+                        
+                    }
+                    
+                    </script>
+                <th> 公司编号</th>
+                <th> 供应商编号</th>
+                <th> 发票编号</th>
+                <th> 发票备注</th>
+                <th> 发票过账时间</th>
+                <th> 总金额</th>
+                <th> 结算</th>
+            
+            </tr>
+            </thead>
+            <tbody id="searchDiv"></tbody>
+            
+        </table>
+        <label>本次结算总金额：</label>
+        <label id='sum'></label>
+
+        <input  type="text" id="materialInput2" placeholder="请输入付款过账日期">
+        <button type="submit" formmethod="post">Submit</button>
+    </form>
+        
+        <textarea id="item_result"></textarea>
+
+        <script>
+            
+            $('#material1').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_unpaied_invoice' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        vid: $("#materialInput1").val(),
+                        
+                        //输入2个搜索框的值
+                    },
+                    success: function(data) {
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                       // var content=dataObj[0].gr;
+                        //console.log(dataObj.gr[0].pk);
+                       var out='';
+                        for(i = 0; i < dataObj.gr.length; i++) {
+                            content2 =dataObj.gr[i].fields;
+                            out += '<tr><td><input  id="cid'+i+'" onclick="submitpk(this.id)" name="checkbox" type="checkbox" ></td><td >'+ dataObj.gr[i].vendor.companyCode+ '</td><td>' + dataObj.gr[i].vendor.id + '</td><td id="itempk'+i+'">' + dataObj.gr[i].pk+ '</td><td>' + dataObj.gr[i].fields.text+ '</td><td>'+ dataObj.gr[i].fields.postDate.quantity+ '</td><td>'+ content2.sumAmount+ '</td><td id="bid'+i+'">未结算</td></tr>';
+                         }
+                        //  $('#item_result').text(out);
+                         document.getElementById("searchDiv").innerHTML=out;
+                         //console.log(out);
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+
+            $('#material5').on('submit', function(e) {
+                e.preventDefault();
+                var checkId=document.getElementsByName("checkbox")
+                checkar=[];
+                out2='['
+                for(k in checkId){
+                    if(checkId[k].checked){
+                        var itempk='#itempk'+k.toString();
+                        console.log(k);
+                        //checkar.push($(itempk).html());
+                        //console.log(checkar.value);
+                        out2+=$(itempk).html()+',';
+
+                    }
+                }
+                out2+=']';
+                console.log(out2);
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_pay_invoice' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        postDate: $("#materialInput2").val(),
+                        invoiceIDList: out2,
+                        
+                        //输入2个搜索框的值
+                    },
+                    success: function(data) {
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                        
+                       var out='';
+                        for(i = 0; i < dataObj.gr.length; i++) {
+                           
+                         }
+                         document.getElementById("searchDiv").innerHTML=out;
+                         console.log(out);
+                    },
+                    failure: function() {
+
+                    }
+                })
+                
+                
+            });
+            
+            //其他搜索
+            $('#material2').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_vendor' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        vname: $("#vname").val(),
+                        city: $("#city").val(),
+                        country: $("#country").val(),
+                        companyCode: $("#company").val(),
+                        uid: $("#uid").val(),
+                    },
+                    success: function(data) {
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                        var out = "";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            fields = dataObj[i].fields
+                            out += '<tr><td>'+ dataObj[i].pk+ '</td><td>' + fields.vname+ '</td><td>' + fields.city+ '</td><td>' + fields.country+ '</td><td>'+ fields.euser+ '</td><tr>';
+                        }
+                        document.getElementById("searchDiv").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+
+            //双击行 信息进入“搜索商品条件”三个框
+            $("table").on("dblclick","tr",function(e){
+                document.getElementById("materialInput1").value=$(this).find('td').eq(0).text();
+                //$('#myModal1').modal('hide');
+            });
+
+            
+        </script>
+
+        <!-- 确认提示 -->
+        <script>
+            function tip(){
+                if(confirm("您确认修改吗？")){
+                return true;
+                }
+                else{
+                return false;
+                }
+            } 
+        </script>
+
+        
+    </body>
+</html>

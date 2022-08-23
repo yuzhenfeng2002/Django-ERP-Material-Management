@@ -89,7 +89,7 @@
         MAIN SIDEBAR MENU
         *********************************************************************************************************************************************************** -->
         <!--sidebar start-->
-        <aside>
+        {% comment %} <aside>
             <div id="sidebar"  class="nav-collapse ">
                 <!-- sidebar menu start-->
                 <ul class="sidebar-menu" id="nav-accordion">
@@ -110,10 +110,10 @@
                             <span>供应商管理</span>
                         </a>
                         <ul class="sub">
-                            <li><a  href="general.html">创建新供应商</a></li>
-                            <li><a  href="buttons.html">查看或修改供应商信息</a></li>
+                            <li><a  href="{% url 'MM:create_vendor' %}">创建新供应商</a></li>
+                            <li><a  href="{% url 'MM:vendor/search/' %}">查看或修改供应商信息</a></li>
                             {% comment %} <li><a  href="panels.html">Panels</a></li> {% endcomment %}
-                        </ul>
+                        {% comment %} </ul>
                     </li>
   
                     <li class="sub-menu">
@@ -122,11 +122,11 @@
                             <span>商品管理</span>
                         </a>
                         <ul class="sub">
-                            <li><a  href="calendar.html">创建新商品</a></li>
-                            <li><a  href="gallery.html">查看或修改商品信息</a></li>
-                            <li><a  href="todo_list.html">查看商品库存</a></li>
+                            <li><a  href="{% url 'MM:material/search/' %}">创建新商品</a></li>
+                            <li><a  href="{% url 'MM:material/item/create/' %}">查看或修改商品信息</a></li>
+                            <li><a  href="{% url 'MM:material/item/stock/' %}">查看商品库存</a></li>
                         </ul>
-                    </li>
+                    </li> {% endcomment %} 
                     {% comment %} <li class="sub-menu">
                         <a href="javascript:;" >
                             <i class="fa fa-book"></i>
@@ -138,17 +138,17 @@
                             <li><a  href="lock_screen.html">Lock Screen</a></li>
                         </ul>
                     </li> {% endcomment %}
-                    <li class="sub-menu">
+                    {% comment %} <li class="sub-menu">
                         <a class="active" href="javascript:;" >
                             <i class="fa fa-tasks"></i>
                             <span>收货管理</span>
                         </a>
                         <ul class="sub">
-                            <li class="active"><a  href="form_component.html">创建商品收据</a></li>
-                            <li class="active"><a  href="form_component.html">查看商品收据</a></li>
-                            <li class="active"><a  href="form_component.html">创建发票收据</a></li>
-                            <li class="active"><a  href="form_component.html">查看发票收据</a></li>
-                            <li class="active"><a  href="form_component.html">付款</a></li>
+                            <li class="active"><a  href="{% url 'MM:receipt/create/' %}">创建商品收据</a></li>
+                            <li class="active"><a  href="{% url 'MM:receipt/search/' %}">查看商品收据</a></li>
+                            <li class="active"><a  href="{% url 'MM:invoice/create/' %}">创建发票收据</a></li>
+                            <li class="active"><a  href="{% url 'MM:invoice/search/' %}">查看发票收据</a></li>
+                            <li class="active"><a  href="{% url 'MM:invoice/payment/' %}">付款</a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">
@@ -175,7 +175,7 @@
                 </ul>
                 <!-- sidebar menu end-->
             </div>
-        </aside>
+        </aside> {% endcomment %}
         <!--sidebar end-->
         
         <!-- **********************************************************************************************************************************************************

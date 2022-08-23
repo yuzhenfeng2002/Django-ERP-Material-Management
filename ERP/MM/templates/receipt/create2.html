@@ -51,201 +51,7 @@
     <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
 
     <script>
-        //plant改变
-        $(document).ready(function() {
-            $("#plant2").change(function(){ 
-                
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'MM:ajax_getStockByName' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        //plant值
-                        name:$("#plant2").val(),
-                    },
-                    
-                    success: function(data) {
-                        $('#test2').text(data);
-                        //add：如果没有该工厂，回传回来一个message提示
-                        var dataObj = eval("("+data+")");
-                        //注意：plant选择空的时候，这三项也返回空
-                        fields = dataObj[0].fields
-                        $("#pgrp2").val(fields.pGrp);
-                        $("#pOrg2").val(fields.pOrg);
-                        $("#company2").val(fields.companyCode);
-                    },
-                    failure: function() {
-    
-                    }
-                });
-            
-            }); 
-            $("#plant3").change(function(){ 
-                
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'MM:ajax_getStockByName' %}",
-                    data:{
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        //plant值
-                        name:$("#plant3").val(),
-                    },
-                    
-                    success: function(data) {
-                        $('#test2').text(data);
-                        //add：如果没有该工厂，回传回来一个message提示
-                        var dataObj = eval("("+data+")");
-                        //注意：plant选择空的时候，这三项也返回空
-                        fields = dataObj[0].fields
-                        $("#pgrp3").val(fields.pGrp);
-                        $("#pOrg3").val(fields.pOrg);
-                        $("#company3").val(fields.companyCode);
-                    },
-                    failure: function() {
-    
-                    }
-                });
-            
-            }); 
-            $.ajax({
-                type: "POST",
-                url: "{% url 'MM:ajax_load_sorg' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择销售组织</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Sorg+'>'+ dataObj[i].Sorg + '--' + dataObj[i].Name1 + '</option>' ;
-                    }
-                    var items=document.getElementsByName("sorg");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-    
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_meaunit' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择单位</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Meaunit+'>'+ dataObj[i].Meaunit + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    
-                    var items=document.getElementsByName("meaunit");
-                    console.log(items);
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }
-                },
-                failure: function() {
-    
-                }
-            });
-            
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_plant' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择工厂</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
-                    var items=document.getElementsByName("plant");
-                    console.log(items);
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }
-                },
-                failure: function() {
-    
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_porg' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择采购组织</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("porg");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-    
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_company' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择公司编码</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("company");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-    
-                }
-            });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_pgrp' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择采购组</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("pgrp");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }  
-                },
-                failure: function() {
-    
-                }
-            });
-            
-        });
+        
     function re(){
         document.getElementById("fu").style.display="none";
                 document.getElementById("yuan").style.display="";
@@ -293,7 +99,7 @@
                                         
                                         <td style="width: 350px;">
                                             <label>库存类型：</label>
-                                            <select name="" id="sType">
+                                            <select name="" id="sType" required>
                                                 <option value="1">1--冻结库存</option>
                                                 <option value="2">2--质量检验库存</option>
                                                 <option value="3">3--无限制使用库存</option>
@@ -315,12 +121,12 @@
                                     <tr>
                                         <td>
                                             <label>收货日期：</label>
-                                            <label><input type="text" id="my-input" ></label>
+                                            <label><input type="text" id="my-input" required></label>
                                         </td>
                                         
                                         <td >
                                             <label>过账日期：</label>
-                                            <label><input type="text" id="my-input2"></label>
+                                            <label><input type="text" id="my-input2" required></label>
                                         </td>
                                     </tr>
                                     
@@ -374,7 +180,7 @@
                                                  <li rel="5" title="100分">★</li>
                                                  <span id="dir"></span>
                                                 </ul>
-                                                <input type="hidden" value="" id="startP">
+                                                <input type="hidden" value="" id="startP" required>
                                                </div>
                                         </td>
                                         <td>
@@ -387,7 +193,7 @@
                                                  <li rel="5" title="100分">★</li>
                                                  <span id="dir2"></span>
                                                 </ul>
-                                                <input type="hidden" value="" id="startP2">
+                                                <input type="hidden" value="" id="startP2" required>
                                                </div>
                                         </td>
                                         <style>
@@ -562,153 +368,6 @@
             } 
         </script>
 
-        <script>
-            //商品搜索 三项内容都填才能发起搜索，否则返回提示:请填写xxx（第一个未填的项）；如果搜不到，返回提示：没有符合条件的商品（这个也不返回了，可以判断是否为序列中只有一个元素）
-            $('#material1').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "{% url 'MM:ajax_search_item' %}",
-                    data:{
-                        dataType: "json",
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        //输入三个搜索框的值
-                        mid: $("#materialInput1").val(),
-                        plant: $("#materialInput2").val(),
-                        sloc: $("#materialInput3").val(),
-                    },
-                    success: function(data) {
-                        document.getElementById("fu").style.display="";
-                        $('#item_result').text(data);
-                        var dataObj = eval("("+data+")");
-                        fields = dataObj[0].fields;
-                        material = dataObj[0].material;
-                        stock = dataObj[0].stock;
-                        user = dataObj[0].user;
-                        //输入表单material3的属性的id
-                        $("#pk2").val(material.id);
-                        $("#mname2").val(material.mname); 
-                        $("#mType2").val(material.mType);
-                        $("#meaunit2").val(material.meaunit);
-                        $("#netWeight2").val(material.netWeight);
-                        $("#weightUnit2").val(material.weightUnit);
-                        $("#transGrp2").val(material.transGrp);
-                        $("#loadingGrp2").val(material.loadingGrp);
-                        $("#industrySector2").val(material.industrySector);
-                        $("#mGroup2").val(material.mGroup);
-                        $("#sloc2").val(fields.sloc);
-                        $("#sorg2").val(fields.sOrg);
-                        $("#distrchannel2").val(fields.distrChannel);
-                        $("#company2").val(stock.companyCode);
-                        $("#porg2").val(stock.pOrg);
-                        $("#pgrp2").val(stock.pGrp);
-                        $("#plant2").val(stock.name);
-                        //document.getElementById("material3").style.visibility="visible";
-                    },
-                    failure: function() {
-
-                    }
-                })
-            });
-
-            //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
-            $('#material2').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "{% url 'MM:ajax_search_item' %}",
-                    data:{
-                        dataType: "json",
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        mid: '',
-                        mname: $("#mname").val(),
-                        mType: $("#mType").val(),
-                        industrySector: $("#industrySector").val(),
-                        sloc: $("#sloc").val(),
-                        plant: $("#plant").val(),
-                        uid: $('#uid').val(),
-                    },
-                    success: function(data) {
-
-                        $('#item_result').text(data);
-                    
-                        var dataObj = eval("("+data+")");
-                        var out = "";
-                        var i;
-                        
-                        for(i = 0; i < dataObj.length; i++) {
-                            //dataObj[i].fields.xx
-                            fields = dataObj[i].fields
-                            material = dataObj[i].material
-                            stock = dataObj[i].stock
-                            user = dataObj[i].user
-                            out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
-                        }
-                        document.getElementById("searchDiv").innerHTML=out;
-                    },
-                    failure: function() {
-
-                    }
-                })
-            });
-
-            //双击行 信息进入“搜索商品条件”三个框
-            $("table").on("dblclick","tr",function(e){
-                document.getElementById("materialInput1").value=$(this).find('td').eq(0).text();
-                document.getElementById("materialInput2").value=$(this).find('td').eq(4).text();
-                document.getElementById("materialInput3").value=$(this).find('td').eq(5).text();
-                $('#myModal1').modal('hide');
-            });
-
-            //提交修改信息 必填的值如果为空，则不提交，并返回错误提示：请填写xxx（第一个未填的项），必填项见word/微信发的图；提交成功后，返回提示：商品信息已更新
-            //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
-            $('#material3').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "{% url 'MM:ajax_update_item' %}",
-                    data:{
-                        dataType: "json",
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        material_id: $("#pk2").val(),
-                        mname: $("#mname2").val(),
-                        mType: $("#mType2").val(),
-                        meaunit: $("#meaunit2").val(),
-                        netWeight: $("#netWeight2").val(),
-                        weightUnit: $("#weightUnit2").val(),
-                        transGrp: $("#transGrp2").val(),
-                        loadingGrp: $("#loadingGrp2").val(),
-                        industrySector: $("#industrySector2").val(),
-                        mGroup: $("#mGroup2").val(),
-                        sloc: $("#sloc2").val(),
-                        sOrg: $("#sorg2").val(),
-                        distrChannel: $("#distrchannel2").val(),
-                        companyCode: $("#company2").val(),
-                        pOrg: $("#porg2").val(),
-                        pGrp: $("#pgrp2").val(),
-                        name: $("#plant2").val(),
-                        //输入修改信息
-                    },
-                    success: function(data) {
-                        $('#item_result').text(data);
-                        var dataObj = eval("("+data+")");
-                    if(dataObj.status==1){
-                        showMessage({text: dataObj.message ,type: 'success'});
-                    }else{
-                        showMessage({text: dataObj.message ,type: 'error'});
-                    }
-                    //0-> fail; 1->succeed; {'status':1, 'message':"xxx", 'fields':[xxx,xxx]}
-                    //根据status写。。。
-                    },
-                    failure: function() {
-
-                    }
-                })
-            });
-        </script>
-
+            
     </body>
 </html>

@@ -49,7 +49,20 @@
     <link rel="stylesheet" href="{% static 'assets/dist/notice.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/default.min.css' %}">
     <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
-
+    <script>
+        function submitpk(clicked_id){
+            var bid='#bid'+clicked_id[3];
+           // console.log($(itempk).html());
+            if($(bid).html()=='未结算'){
+                $(bid).html('正在结算');
+            }else{
+                $(bid).html('未结算');
+            }
+            
+            
+        }
+        
+        </script>
     <script>
         
     function re(){
@@ -67,7 +80,7 @@
     <body>
         <section id="main-content">
             <section class="wrapper">
-                <h3><i class="fa fa-angle-right"></i> 查看商品收据
+                <h3><i class="fa fa-angle-right"></i> 向供应商付款
                 </h3>
                 <div class="row mt">
                   <div class="col-lg-12">
@@ -84,10 +97,9 @@
                             
                             <div class="col-sm-12">
                             <button type="button" class="btn btn-link " data-toggle="modal" data-target="#myModal1">忘记编号？</button>
-
-
-
-
+                            <div class="pull-right"><label >本次结算总金额：</label><label id='sum'></label>
+                              </div><br>
+                          
                                     <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
                                         <div class="modal-dialog">
                                           <div class="modal-content">
@@ -192,22 +204,23 @@
                           <!-- <div class="form-panel2"> -->
                           
                           <table class="table table-striped table-advance table-hover">
-                                  <h4><i class="fa fa-angle-right"></i> 商品收据列表</h4>
+                                  <h4><i class="fa fa-angle-right"></i> 待付款列表</h4>
                                   <hr>
-                              <thead>
-                              <tr>
-                                <th>收据编码</th>
-                                <th>采购订单编码</th>
-                                <th>条目编码</th>
-                                <th> 商品名称</th>
-                                <th> 数量</th>
-                                <th> 实收数量</th>
-                                <th>创建时间</th>
-                                <th>查看详情</th>
-                                 
-                              </tr>
-                              </thead>
-                              <tbody id="searchDiv"></tbody>
+                                  <thead>
+                                    <tr>
+                                        <th></th>
+                                        
+                                        <th> 公司编号</th>
+                                        <th> 供应商编号</th>
+                                        <th> 发票编号</th>
+                                        <th> 发票备注</th>
+                                        <th> 发票过账时间</th>
+                                        <th> 总金额</th>
+                                        <th> 结算</th>
+                                    
+                                    </tr>
+                                    </thead>
+                              <tbody id="searchDiv2"></tbody>
                           </table>
                       </div>
                       </div>
@@ -235,54 +248,135 @@
         {% comment %} <textarea id="item_result"></textarea> {% endcomment %}
 
         <script>
-            //收据搜索 不限制三项内容是否填写默认返回全部
-                    $('#material1').on('submit', function(e) {
-                        e.preventDefault();
-                        $.ajax(
-                        {
-                            type: "POST",
-                            url: "{% url 'MM:ajax_search_receipt' %}",
-                            data:{
-                                dataType: "json",
-                                csrfmiddlewaretoken: '{{ csrf_token }}',
-                                //输入三个搜索框的值
-                                uid: $("#cjzcode").val(),
-                                pk: $("#sjcode").val(),
-                                date: $("#my-input").val(),
-                            },
-                            success: function(data) {
-                                $('#item_result').text(data);
-                                var dataObj = eval("("+data+")");
-                                if(dataObj.status==1){
-                                    showMessage({text: dataObj.message ,type: 'success'});
-                                }else{
-                                    showMessage({text: dataObj.message ,type: 'error'});
-                                }
-                                
-                                for(i = 0; i < dataObj.gr.length; i++) {
-                                    content2 =dataObj.gr[i].fields
-                                    //": 10, "sType": "1", "time": "2022-08-18T10:05:04.605Z", "postTime": "2022-08-18T10:03:52Z", "orderItem": 1, "euser": 1}, "user": {"id": 2,
-                                    var out='';
-                                     out += '<tr><td>'+ dataObj.gr[i].pk+ '</td><td id="itempk'+i+'">' + dataObj.gr[i].po.id + '</td><td id="orpk'+i+'">' + dataObj.gr[i].orderItem.itemId+ '</td><td>' + dataObj.gr[i].material.mname+ '</td><td>'+ dataObj.gr[i].orderItem.quantity+ '</td><td>'+ content2.actualQnty+ '</td><td>'+ content2.time.substr(0,10) +'</td><td><button class="btn btn-success btn-xs" onclick="submitpk(this.id)" id="bid'+i+'"><i class="fa fa-search-plus"></i></button></td></tr>';
-                                 }
-                                 document.getElementById("searchDiv").innerHTML=out;
-                            },
-                            failure: function() {
-    
-                            }
-                        })
-                    });
-    
-                    //点击按钮，收据编码给后端
-                    function submitpk(clicked_id){
-                        var itempk="#itempk"+clicked_id[3];
-                        var orpk="#orpk"+clicked_id[3];
-                        console.log($(orpk).html());
-                        //待补充，两个参数    dataObj.gr[i].orderItem.itemId dataObj.gr[i].po.id
-                        var target="{% url 'MM:display_receipt' %}"+'?'+'itemID='+ $(orpk).html() +'&'+'orderID='+$(itempk).html();
-                        window.location.href=target; 
-                        
+            $('#material5').on('submit', function(e) {
+                e.preventDefault();
+                var checkId=document.getElementsByName("checkbox")
+                checkar=[];
+                out2='['
+                for(k in checkId){
+                    if(checkId[k].checked){
+                        var itempk='#itempk'+k.toString();
+                        console.log(k);
+                        //checkar.push($(itempk).html());
+                        //console.log(checkar.value);
+                        out2+=$(itempk).html()+',';
+
                     }
+                }
+                out2+=']';
+                console.log(out2);
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_pay_invoice' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        postDate: $("#materialInput2").val(),
+                        invoiceIDList: out2,
+                        
+                        
+                    },
+                    success: function(data) {
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                        
+                       var out='';
+                        for(i = 0; i < dataObj.gr.length; i++) {
+                           
+                         }
+                         //结算额
+                         document.getElementById("sum").innerHTML=out;
+                         console.log(out);
+                    },
+                    failure: function() {
+
+                    }
+                })
+                
+                
+            });
+            $('#material1').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_unpaied_invoice' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        vid: $("#materialInput1").val(),
+                        
+                        //输入2个搜索框的值
+                    },
+                    success: function(data) {
+                       // $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                       // var content=dataObj[0].gr;
+                        //console.log(dataObj.gr[0].pk);
+                       var out='';
+                        for(i = 0; i < dataObj.gr.length; i++) {
+                            content2 =dataObj.gr[i].fields;
+                            out += '<tr><td><input  id="cid'+i+'" onclick="submitpk(this.id)" name="checkbox" type="checkbox" ></td><td >'+ dataObj.gr[i].vendor.companyCode+ '</td><td>' + dataObj.gr[i].vendor.id + '</td><td id="itempk'+i+'">' + dataObj.gr[i].pk+ '</td><td>' + dataObj.gr[i].fields.text+ '</td><td>'+ dataObj.gr[i].fields.postDate.quantity+ '</td><td>'+ content2.sumAmount+ '</td><td id="bid'+i+'">未结算</td></tr>';
+                         }
+                        //  $('#item_result').text(out);
+                         document.getElementById("searchDiv2").innerHTML=out;
+                         console.log(out);
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+            function submitpk(clicked_id){
+                var bid='#bid'+clicked_id[3];
+               // console.log($(itempk).html());
+                if($(bid).html()=='未结算'){
+                    $(bid).html('正在结算');
+                }else{
+                    $(bid).html('未结算');
+                }
+                
+                
+            };
+            //其他搜索
+            $('#material2').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "{% url 'MM:ajax_search_vendor' %}",
+                    data:{
+                        dataType: "json",
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        vname: $("#vname").val(),
+                        city: $("#city").val(),
+                        country: $("#country").val(),
+                        companyCode: $("#company").val(),
+                        uid: $("#uid").val(),
+                    },
+                    success: function(data) {
+                        $('#item_result').text(data);
+                        var dataObj = eval("("+data+")");
+                        var out = "";
+                        var i;
+                        for(i = 0; i < dataObj.length; i++) {
+                            fields = dataObj[i].fields
+                            out += '<tr><td>'+ dataObj[i].pk+ '</td><td>' + fields.vname+ '</td><td>' + fields.city+ '</td><td>' + fields.country+ '</td><td>'+ fields.euser+ '</td><tr>';
+                        }
+                        document.getElementById("searchDiv").innerHTML=out;
+                    },
+                    failure: function() {
+
+                    }
+                })
+            });
+            //双击行 信息进入“搜索商品条件”三个框
+            $("table").on("dblclick","tr",function(e){
+                document.getElementById("materialInput1").value=$(this).find('td').eq(0).text();
+                $('#myModal1').modal('hide');
+            });
+
                 </script>
 
 

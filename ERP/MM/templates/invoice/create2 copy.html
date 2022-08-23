@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    {% load static %}
+<!-- import CSS -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Bootstrap core CSS -->
+<link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+<!--external css-->
+<link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    
+<!-- Custom styles for this template -->
+<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/style-responsive.css' %}" rel="stylesheet">
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+
+
+<!--common script for all pages-->
+<script src="{% static 'assets/js/common-scripts.js' %}"></script>
+
+<!--script for this page-->
+
+<!-- 引入刚刚下载的 ECharts 文件 -->
+<script src="{% static 'assets/js/echarts.js' %}"></script>
+<script src="{% static 'assets/js/highlight.min.js' %}"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+
+    <script src="{% static 'assets/dist/notice.min.js' %}"></script>
+    <script>
+        const notice = new Notice();
+    </script>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/dist/notice.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/default.min.css' %}">
+    <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
+
+    <script>
+        
+    function re(){
+        document.getElementById("fu").style.display="none";
+                document.getElementById("yuan").style.display="";
+    }
+    </script>
+    {{context}}
+    
+    <body>
+       
+        <section id="main-content">
+            <section class="wrapper">
+                <h3><i class="fa fa-angle-right"></i> 创建发票收据
+                </h3>
+                
+              <div class="row mt">  
+                  <div class="col-lg-12">
+                    <div class="col-lg-12">
+                      <div class="content-panel">
+                      <h4 ><i class="fa fa-angle-right"></i> 发票收据信息</h4>
+                          <section id="unseen">
+                            <form id="material3" method='post'>
+                                {% csrf_token %}
+                                <table class="table">
+                                
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <label>采购订单编码：</label>
+                                            <label id='po_id'>{{context.po}}</label>
+                                        </td>
+                                        <td style="width: 350px;">
+                                            <label>条目编号：</label>
+                                            <label id='oi_id'>{{context.itemId}}</label>
+                                        </td>
+                                        
+                                    </tr>
+                                    
+                        
+                            </table>
+                            <table class="table">
+                                
+                                <tbody>
+                                    <tr>
+                                        <td >
+                                            <label>总金额：</label>
+                                            <label ><input type="text" id='sumAmount' required ></label>
+                                        </td>
+                                        <td>
+                                            <label>交易货币：</label>
+                                            <label>{{context.currency}}</label>
+                                        </td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td>
+                                            <label>发票日期：</label>
+                                            <label><input type="text" id="my-input" required></label>
+                                        </td>
+                                        
+                                        <td >
+                                            <label>过账日期：</label>
+                                            <label><input type="text" id="my-input2" required></label>
+                                        </td>
+                                        <td >
+                                            <label>财年：</label>
+                                            <label ><input type="text" id='fiscal' required ></label>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    <script src="{% static 'assets/js/the-datepicker.js' %}"></script>
+                                    <script>
+                                        (function () {
+                                            const input = document.getElementById('my-input');
+                                            const datepicker = new TheDatepicker.Datepicker(input);
+                                            datepicker.render();
+                                        })();
+                                        (function () {
+                                            const input = document.getElementById('my-input2');
+                                            const datepicker = new TheDatepicker.Datepicker(input);
+                                            datepicker.render();
+                                        })();
+                                    </script>
+                                   
+                                </tbody>
+                            </table>
+                            <table class="table">
+                                
+                                <tbody>
+                                    <tr>
+                                        <td >
+                                            <label>备注：</label>
+                                            <label ><input type="text" id='Test' ></label>
+                                        </td>
+                                        
+                                    </tr>
+                                    
+                                   
+                                </tbody>
+                            </table>
+
+                            <div class="col-sm-9"></div>
+                            <button  class="btn btn-danger btn-xs" type="reset" >重置</button>
+                            <div class="col-sm-2"></div>
+                            <button class="btn btn-primary btn-xs" type="submit" formmethod="post" onclick="return tip()">提交</button>
+                        </form>
+
+                                    
+                          </section>
+                    </div><!-- /content-panel -->
+                </div>
+                </div><!-- /col-md-12 -->
+                </div><!-- /row -->
+            </div>
+  
+          </section>
+        </section><!-- /MAIN CONTENT -->
+  
+        <!--main content end-->
+        <!--footer start-->
+        <footer class="site-footer">
+            <div class="text-center">
+                2014 - Alvarez.is
+                <a href="basic_table.html#" class="go-top">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+            </div>
+        </footer>
+        <!--footer end-->
+    </section>
+    <textarea id="item_result"></textarea>
+
+        {% comment %} <textarea id="item_result"></textarea> {% endcomment %}
+
+        <script>
+           
+        //提交
+        $('#material3').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax(
+            {
+                type: "POST",
+                url: "{% url 'MM:ajax_create_invoice' %}",
+                data:{
+                    dataType: "json",
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    //$("#id").html() 这样取label内的值
+                    po_id: $("#po_id").html(),
+                    oi_id: $("#oi_id").html(),// itemId
+                    sumAmount: $("#sumAmount").val(),
+                    fiscal: $("#fiscal").val(),
+                    currency: 'CNY',
+                    text: $("#Test").val(),
+                    postDate: $("#my-input").val(),
+                    invoiceDate: $("#my-input2").val(),
+                    //两个评分的id是startP、startP2；两个日期的id是my-input、my-input2；
+                },
+                success: function(data) {
+                    $('#item_result').text(data);
+                    var dataObj = eval("("+data+")");
+                    if(dataObj.status==1){
+                        showMessage({text: dataObj.message ,type: 'success'});
+                    }else{
+                        showMessage({text: dataObj.message ,type: 'error'});
+                    }
+                },
+                failure: function() {
+
+                }
+            })
+        });
+        </script>
+
+
+        <!-- 确认提示 -->
+        <script>
+            function tip(){
+                if(confirm("您确认修改吗？")){
+                return true;
+                }
+                else{
+                return false;
+                }
+            } 
+            function sub(){
+                material3.submit();
+            }
+        </script>
+
+        
+
+    </body>
+</html>

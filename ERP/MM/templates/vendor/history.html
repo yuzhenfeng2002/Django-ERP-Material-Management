@@ -733,19 +733,21 @@
                         console.log(dataObj);
                         
                         //console.log(dataObj.gr[0].pk);
-                        if(dataObj.status==1){
-                            showMessage({text: dataObj.message ,type: 'success'});
+                        
+                        if(dataObj.length==0){
+                            showMessage({text: '1' ,type: 'error'});
                         }else{
-                            showMessage({text: dataObj.message ,type: 'error'});
+                            var out='';
+                            for(i = 0; i < dataObj.length; i++) {
+                                //content2 =dataObj.gr[i].fields
+                                //": 10, "sType": "1", "time": "2022-08-18T10:05:04.605Z", "postTime": "2022-08-18T10:03:52Z", "orderItem": 1, "euser": 1}, "user": {"id": 2,
+                                
+                                 out += '<tr><td>'+ dataObj[0].vendor.vid+ '</td><td>' + dataObj[0].vendor.vname + '</td><td >' + dataObj[0].quan+ '</td><td>' + dataObj[0].num+ '</td><td>'+ dataObj[0].score+ '</td></tr>';
+                             }
+                             document.getElementById("searchDiv2").innerHTML=out;
+                            showMessage({text: '2' ,type: 'success'});
                         }
                         
-                        for(i = 0; i < dataObj.length; i++) {
-                            //content2 =dataObj.gr[i].fields
-                            //": 10, "sType": "1", "time": "2022-08-18T10:05:04.605Z", "postTime": "2022-08-18T10:03:52Z", "orderItem": 1, "euser": 1}, "user": {"id": 2,
-                            var out='';
-                             out += '<tr><td>'+ dataObj[0].vendor.vid+ '</td><td>' + dataObj[0].vendor.vname + '</td><td >' + dataObj[0].quan+ '</td><td>' + dataObj[0].num+ '</td><td>'+ dataObj[0].score+ '</td></tr>';
-                         }
-                         document.getElementById("searchDiv2").innerHTML=out;
                         
                     },
                     failure: function() {

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <head>Material Search</head>
+    <body>
+        <form id="material3">
+            {% csrf_token %}
+            <fieldset>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>基本信息</th>
+                           
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <label>采购订单编码：</label>
+                                <label id='pk' >1</label>
+                            </td>
+                            <td>
+                                <label>创建者编码：</label>
+                                <label>1112</label>
+                            </td>
+                            <td>
+                                <label>创建时间：</label>
+                                <label>1112</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>总价：</label>
+                                <label>1112</label>
+                            </td>
+                            <td>
+                                <label>结算货币：</label>
+                                <label>1112</label>
+                            </td>
+                            <td>
+                                <label>物资条数目：</label>
+                                <label>1112</label>
+                            </td>
+                         
+                        </tr>
+            
+                    </thead>
+        
+                </table>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+
+                        <th>供应商信息</th>
+                        
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>供应商编码：</label>
+                                <label>1112</label>
+                            </td>
+                            
+                            <td>
+                                <label>供应商名称：</label>
+                                <label>1112</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>城市：</label>
+                                <label>1112</label>
+                            </td>
+                            
+                            <td>
+                                <label>街区地址：</label>
+                                <label>1112</label>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+
+                        <th>采购方信息</th>
+                        
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>采购方电话：</label>
+                                <label>1112</label>
+                            </td>
+                            
+                            <td>
+                                <label>送货地址：</label>
+                                <label>1112</label>
+                            </td>
+                            <td>
+                                <label>传真：</label>
+                                <label>1112</label>
+                            </td>
+                        </tr>
+                       
+                    </tbody>
+                </table>
+
+                <table class="table table-striped table-advance table-hover">
+                    <h4><i class="fa fa-angle-right"></i> 商品信息</h4>
+                <thead>
+                <tr>
+                    <th ># 条目编码</th>
+                    <th><i class="fa fa-question-circle"></i> 商品编码</th>
+                    <th><i class="fa fa-bookmark"></i> 商品名称</th>
+                    <th><i class=" fa fa-edit"></i> 数量</th>
+                    <th><i class=" fa fa-edit"></i> 单价</th><!--后面加上货币-->
+                    <th><i class=" fa fa-edit"></i> 总价</th>
+                    <th><i class=" fa fa-edit"></i> 货币</th>
+                    <th><i class="fa fa-bookmark"></i> 工厂</th>
+                    <th><i class="fa fa-bookmark"></i> 存储位置</th>
+                    <th><i class=" fa fa-edit"></i> 送达时间</th>
+                    <th><i class="fa fa-bullhorn"></i> 订单状态</th>
+                    <th><i class="fa fa-bullhorn"></i> 操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td id='itempk0'>1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td id='status0'>货物已送达</td>
+                    <td><input type="button" id='submit0' onclick="submitpk(this.id)" ></td>
+                </tr>
+              
+                </tbody>
+            </table>
+                
+            </fieldset>
+
+        </form>
+        <textarea id="item_result"></textarea>
+        <script>
+            function submitpk(clicked_id){
+                var itempk='itempk'+clicked_id[6];
+                var status='status'+clicked_id[6];
+                if($("#"+status).html()=='货物未发出') {
+                    //window.location.href="https://www.php.cn"; 
+                }else {
+                    var target="{% url 'MM:load_order_item_invoice' %}"+'?'+'itemID='+ $("#"+itempk).html()+'&'+'orderID='+$("#pk").text();
+                    window.location.href=target; 
+                }
+            }
+        </script>
+    </body>
+</html>
