@@ -1220,7 +1220,7 @@ function re(){
             })
         });
 
-        {% comment %} $('#material4').on('submit', function(e) {
+        $('#material4').on('submit', function(e) {
             e.preventDefault();
             $.ajax(
             {
@@ -1230,23 +1230,23 @@ function re(){
                     dataType: "json",
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     material_id: $("#pk3").val(),
-                    mname: $("#mname2").val(),
-                    mType: $("#mType2").val(),
-                    meaunit: $("#meaunit2").val(),
-                    netWeight: $("#netWeight2").val(),
-                    weightUnit: $("#weightUnit2").val(),
-                    transGrp: $("#transGrp2").val(),
-                    loadingGrp: $("#loadingGrp2").val(),
-                    industrySector: $("#industrySector2").val(),
-                    mGroup: $("#mGroup2").val(),
-                    sloc: $("#sloc2").val(),
-                    sOrg: $("#sorg2").val(),
-                    distrChannel: $("#distrchannel2").val(),
-                    companyCode: $("#company2").val(),
-                    pOrg: $("#pOrg2").val(),
-                    pGrp: $("#pgrp2").val(),
-                    name: $("#plant2").val(),
-                    shortText: $("#shortText2").val(),
+                    mname: $("#mname3").val(),
+                    mType: $("#mType3").val(),
+                    meaunit: $("#meaunit3").val(),
+                    netWeight: $("#netWeight3").val(),
+                    weightUnit: $("#weightUnit3").val(),
+                    transGrp: $("#transGrp3").val(),
+                    loadingGrp: $("#loadingGrp3").val(),
+                    industrySector: $("#industrySector3").val(),
+                    mGroup: $("#mGroup3").val(),
+                    sloc: $("#sloc3").val(),
+                    sOrg: $("#sorg3").val(),
+                    distrChannel: $("#distrchannel3").val(),
+                    companyCode: $("#company3").val(),
+                    pOrg: $("#pOrg3").val(),
+                    pGrp: $("#pgrp3").val(),
+                    name: $("#plant3").val(),
+                    shortText: $("#shortText3").val(),
                 },
                 success: function(data) {
                     $('#item_result').text(data);
@@ -1263,7 +1263,7 @@ function re(){
 
                 }
             })
-        }); {% endcomment %}
+        });
 
         //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
         $('#material2').on('submit', function(e) {
