@@ -180,7 +180,6 @@ MAIN SIDEBAR MENU
                                 <p class="form-control-static">{{ c.text }}</p>
                             </div>
                         </div>
-                        {% endfor %}
                         <div class="form-group">
                         <div class="col-md-12 mt">
                             <div class="content-panel">
@@ -198,17 +197,19 @@ MAIN SIDEBAR MENU
                                     </tr>
                                     </thead>
                                     <tbody id="gooddiv">
-                                        {% for c in rq %}
+                                        {% for b in rq %}
                                         <tr>
-                                            <td>{{ c.itemId }}</td>
-                                            <td>{{ c.meterial__id }}</td>
-                                            <td>{{ c.meterial__stock__id }}</td>
-                                            <td>{{ c.meterial__sloc }}</td>
+                                            <td>{{ b.itemId }}</td>
+                                            <td>{{ b.meterial__id }}</td>
+                                            <td>{{ b.meterial__stock__name }}</td>
+                                            <td>{{ b.meterial__sloc }}</td>
                                             <td class="rfq-td-daoru">
-                                           <a href="/mm/quotation/makebyrq/{{c.id}}> <button type="button" class="btn btn-link"  onclick="return tip()">导入</button> </a>     
+                                           <a href="/mm/quotation/makebyrq/{{c.id}}/{{b.itemId}}"> <button type="button" class="btn btn-link"  onclick="return tip()">导入</button> </a>     
                                             </td>
                                         </tr>
                                         {% endfor %}
+                        {% endfor %}
+
                                 </tbody>
                                 </table>
             

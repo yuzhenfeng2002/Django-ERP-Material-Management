@@ -28,6 +28,8 @@
 
     <link href="{% static 'assets/css/purchase.css' %}" rel="stylesheet">
     <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'assets/fonts/icon/iconfont.css' %}">
 
   </head>
 
@@ -149,7 +151,9 @@ MAIN SIDEBAR MENU
 			  		<div class="col-lg-12">
                       <div class="content-panel">
                       <h4><i class="fa fa-angle-right"></i> 报价申请详情
-                    <label style="margin-left: 76%;color:brown;font-size:larger" >拒绝情况：<input type="checkbox" value="" id="deny"></label>
+                        {% for c in quoatations %}
+
+                    <label style="margin-left: 76%;color:brown;font-size:larger" >拒绝情况：<input type="checkbox" value="" id="deny" checked="{{c.rej}}" ></label>
                     </h4>
                           <section id="unseen">
                             <table class="table">
@@ -160,7 +164,6 @@ MAIN SIDEBAR MENU
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        {% for c in quoatations %}
                                     <tr>
                                         <td>
                                             <label>报价申请单编码：</label>
@@ -178,7 +181,7 @@ MAIN SIDEBAR MENU
                                     <tr>
                                         <td>
                                             <label>询价单的截止日期：</label>
-                                            <label>{{c.deadlin}}</label>
+                                            <label>{{c.deadline}}</label>
                                         </td>
                                         
                                         <td>
@@ -191,6 +194,7 @@ MAIN SIDEBAR MENU
                                         </td>
                                     </tr>
                                 </tbody>
+                               
                     {%endfor%}
                             </table>
 
@@ -243,7 +247,7 @@ MAIN SIDEBAR MENU
                                         </td>
                                         <td>
                                             <label>集合码：</label>
-                                            <label>{{c.quotation__collNo}}</label>
+                                            <label>{{c.collNo}}</label>
                                         </td>
                                     </tr>
                                     <tr>
@@ -313,7 +317,7 @@ MAIN SIDEBAR MENU
                                     <tr>
                                         <td>
                                             <label>报价：</label>
-                                            <label>{{c.price}}</label>&nbsp;&nbsp;<label>USD</label>
+                                            <label>{{c.price}}</label>&nbsp;&nbsp;<label>{{c.currency}}</label>
                                         </td>
                                         <td>
                                             <label>报价有效期：</label>
@@ -366,7 +370,7 @@ MAIN SIDEBAR MENU
 
 <script>
 //   if(==1)
-    $("#deny").prop("checked",true); //勾选
+ //   $("#deny").prop("checked",true); //勾选
 //else $("#deny").prop("checked",false);//取消勾选
 
 </script>

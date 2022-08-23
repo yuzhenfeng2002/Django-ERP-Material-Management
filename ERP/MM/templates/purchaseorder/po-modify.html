@@ -304,8 +304,8 @@ MAIN SIDEBAR MENU
                               <td><input type="text" class="form-control po-text-modify" onclick="currency()" id="curr1" value="{{ c.currency }}"></td>
                               <td id="meterialItem__stock__id">{{c.meterialItem__material__mname}}</td>
                               <td id="meterialItem__sloc">{{c.meterialItem__sloc}}</td>
-                              <td><input type="text" class="form-control po-text-modify" onclick="date(this)" value="{{c.deliveryDate}}" id="deliveryDate"></td>
-                              <td id="state">{{c.po__rfq__rej}}</td>
+                              <td><input type="text" class="form-control po-text-modify" onclick="date(this)" value="{{c.deliveryDate.day}}. {{c.deliveryDate.month}}. {{c.deliveryDate.year}}" id="deliveryDate"></td>
+                              <td id="state">{{c.status}}</td>
                               <td>
                                 <button type="button" class="btn btn-link "  onclick="save(this)">保存</button> <!--不同状态保存成功失败的判断-->
                             </td>
@@ -438,7 +438,7 @@ MAIN SIDEBAR MENU
         //保存失败
         var $td=$(nowTr).parent().parent();
         var state=$td.find("#state").text();
-        if($.trim(state) == "已发货")
+        if($.trim(state) != "货物未发出")
         showMessage({text: '商品已发货，无法修改。',type: 'warning'})
         else   
         {
@@ -453,7 +453,7 @@ MAIN SIDEBAR MENU
         console.log(jsonT);
         $.ajax({
             type: 'post',
-            url: '',
+            url: '/mm/purchaseorder/modifyinfo3/',
             data:{"json":jsonT},
             success: function (data) {
                 alert(1);

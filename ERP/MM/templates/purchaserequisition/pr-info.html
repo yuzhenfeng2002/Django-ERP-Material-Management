@@ -205,17 +205,16 @@ MAIN SIDEBAR MENU
                                     </thead>
                                     <tbody id="gooddiv">
                                         {% for c in reuqe %}
-                                        {'itemId': 122222, 'estimatedPrice': 1000, 'currency': '5', 'deliveryDate': datetime.date(2022, 8, 14), 'meterial_id': 1, 'pr_id': 27, 'status': '1', 'meterial__materialitem__sloc': 'TG00', 'meterial__materialitem__stock_id': 1}
                                         <tr>
                                             <td>{{ c.itemId }}</td>
-                                            <td>{{ c.meterial_id }}</td>
-                                            <td>{{ c.itemId }}</td>名称
+                                            <td>{{ c.meterial__id }}</td>
+                                            <td>{{ c.meterial__material__mname }}</td>
                                             <td>{{ c.estimatedPrice }}</td>
                                             <td>{{ c.currency }}</td>
-                                            <td>{{ c.itemId }}</td>数量
+                                            <td>{{ c.quantity }}</td>
                                             <td>{{ c.deliveryDate }}</td>
-                                            <td>{{ c.meterial__materialitem__sloc }}</td>
-                                            <td>{{ c.meterial__materialitem__sloc }}</td>
+                                            <td>{{ c.meterial__stock__name }}</td>
+                                            <td>{{ c.meterial__sloc }}</td>
                                             <td>{{ c.status }}</td>
                                         </tr>
                                         {% endfor %}
