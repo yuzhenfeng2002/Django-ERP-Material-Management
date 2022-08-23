@@ -104,6 +104,7 @@ urlpatterns = [
     path('purchaseorder/cremanu/', purchaserequisition.createmanu, name='search_pur'),
     path('purchaseorder/cremanujiekou/', purchaserequisition.creamanujiekou, name='search_pur'),
     path('purchaseorder/quomodify/<int:pk>/', purchaserequisition.quomodify, name='search_pur'),
+    path('purchaseorder/quomodifyjiekou/', purchaserequisition.quomodifyjiekou, name='search_pur'),
     path('quotation/makebyrq/<int:pk>/<int:itemId>', quotation.makebyrq, name='search_pur'),
     path('quotation/rfqinfo', quotation.rfqinfojiekou, name='search_pur'),
     path('purchaseorder/searchpo', purchaseorder.searchpo, name='search_pur'),
