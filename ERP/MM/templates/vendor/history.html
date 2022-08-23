@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     {% load static %}
     <!-- vue -->
     <link href="{% static 'assets/css/base/jquery-ui-1.10.4.custom.css' %}" rel="stylesheet">
@@ -7,12 +7,12 @@
 	<script src="{% static 'assets/js/jquery-ui-1.10.4.custom.js' %}"></script>
 <!-- import CSS -->
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script> {% endcomment %}
 <!-- import Vue before Element -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.4/jquery.min.js"></script>
 
 <!-- Bootstrap core CSS -->
 <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
@@ -264,35 +264,35 @@
                 // 获取滑动条的值并且打印
     
                 slide: function( event, ui ) {
-                    
-                    
-                    var four=100-ui.value-$("#slider2").slider("value")-$("#slider3").slider("value");
-                    
-                    var three=100-ui.value-$("#slider2").slider("value");
-                    var two=100-ui.value;
-                    if(four>=0){
-                        $("#slider4").slider("value", four);
-                        $('#mem_num1').html($("#slider1").slider("value"));
+                    $('#mem_num1').html($("#slider1").slider("value"));
                     $('#mem_num2').html($("#slider2").slider("value"));
                     $('#mem_num3').html($("#slider3").slider("value"));
                     $('#mem_num4').html($("#slider4").slider("value"));
+                    
+                    var four=100-$("#slider1").slider("value")-$("#slider2").slider("value")-$("#slider3").slider("value");
+                    var three=100-$("#slider1").slider("value")-$("#slider2").slider("value");
+                    var two=100-$("#slider1").slider("value");
+                    if(four>=0){
+                        $("#slider4").slider("value", four);
+                        
                     }else if(three>=0){
                         $("#slider4").slider("value", 0);
                         $("#slider3").slider("value", three);
-                        $('#mem_num1').html($("#slider1").slider("value"));
-                    $('#mem_num2').html($("#slider2").slider("value"));
-                    $('#mem_num3').html($("#slider3").slider("value"));
-                    $('#mem_num4').html($("#slider4").slider("value"));
+                        
                     }else{
                         $("#slider4").slider("value", 0);
                         $("#slider3").slider("value", 0);
                         $("#slider2").slider("value", two);
-                        $('#mem_num1').html($("#slider1").slider("value"));
+                        
+                    }
+                    $('#mem_num1').html($("#slider1").slider("value"));
                     $('#mem_num2').html($("#slider2").slider("value"));
                     $('#mem_num3').html($("#slider3").slider("value"));
                     $('#mem_num4').html($("#slider4").slider("value"));
-                    }
-                    
+                     console.log("4:"+$("#slider4").slider("value"));
+				 console.log("3:"+$("#slider3").slider("value"));
+				 console.log("2:"+$("#slider2").slider("value"));
+                 console.log("1:"+$("#slider1").slider("value"));
                 }
                 
             });
@@ -301,21 +301,24 @@
                 
                 value: 25,
                 slide: function( event, ui ) {
-                    
-                    var four=100-$("#slider1").slider("value")-ui.value-$("#slider3").slider("value");
-                    var three=100-$("#slider1").slider("value")-ui.value;
-                    var one=100-ui.value;
+                    $('#mem_num1').html($("#slider1").slider("value"));
+                    $('#mem_num2').html($("#slider2").slider("value"));
+                    $('#mem_num3').html($("#slider3").slider("value"));
+                    $('#mem_num4').html($("#slider4").slider("value"));
+                    var four=100-$("#slider1").slider("value")-$("#slider2").slider("value")-$("#slider3").slider("value");
+                    var three=100-$("#slider1").slider("value")-$("#slider2").slider("value");
+                    var one=100-$("#slider2").slider("value");
                     if(four>=0){
                         $("#slider4").slider("value", four);
                         $('#mem_num1').html($("#slider1").slider("value"));
-                    $('#mem_num2').html(ui.value);
+                    $('#mem_num2').html($("#slider2").slider("value"));
                     $('#mem_num3').html($("#slider3").slider("value"));
                     $('#mem_num4').html($("#slider4").slider("value"));
                     }else if(three>=0){
                         $("#slider4").slider("value", 0);
                         $("#slider3").slider("value", three);
                         $('#mem_num1').html($("#slider1").slider("value"));
-                    $('#mem_num2').html(ui.value);
+                    $('#mem_num2').html($("#slider2").slider("value"));
                     $('#mem_num3').html($("#slider3").slider("value"));
                     $('#mem_num4').html($("#slider4").slider("value"));
                     }else{
@@ -323,7 +326,7 @@
                         $("#slider3").slider("value", 0);
                         $("#slider1").slider("value", one);
                         $('#mem_num1').html($("#slider1").slider("value"));
-                    $('#mem_num2').html(ui.value);
+                    $('#mem_num2').html($("#slider2").slider("value"));
                     $('#mem_num3').html($("#slider3").slider("value"));
                     $('#mem_num4').html($("#slider4").slider("value"));
                     }
@@ -415,7 +418,7 @@
     <body>
         <section id="main-content">
             <section class="wrapper">
-                <h3><i class="fa fa-angle-right"></i> 查看商品收据
+                <h3><i class="fa fa-angle-right"></i> 供应商交易历史汇总
                 </h3>
                 <div class="row mt">
                   <div class="col-lg-12">
@@ -423,26 +426,26 @@
                   <div class="form-panel3">
                         
                       <form id='material1' class="form-horizontal style-form" method="get">
+                        <label class="col-sm-1 col-sm-2 control-label">
+                            <div class="pull-right">商品编号</div>
+                        </label>
                         <div class="col-sm-3">
-                            <label class="col-sm-1 col-sm-1 control-label">
-                                <div class="pull-right">商品编号</div>
-                            </label>
-                            <div class="col-sm-2">
+                           
                                 <input class="form-control" id="materialInput1" type="text"  placeholder="请输入商品编号" required>
-                            </div>
+                          
                         </div>
+                        <label class="col-sm-2 col-sm-2 control-label">
+                            <div class="pull-right">时间</div>
+                        </label>
                         <div class="col-sm-3">
-                                <label class="col-sm-1 col-sm-1 control-label">
-                                    <div class="pull-right">时间</div>
-                                </label>
-                                <div class="col-sm-2">
+                               
                                     <select id="materialInput2" class="form-control">
                                         <option value='0'>全部</option>
                                         <option value='2'>近三月</option>
                                         <option value='1'>近半年</option>
                                         
                                       </select>
-                                </div>
+                     
                               </div>
                               
                             
@@ -589,8 +592,8 @@
                     <div class="col-md-12">
                       <div class="col-md-12">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-theme03" data-toggle="modal" data-target="#myModal2">根据已有商品信息创建</button>
-                          </div><br>
+                            <button type="button" class="btn btn-theme03" data-toggle="modal" data-target="#myModal2">自定义权重</button>
+                          </div><br><br>
                           <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
@@ -610,7 +613,7 @@
                                                             <div  id="slider1"></div>
                                                 </div>
                                                 <div class="col-sm-2 control-label">
-                                                  <p id="mem_num1"></p>        
+                                                  <p id="mem_num1">25</p>        
                                                 </div>
                                             </div>
 
@@ -622,7 +625,7 @@
                                                         <div  id="slider2"></div>
                                             </div>
                                             <div class="col-sm-2 control-label">
-                                              <p id="mem_num2"></p>        
+                                              <p id="mem_num2">25</p>        
                                             </div>
                                             </div>
 
@@ -634,7 +637,7 @@
                                                         <div  id="slider3"></div>
                                             </div>
                                             <div class="col-sm-2 control-label">
-                                              <p id="mem_num3"></p>        
+                                              <p id="mem_num3">25</p>        
                                             </div>
                                             </div>
 
@@ -646,7 +649,7 @@
                                                         <div  id="slider4"></div>
                                             </div>
                                             <div class="col-sm-2 control-label">
-                                              <p id="mem_num4"></p>        
+                                              <p id="mem_num4">25</p>        
                                             </div>
                                             </div>
 
@@ -677,7 +680,7 @@
                                     
                                 </tr>
                               </thead>
-                              <tbody id="searchDiv"></tbody>
+                              <tbody id="searchDiv2"></tbody>
                           </table>
                       </div>
                       </div>
@@ -702,7 +705,7 @@
         <!--footer end-->
     </section>
 
-        <textarea id="item_result"></textarea>
+        {% comment %} <textarea id="item_result"></textarea> {% endcomment %}
 
         <script>
             //收据搜索 不限制三项内容是否填写默认返回全部
@@ -724,11 +727,25 @@
                         w4: $("#slider4").slider("value"),
                     },
                     success: function(data) {
+                       
                         $('#item_result').text(data);
                         var dataObj = eval("("+data+")");
+                        console.log(dataObj);
                         
                         //console.log(dataObj.gr[0].pk);
+                        if(dataObj.status==1){
+                            showMessage({text: dataObj.message ,type: 'success'});
+                        }else{
+                            showMessage({text: dataObj.message ,type: 'error'});
+                        }
                         
+                        for(i = 0; i < dataObj.length; i++) {
+                            //content2 =dataObj.gr[i].fields
+                            //": 10, "sType": "1", "time": "2022-08-18T10:05:04.605Z", "postTime": "2022-08-18T10:03:52Z", "orderItem": 1, "euser": 1}, "user": {"id": 2,
+                            var out='';
+                             out += '<tr><td>'+ dataObj[0].vendor.vid+ '</td><td>' + dataObj[0].vendor.vname + '</td><td >' + dataObj[0].quan+ '</td><td>' + dataObj[0].num+ '</td><td>'+ dataObj[0].score+ '</td></tr>';
+                         }
+                         document.getElementById("searchDiv2").innerHTML=out;
                         
                     },
                     failure: function() {
@@ -737,7 +754,11 @@
                 })
             });
     
-               
+            $("table").on("dblclick","tr",function(e){
+                document.getElementById("materialInput1").value=$(this).find('td').eq(0).text();
+                
+                $('#myModal1').modal('hide');
+            });
 
                 //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
             $('#material2').on('submit', function(e) {
