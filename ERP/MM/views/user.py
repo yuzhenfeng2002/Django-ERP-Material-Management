@@ -94,7 +94,11 @@ def register(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def home(request):
-    return HttpResponse(request.user.username)
+    return render(
+        request=request,
+        template_name='../templates/user/index.html',
+    )
+    # return HttpResponse(request.user.username)
 
 def logout(request):
     auth.logout(request=request)

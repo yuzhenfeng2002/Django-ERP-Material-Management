@@ -55,7 +55,7 @@ def search_vendor_history(request: HttpRequest):
     post = request.POST # test
     range = int(post.get('range'))
     mid = getPkExact(post.get('mid'), 'V')
-    w1 = int(post.get('w1')); w2 = int(post.get('w2')); w3 = int(post.get('w3')); w4 = int(post.get('w4'))
+    w1 = float(post.get('w1')); w2 = float(post.get('w2')); w3 = float(post.get('w3')); w4 = float(post.get('w4'))
     range_list = [12, 6, 3]
     now = timezone.now()
     start = now + datetime.timedelta(days=-30 * range_list[range])
