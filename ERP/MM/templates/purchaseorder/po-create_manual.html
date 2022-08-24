@@ -375,7 +375,7 @@
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">工厂</label>
                           <div class="col-sm-10">
-                              <input class="form-control" id="factory-pocm"></input>
+                              <select class="form-control" id="factory-pocm" name="plant"></select>
                           </div>
                       </div>
                       <div class="form-group">
@@ -787,6 +787,29 @@ function currencyf() {
 </script>
         <script>  
            
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_plant' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >请选择工厂</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
+                    var items=document.getElementsByName("plant");
+                    for(i = 0; i < items.length; i++) {
+                        items[i].innerHTML=out;
+                    }
+                },
+                failure: function() {
+
+                }
+            });
 
             $.ajax({
                 type: "post",
