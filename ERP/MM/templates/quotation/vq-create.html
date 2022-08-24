@@ -163,7 +163,7 @@ MAIN SIDEBAR MENU
                                         <tr>
                                             <td>
                                                 <label>报价申请单编码：</label>
-                                                <label>{{ c.id }}</label>
+                                                <label id="quoid">{{ c.id }}</label>
                                             </td>
                                             <td>
                                                 <label>创建者编码：</label>
@@ -304,13 +304,13 @@ MAIN SIDEBAR MENU
                         <td style="display:flex">
                             <label>报价：</label>
                             <div class="form-group" style="display:flex">
-                                <input  class="form-control" name="price" placeholder="报价数值"><input  class="form-control" placeholder="单位" onclick="currencyf()" name="currency" id="danwei" style="width:100px">
+                                <input  class="form-control" name="price" placeholder="报价数值" id="price"><input  class="form-control" placeholder="单位" onclick="currencyf()" name="currency" id="danwei" style="width:100px">
                             </div>
                         </td>
                         <td>
                             <label>报价有效期：</label>
                             <div class="form-group">
-                                <input  class="form-control"   name="validTime" placeholder="Valid to"  onclick="date(this)">
+                                <input  class="form-control"   name="validTime" placeholder="Valid to"  onclick="date(this)" id="validTime">
                             </div>
                             
                         </td>
@@ -319,7 +319,8 @@ MAIN SIDEBAR MENU
                 </tbody>
             </table>
             <div id="btn-vq-create">
-                <button type="submit" class="btn btn-primary btn-lg btn-block" >添加供应商报价</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="create()">添加供应商报价</button>
+                <input onclick="create()">
         </div>
             </form>
             
@@ -478,7 +479,7 @@ MAIN SIDEBAR MENU
 <script>
 function create(){
     var duedate=document.getElementById("duedate").innerHTML
-    var validto=document.getElementById("validto").value
+    var validto=$("#validTime").val()
     let due = duedate.match(/\d+/g);
     let valid = validto.match(/\d+/g)
     var dday=due[0]
@@ -493,11 +494,36 @@ function create(){
     var month = date.getMonth() + 1;
     var day = date.getDay();
    
-    if($.trim(year) > parseInt(dyear) || (parseInt(year) == parseInt(dyear) && parseInt(month) > parseInt(dmonth)) ||( parseInt(year) == parseInt(dyear) && parseInt(month) == parseInt(dmonth) && parseInt(day) > parseInt(dday)))
+   if($.trim(year) > parseInt(dyear) || (parseInt(year) == parseInt(dyear) && parseInt(month) > parseInt(dmonth)) ||( parseInt(year) == parseInt(dyear) && parseInt(month) == parseInt(dmonth) && parseInt(day) > parseInt(dday)))
     showMessage({text: '截止日期已过，无法添加报价!',type: 'warning'})
     else if(parseInt(vyear) < parseInt(dyear) || (parseInt(vyear) == parseInt(dyear) && parseInt(vmonth) < parseInt(dmonth)) ||( parseInt(vyear) == parseInt(dyear) && parseInt(vmonth) == parseInt(dmonth) && parseInt(vday) < parseInt(dday)))
     showMessage({text: '报价有效期必须在截止日期之后!',type: 'warning'})
-    else    showMessage({text: '添加成功！',type: 'success'})  //成功
+    else  {
+
+        var quoid=document.getElementById("quoid").innerHTML
+        var price=$("#price").val()
+        var danwei=$("#danwei").val()
+        console.log(quoid,price,danwei,validto)
+
+        $.ajax({
+            type: 'post',
+            url: '',
+            data:{
+                "quoid": quoid,
+                "price": price,
+                "currency": danwei,
+                "validTime": validto
+            },
+            success: function (data) {
+        showMessage({text: '添加成功！',type: 'success'})  //成功
+
+
+            }
+        });     
+
+
+
+    } 
 }
 </script>
   </body>
