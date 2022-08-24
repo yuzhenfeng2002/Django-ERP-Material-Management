@@ -886,7 +886,7 @@ def searchjiekou(request):
                                                meterial_id=gcode).values("pr_id","pr__euser_id","deliveryDate",
                                                                          "meterial__id","itemId")
         reque = list(reque)
-        return HttpResponse(reque)
+        return HttpResponse(json.dumps(reque))
 
 
 
@@ -902,7 +902,7 @@ def searchjiekouzhuanhua(request):
                                                meterial_id=gcode).values("pr_id","pr__euser_id","deliveryDate",
                                                                          "meterial__id","itemId")
         reque = list(reque)
-        return HttpResponse(reque)
+        return HttpResponse(json.dumps(reque))
 
 
 
