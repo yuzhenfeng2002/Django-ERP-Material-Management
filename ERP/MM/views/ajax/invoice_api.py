@@ -158,6 +158,8 @@ def search_unpaied_invoice(request: HttpRequest):
         results_list[i]['orderItem'] = model_to_dict(orderItem)
         results_list[i]['po'] = model_to_dict(po)
         results_list[i]['vendor'] = model_to_dict(vendor)
+    if len(results_list) == 0:
+        return HttpResponse(json.dumps({'status':0, 'message':"无相关发票！", 'gr':results_list}, default=str))
     return HttpResponse(json.dumps({'status':1, 'message':"发票检索成功！", 'gr':results_list}, default=str))
 
 @login_required

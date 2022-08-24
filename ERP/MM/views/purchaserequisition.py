@@ -474,7 +474,7 @@ def createsys(request: HttpRequest, pk):
 
 
 @csrf_exempt
-@login_required()
+
 def createmanu(request):
     if request.method == "GET":
         return render(request, '../templates/purchaseorder/po-create_manual.html', locals())
@@ -482,11 +482,10 @@ def createmanu(request):
 
 
 @csrf_exempt
-@login_required()
+
 def creamanujiekou(request):
     if request.method == "POST":
-        euser = request.user
-        euserid = euser.pk
+        euserid=1
         data1= request.POST.get("json")
         data1 = eval(data1)
         telephone = request.POST.get("telephone")
@@ -499,6 +498,17 @@ def creamanujiekou(request):
         print(fax)
         print(vendor_id)
         print(shippingAddress)
+        for i in data1:
+            print(i['deliveryDate'])
+            mete = MaterialItem.objects.filter(stock_id = i['plant'],material_id=i['material_id']).values()
+            print("mete:",mete)
+            if mete.count()==0:
+                print("cjsb!")
+                datalist = {
+                    "message": "物料不存在",
+                    "content": 0
+                }
+                return HttpResponse(json.dumps(datalist))
         pr =PurchaseOrder.objects.create(euser_id=euserid, telephone=telephone,
                                                  shippingAddress=shippingAddress, fax=fax,
                                                  vendor_id=vendor_id,time=now_time)
@@ -507,22 +517,25 @@ def creamanujiekou(request):
             print(i['deliveryDate'])
             str1 = getDate2(i['deliveryDate'])
             mete = MaterialItem.objects.filter(stock_id = i['plant'],material_id=i['material_id']).values()
-            mateid = mete[0]['id']
-            requisitionitem = OrderItem.objects.create(
-                                                             meterialItem_id=mateid,
-                                                             price=i['price'],
-                                                             currency=i['currency'],
-                                                             quantity=i['quantity'],
-                                                             status="0",
-                                                             itemId=i['itemId'],
-                                                             deliveryDate=str1,
-                                                                po_id=prid)
-            print("chuangjiancg")
-        datalist = {
+            print("mete:",mete)
+            if mete:
+                mateid = mete[0]['id']
+                print("cjcg!")
+                requisitionitem = OrderItem.objects.create(
+                                                                 meterialItem_id=mateid,
+                                                                 price=i['price'],
+                                                                 currency=i['currency'],
+                                                                 quantity=i['quantity'],
+                                                                 status="0",
+                                                                 itemId=i['itemId'],
+                                                                 deliveryDate=str1,
+                                                                    po_id=prid)
+                print("chuangjiancg")
+        datalist1 = {
             "message": "创建成功",
             "content": prid
         }
-        return HttpResponse(json.dumps(datalist))
+        return HttpResponse(json.dumps(datalist1))
 
 
 @csrf_exempt

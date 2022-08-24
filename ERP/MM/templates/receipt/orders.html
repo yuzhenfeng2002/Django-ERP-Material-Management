@@ -172,6 +172,7 @@ MAIN SIDEBAR MENU
                 <div class="form-panel3">
                     
                     <form class="form-horizontal style-form" method="post">
+                        {% csrf_token %}
                         <div class="col-sm-9" id="rfq-search">
                     
                             <div id="rfq-search-row1">
@@ -210,12 +211,12 @@ MAIN SIDEBAR MENU
                                     创建时间
                                 </div>
                                 <div class="col-sm-2" id="rfq-search4">
-                                        <select class="form-control">
-                                            <option>全部</option>
-                                            <option>近三月</option>
-                                            <option>近半年</option>
+                                        <select class="form-control" name="range">
+                                            <option value="0">全部</option>
+                                            <option value="2">近三月</option>
+                                            <option value="1">近半年</option>
                                        
-                                          </select>
+                                        </select>
                                         </div>
                             <button type="submit" class="btn btn-success" id="btn-po-search">搜索</button>
 
@@ -570,25 +571,25 @@ MAIN SIDEBAR MENU
                             </tr>
                             </thead>
                             <tbody>
-                                {%for c in vendorid %}
+                                {% for c in orderItems %}
                             <tr>
-                                <td>{{c.id}}</td>
-                                <td>{{c.rfq__ri__itemId}}</td>
+                                <td>{{c.po__id}}</td>
+                                <td>{{c.itemId}}</td>
                                 <td>
-                                    {{c.rfq__ri__meterial_id}}
+                                    {{c.meterialItem__material__mname}}
                                 </td>
-                                <td>{{c.rfq__quantity}}</td>
-                                <td>{{c.sum}} {{c.rfq__ri__currency}}</td>
-                                <td>{{c.vendor_id}}
+                                <td>{{c.quantity}}</td>
+                                <td>{{c.sum}} {{c.currency}}</td>
+                                <td>{{c.po__vendor__vid}}
                                 </td>
-                                <td>{{c.euser_id}}</td>
-                                <td>{{c.time}}</td>
-                                <td>{{c.rfq__ri__status}}</td>
+                                <td>{{c.po__euser__uid}}</td>
+                                <td>{{c.po__time}}</td>
+                                <td>{{c.status}}</td>
                                 <td>
                                     <!-- <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button> -->
-                              <a href="/mm/receipt/getpqinfo/{{c.id}}/"> <button class="btn btn-success btn-xs"><i class="fa fa-search-plus"></i></button> </a>     
-                              <a href="/mm/purchaseorder/modifyinfo/{{c.id}}">   <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></button> </a>   
-{%endfor%}
+                              <a href="/mm/receipt/order/display/{{c.po__id}}/"> <button class="btn btn-success btn-xs"><i class="fa fa-search-plus">查看详情</i></button> </a>     
+                              <a href="/mm/purchaseorder/modifyinfo/{{c.po__id}}">   <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></button> </a>   
+                                {%endfor%}
                              
                             </tbody>
                         </table>

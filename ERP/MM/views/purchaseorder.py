@@ -327,6 +327,35 @@ def vqcreate(request: HttpRequest, pk):
 
 
 
+
+
+
+
+
+
+@csrf_exempt
+def vqcreatejiekou(request):
+    if request.method == "POST":
+        pk = request.POST.get("quoid")
+        print("id:",pk)
+        price = request.POST.get("price")
+        currency = request.POST.get("currency")
+        validTime = request.POST.get("validTime")
+        validTime = getDate2(validTime)
+        quotation1 = Quotation.objects.filter(id=pk).update(price=price, validTime=validTime, currency=currency)
+        if quotation1:
+            print("修改成功")
+        return HttpResponse(json.dumps(pk))
+
+
+
+
+
+
+
+
+
+
 @csrf_exempt
 def poinfo(request: HttpRequest, pk):
     if request.method == "GET":
