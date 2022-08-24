@@ -884,7 +884,7 @@ def searchjiekou(request):
         gcode = request.POST.get("gcode")
         reque = RequisitionItem.objects.filter(deliveryDate=ctime,pr__euser_id=cname,
                                                meterial_id=gcode).values("pr_id","pr__euser_id","deliveryDate",
-                                                                         "meterial__id","itemId")
+                                                                         "meterial__id","itemId","pr__time")
         reque = list(reque)
         return HttpResponse(json.dumps(reque, cls=ComplexEncoder))
 
@@ -901,7 +901,7 @@ def searchjiekouzhuanhua(request):
         gcode = request.POST.get("gcode")
         reque = RequisitionItem.objects.filter(deliveryDate=ctime,pr__euser_id=cname,
                                                meterial_id=gcode).values("pr_id","pr__euser_id","deliveryDate",
-                                                                         "meterial__id","itemId")
+                                                                         "meterial__id","itemId","pr__time")
         reque = list(reque)
         return HttpResponse(json.dumps(reque,cls=ComplexEncoder))
 
