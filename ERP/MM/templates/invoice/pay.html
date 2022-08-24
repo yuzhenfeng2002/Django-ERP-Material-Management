@@ -98,8 +98,8 @@
                             
                             <div class="col-sm-12">
                             <button type="button" class="btn btn-link " data-toggle="modal" data-target="#myModal1">忘记编号？</button>
-                            <div class="pull-right"><label >本次结算总金额：</label><label id='sum'></label>
-                              </div><br>
+                            {% comment %} <div class="pull-right"><label >本次结算总金额：</label><label id='sum'></label>
+                              </div><br> {% endcomment %}
                           
                                     <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -231,6 +231,15 @@
                             <input  type="text" id="materialInput2" placeholder="请输入付款过账日期" class="form-control" >
                 
                         </div>
+                        <script src="{% static 'assets/js/the-datepicker.js' %}"></script>
+                        <script>
+                            (function () {
+                                const input = document.getElementById('materialInput2');
+                                const datepicker = new TheDatepicker.Datepicker(input);
+                                datepicker.render();
+                            })();
+                            
+                        </script>
                         <button type="submit" class="btn btn-theme03"  formmethod="post" class="btn btn-success ">提交</button>
                         
                      <br>
@@ -296,12 +305,10 @@
                         var dataObj = eval("("+data+")");
                         
                        var out='';
-                        for(i = 0; i < dataObj.gr.length; i++) {
-                           
-                         }
+                       document.getElementById("searchDiv2").innerHTML=out;
                          //结算额
-                         document.getElementById("sum").innerHTML=out;
-                         console.log(out);
+                        // document.getElementById("sum").innerHTML=out;
+                        // console.log(out);
                     },
                     failure: function() {
 
