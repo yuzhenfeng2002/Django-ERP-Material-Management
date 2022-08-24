@@ -327,6 +327,35 @@ def vqcreate(request: HttpRequest, pk):
 
 
 
+
+
+
+
+
+
+@csrf_exempt
+def vqcreatejiekou(request):
+    if request.method == "POST":
+        pk = request.POST.get("quoid")
+        print("id:",pk)
+        price = request.POST.get("price")
+        currency = request.POST.get("currency")
+        validTime = request.POST.get("validTime")
+        validTime = getDate2(validTime)
+        quotation1 = Quotation.objects.filter(id=pk).update(price=price, validTime=validTime, currency=currency)
+        if quotation1:
+            print("修改成功")
+        return HttpResponse(json.dumps(pk))
+
+
+
+
+
+
+
+
+
+
 @csrf_exempt
 def poinfo(request: HttpRequest, pk):
     if request.method == "GET":
@@ -766,10 +795,7 @@ def searchpo2(request):
                                                        'euser_id','time','rfq__rej','vendor_id','rfq__collNo','rfq__ri__itemId',
                                                        'rfq__ri__currency','rfq__ri__status')
         for i in vendorid:
-            if i['rfq__quantity'] is None or i['rfq__price'] is None:
-                i['sum'] = "无绑定请购单。"
-            else:
-                i['sum'] = i['rfq__quantity']*i['rfq__price']
+            i['sum'] = i['rfq__quantity']*i['rfq__price']
         for i in vendorid:
             if i['rfq__ri__status']=='0':
                 i['rfq__ri__status'] = "已创建采购申请"
@@ -791,10 +817,7 @@ def searchpo2(request):
                                                          'rfq__ri__currency','rfq__ri__status')
         print(vendorid)
         for i in vendorid:
-            if i['rfq__quantity'] is None or i['rfq__price'] is None:
-                i['sum'] = "无绑定请购单。"
-            else:
-                i['sum'] = i['rfq__quantity']*i['rfq__price']
+            i['sum'] = i['rfq__quantity']*i['rfq__price']
         for i in vendorid:
             if i['rfq__ri__status']=='0':
                 i['rfq__ri__status'] = "已创建采购申请"
