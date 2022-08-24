@@ -886,7 +886,8 @@ def searchjiekou(request):
                                                meterial_id=gcode).values("pr_id","pr__euser_id","deliveryDate",
                                                                          "meterial__id","itemId")
         reque = list(reque)
-        return HttpResponse(json.dumps(reque))
+        return HttpResponse(json.dumps(reque, cls=ComplexEncoder))
+
 
 
 
@@ -902,11 +903,7 @@ def searchjiekouzhuanhua(request):
                                                meterial_id=gcode).values("pr_id","pr__euser_id","deliveryDate",
                                                                          "meterial__id","itemId")
         reque = list(reque)
-        return HttpResponse(json.dumps(reque))
-
-
-
-
+        return HttpResponse(json.dumps(reque,cls=ComplexEncoder))
 
 
 @csrf_exempt
