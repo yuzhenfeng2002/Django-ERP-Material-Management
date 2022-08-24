@@ -298,42 +298,39 @@
 
                                     </tr>
                                     </thead>
-                                    {% for c in xiangqing %}
-
                                     <tbody>
                                     <tr>
                                         <td>
                                             <label>采购订单编码：</label>
-                                            <label>{{ c.id }}</label>
+                                            <label>{{ purchaseOrder.id }}</label>
                                         </td>
                                         <td>
                                             <label>创建者编码：</label>
-                                            <label>{{ c.euser_id }}</label>
+                                            <label>{{ user_id }}</label>
                                         </td>
                                         <td>
                                             <label>创建时间：</label>
-                                            <label>{{ c.time }}</label>
+                                            <label>{{ purchaseOrder.time }}</label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <label>总价：</label>
-                                            <label>{{c.sum}}</label>
+                                            <label>{{ sum }}</label>
                                         </td>
                                         <td>
                                             <label>结算货币：</label>
-                                            <label>{{c.orderitem__currency}}</label>
+                                            <label>{{ currency }}</label>
                                         </td>
                                         <td>
                                             <label>物资条数目：</label>
-                                            <label>{{c.sumquantity}}</label>
+                                            <label>{{ itemNum }}</label>
                                         </td>
                                      
                                     </tr>
 
                             
                                 </tbody>
-                                {% endfor %}
 
                             </table>
 
@@ -345,30 +342,28 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {% for c in vendor %}
                                     <tr>
                                         <td>
                                             <label>供应商编码：</label>
-                                            <label>{{c.vid}}</label>
+                                            <label>{{vendor.vid}}</label>
                                         </td>
                                         
                                         <td>
                                             <label>供应商名称：</label>
-                                            <label>{{c.vname}}</label>
+                                            <label>{{vendor.vname}}</label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <label>城市：</label>
-                                            <label>{{c.city}}</label>
+                                            <label>{{vendor.city}}</label>
                                         </td>
                                         
                                         <td>
                                             <label>街区地址：</label>
-                                            <label>{{c.address}}</label>
+                                            <label>{{vendor.address}}</label>
                                         </td>
                                     </tr>
-                                    {% endfor %}
                                 </tbody>
                             </table>
 
@@ -380,23 +375,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {% for c in caigou  %}
                                     <tr>
                                         <td>
                                             <label>采购方电话：</label>
-                                            <label>{{c.telephone}}</label>
+                                            <label>{{purchaseOrder.telephone}}</label>
                                         </td>
                                         
                                         <td>
                                             <label>送货地址：</label>
-                                            <label>{{c.shippingAddress}}</label>
+                                            <label>{{purchaseOrder.shippingAddress}}</label>
                                         </td>
                                         <td>
                                             <label>传真：</label>
-                                            <label>{{c.fax}}</label>
+                                            <label>{{purchaseOrder.fax}}</label>
                                         </td>
                                     </tr>
-                                    {% endfor %}
                                 </tbody>
                             </table>
                             <div class="row mt">
@@ -422,7 +415,7 @@
                                           </tr>
                                           </thead>
                                           <tbody>
-                                            {% for c in orderitems  %}
+                                            {% for c in orderItems  %}
                                           <tr>
                                               <td>{{c.itemId}}</td>
                                               <td>{{c.meterialItem__id}}</td>
@@ -430,13 +423,13 @@
                                               <td>{{c.quantity}}</td>
                                               <td>{{c.price}}</td>
                                               <td>{{c.sum}}</td>
-                                              <td>{{c.meterialItem__material__mname}}</td>
+                                              <td>{{c.meterialItem__stock__name}}</td>
                                               <td>{{c.meterialItem__sloc}}</td>
                                               <td>{{c.deliveryDate}}</td>
                                               <td>{{c.status}}</td>
-                                              <td>{%for x in xiangqing%}<a href="{% url 'MM:load_order_item_invoice' %}?itemID={{c.itemId}}&orderID={{x.id}}">点击创建</a>{%endfor%}</td>
+                                              <td><a href="{% url 'MM:load_order_item_invoice' %}?itemID={{c.itemId}}&orderID={{purchaseOrder.id}}">点击创建</a></td>
                                           </tr>
-                                          {% endfor %}
+                                            {% endfor %}
                                           </tbody>
                                       </table>
                                   </div>

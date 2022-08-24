@@ -766,7 +766,10 @@ def searchpo2(request):
                                                        'euser_id','time','rfq__rej','vendor_id','rfq__collNo','rfq__ri__itemId',
                                                        'rfq__ri__currency','rfq__ri__status')
         for i in vendorid:
-            i['sum'] = i['rfq__quantity']*i['rfq__price']
+            if i['rfq__quantity'] is None or i['rfq__price'] is None:
+                i['sum'] = "无绑定请购单。"
+            else:
+                i['sum'] = i['rfq__quantity']*i['rfq__price']
         for i in vendorid:
             if i['rfq__ri__status']=='0':
                 i['rfq__ri__status'] = "已创建采购申请"
@@ -788,7 +791,10 @@ def searchpo2(request):
                                                          'rfq__ri__currency','rfq__ri__status')
         print(vendorid)
         for i in vendorid:
-            i['sum'] = i['rfq__quantity']*i['rfq__price']
+            if i['rfq__quantity'] is None or i['rfq__price'] is None:
+                i['sum'] = "无绑定请购单。"
+            else:
+                i['sum'] = i['rfq__quantity']*i['rfq__price']
         for i in vendorid:
             if i['rfq__ri__status']=='0':
                 i['rfq__ri__status'] = "已创建采购申请"

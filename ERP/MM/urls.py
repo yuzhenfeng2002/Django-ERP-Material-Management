@@ -24,16 +24,16 @@ urlpatterns = [
     path('receipt/display/', receipt.display_receipt, name='display_receipt'),
     path('receipt/search/', receipt.search_receipt, name='search_receipt'),
     path('receipt/create2/', receipt.load_order_item, name='load_order_item_receipt'),
-    path('receipt/getpqinfo/<int:pk>/', purchaserequisition.getpqinfo3, name='insert_pur1'),
-    path('receipt/searchpo', purchaseorder.searchpo2, name='search_pur1'),
+    path('receipt/order/display/<int:pk>/', receipt.display_purchase_order, name='display_order_receipt'),
+    path('receipt/orders/search/', receipt.search_orders, name='search_orders_receipt'),
     # invoice
     path('invoice/create/', invoice.create_invoice, name='create_invoice'),
     path('invoice/create2/', invoice.load_order_item, name='load_order_item_invoice'),
     path('invoice/search/', invoice.search_invoice, name='search_invoice'),
     path('invoice/display/', invoice.display_invoice, name='display_invoice'),
     path('invoice/payment/', invoice.payment, name='pay_invoice'),
-    path('invoice/getpqinfo/<int:pk>/', purchaserequisition.getpqinfo2, name='insert_pur2'),
-    path('invoice/searchpo', purchaseorder.searchpo3, name='search_pur2'),
+    path('invoice/order/display/<int:pk>/', invoice.display_purchase_order, name='display_order_invoice'),
+    path('invoice/orders/search/', invoice.search_orders, name='search_orders_invoice'),
     # ajax
     ## user
     path('api/user/loadAll/', user_api.load_user, name='ajax_load_user'),
