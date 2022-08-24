@@ -493,14 +493,7 @@
                       <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">采购组织</label>
                           <div class="col-sm-10">
-                              <select name="industrySector"  class="form-control">
-                                <option value=''>请选择采购组织</option>
-                                <option value='CN00'>CN00--中国区</option>
-                                <option value='AS00'>AS00--海外亚洲区</option>
-                                <option value='AF00'>AF00--非洲区</option>
-                                <option value='SA00'>SA00--南美洲区</option>
-                                <option value='NA00'>NA00--北美洲区</option>
-                            </select>
+                              <select name="industrySector"  class="form-control" id="porg"></select>
                           </div>
                           
                       </div>
@@ -509,25 +502,7 @@
                    
                           <label class="col-sm-2 col-sm-2 control-label">采购组</label>
                           <div class="col-sm-10">
-                            <select name="industrySector"  class="form-control">
-                                <option value=''>请选择采购组</option>
-                                <option value='CN00'>G00--广东组</option>
-                                <option value='AS00'>A00--安徽组</option>
-                                <option value='AF00'>H00--湖北组</option>
-                                <option value='SA00'>J00--江苏组</option>
-                                <option value='NA00'>C00--重庆组</option>
-                                <option value='NA00'>S00--山西组</option>
-                                <option value='NA00'>B00--河北组</option>
-                                <option value='NA00'>X00--江西组</option>
-                                <option value='NA00'>V00--越南组</option>
-                                <option value='NA00'>P00--日本组</option>
-                                <option value='NA00'>T00--泰国组</option>
-                                <option value='NA00'>I00--印度组</option>
-                                <option value='NA00'>E00--埃及组</option>
-                                <option value='NA00'>R00--巴西组</option>
-                                <option value='NA00'>D00--阿根廷组</option>
-                                <option value='NA00'>U00--美国组</option>
-                            </select>
+                            <select name="industrySector"  class="form-control" id="pgrp"></select>
                           </div>
                       </div>
                     </form>
@@ -603,7 +578,7 @@
                       <div class="pull-right">公司编码：</div>
                       </label>
                   <div class="col-sm-5">
-                      <select class="form-control"  name="company1" id="company"></select>
+                      <select class="form-control"  name="company1" id="company1"></select>
                   </div>
                   <div class="col-sm-2">
                   <input type="submit"  class="btn btn-theme02">
@@ -611,7 +586,7 @@
               </div>
     
             </form>
-            <table  class="table table-bordered table-striped table-condensed">
+            <table  class="table table-bordered table-striped table-condensed" id="gystable">
               *双击填入编号                                       
               <thead>
               <!-- 搜索编号返回的属性 style="width: 100px;"-->
@@ -638,7 +613,7 @@
                             vname: $("#vname").val(),
                             city: $("#city").val(),
                             country: $("#country").val(),
-                            companyCode: $("#company").val(),
+                            companyCode: $("#company1").val(),
                             uid: $("#uid").val(),
                         },
                         success: function(data) {
@@ -658,12 +633,13 @@
                     })
                 });
      //双击行 信息进入“搜索商品条件”三个框
-     $("table").on("dblclick","tr",function(e){
+     $("#gystable").on("dblclick","tr",function(e){
         document.getElementById("gyscode").value=$(this).find('td').eq(0).text();
         document.getElementById("vdname").value=$(this).find('td').eq(1).text();
         document.getElementById("vdcity").value=$(this).find('td').eq(2).text();
         document.getElementById("vdadress").value=$(this).find('td').eq(3).text();
         $('#myModalgys').modal('hide');
+        $(".modal-backdrop").remove();
     });
             </script>
     
@@ -691,7 +667,7 @@
             </div>
             <div class="modal-body">
             *双击填入货币
-            <table  class="table table-bordered table-striped table-condensed">
+            <table  class="table table-bordered table-striped table-condensed" id="currtable">
                 <thead>
                     <!-- tr 指定表行标签-->
                     <tr>
@@ -701,7 +677,7 @@
                         <th>名称</th>
                     </tr>
                 </thead>
-                <tbody id="currDiv">
+                <tbody id="currencyDiv">
 
                 </tbody>
             </table>
@@ -735,6 +711,19 @@
       <!--footer end-->
   </section>
 
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <script class="include" type="text/javascript" src="{% static 'assets/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.scrollTo.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+    <!--common script for all pages-->
+    <script src="{% static 'assets/js/common-scripts.js' %}"></script>
+
+    <!--script for this page-->
+    <script src="{% static 'assets/js/jquery-ui-1.9.2.custom.min.js' %}"></script>
+
+
       
         <script>
             function date(time){
@@ -743,38 +732,42 @@
             }
     </script>
 <script>
-    
-$(document).ready(function() {
+    $(document).ready(function() {
             
-    $.ajax(
-    {
-        type: "post",
-        url: "{% url 'MM:ajax_load_currency' %}",
-        data:{
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-        },
-        success: function(data) {
-            var dataObj = eval("("+data+")");
-            var out = "";
-            var i;
-            for(i = 0; i < dataObj.length; i++) {
-                out += '<tr><td>'+ i + '</td><td>' +dataObj[i].Currency + '</td><td>' + dataObj[i].Name +'</td><tr>';
-                    //out += '<option value=' + +'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
-            }
-            document.getElementById("currDiv").innerHTML=out;
-            
-        },
-        failure: function() {
+        $.ajax(
+        {
+            type: "post",
+            url: "{% url 'MM:ajax_load_currency' %}",
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(data) {
+                var dataObj = eval("("+data+")");
+                var out = "";
+                var i;
+                for(i = 0; i < dataObj.length; i++) {
+                    out += '<tr><td>'+ i + '</td><td>' +dataObj[i].Currency + '</td><td>' + dataObj[i].Name +'</td><tr>';
+                        //out += '<option value=' + +'>'+ dataObj[i].Currency + '--' + dataObj[i].Name + '</option>' ;
+                }
+                document.getElementById("currencyDiv").innerHTML=out;
+                
+            },
+            failure: function() {
 
-        }
-    })
-});
-$("table").on("dblclick","tr",function(e){
+            }
+        })
+    });
     
-    document.getElementById("danwei").value=$(this).find('td').eq(1).text();
-    $('#myModalcurr').modal('hide')
-    
-});
+    $("#currtable").on("dblclick","tr",function(e){
+        
+        document.getElementById("danwei-pocm").value=$(this).find('td').eq(1).text();
+        $('#myModalcurr').modal('hide')
+        $(".modal-backdrop").remove();
+        
+    });
+
+
+
 function currencyf() {
     console.log(1);
 
@@ -783,10 +776,58 @@ function currencyf() {
     $("#myModalcurr").modal("show")
 }
 
-
 </script>
         <script>  
-           
+            $("#factory-pocm").change(function(){ 
+        
+                $.ajax({
+                    type: "post",
+                    url: "{% url 'MM:ajax_getStockByName' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        //plant值
+                        name:$("#factory-pocm").val(),
+                    },
+                    success: function(data) {
+                        $('#test').text(data);
+                        //add：如果没有该工厂，回传回来一个message提示
+                        //[{'message': '暂无该工厂相关数据，请重新确认！', 'fields': init}]
+                        var dataObj = eval("("+data+")");
+                        //注意：plant选择空的时候，这三项也返回空
+                        const pk = dataObj[0].pk;
+                        sessionStorage.setItem('pk', pk)
+                        fields = dataObj[0].fields
+                        $("#pgrp").val(fields.pGrp);
+                        $("#porg").val(fields.pOrg);
+                        $("#company").val(fields.companyCode);
+                    },
+                    failure: function() {
+        
+                    }
+                });
+            
+            }); 
+        
+
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_pgrp' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >pgrp</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    document.getElementById("pgrp").innerHTML=out;
+                },
+                failure: function() {
+
+                }
+            });
             $.ajax({
                 type: "post",
                 url: "{% url 'MM:ajax_load_plant' %}",
@@ -795,16 +836,50 @@ function currencyf() {
                 },
                 success: function(data) {
                     var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择工厂</option>";
+                    var out = "<option value='' >plant</option>";
                     var i;
                     for(i = 0; i < dataObj.length; i++) {
                         out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
                     }
-                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
-                    var items=document.getElementsByName("plant");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
+                    document.getElementById("factory-pocm").innerHTML=out;
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_porg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >porg</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
                     }
+                    document.getElementById("porg").innerHTML=out;
+                },
+                failure: function() {
+
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_company' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >company</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    document.getElementById("company").innerHTML=out;
                 },
                 failure: function() {
 
@@ -834,30 +909,7 @@ function currencyf() {
 
                 }
             });
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_company' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择公司编码</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    var items=document.getElementsByName("company");
-                    var items1=document.getElementsByName("company1");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                        items1[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
-
-                }
-            });
+           
 
       var i=10
 function addgood() { //商品
@@ -911,6 +963,7 @@ function cancel(){//取消拆分
             }
 
 function create(){ //创建成功
+    var pk=sessionStorage.getItem('pk')
     var tabLen = document.getElementById("podiv");
     var telephone = $("#telephone").val()
     var fax = $("#fax").val()
@@ -922,7 +975,7 @@ function create(){ //创建成功
         var dj = $("#podiv").children().eq(i).children().eq(4).children().val();
         var sum = $("#podiv").children().eq(i).children().eq(5).children().val();
         var deliveryDate = $("#podiv").children().eq(i).children().eq(9).children().val();
-        jsonT += '{"itemId":"' + tabLen.rows[i].cells[0].innerHTML + '","material_id":"' + tabLen.rows[i].cells[1].innerHTML + '","material_name":"' + tabLen.rows[i].cells[2].innerHTML + '","quantity":' + quantity + ',"price":' + dj + ',"sum":' + sum + ',"currency":"' + tabLen.rows[i].cells[6].innerHTML + '","plant":"' + tabLen.rows[i].cells[7].innerHTML + '","sloc":"' + tabLen.rows[i].cells[8].innerHTML+ '","deliveryDate":"' + deliveryDate + '"},'
+        jsonT += '{"itemId":"' + tabLen.rows[i].cells[0].innerHTML + '","material_id":"' + tabLen.rows[i].cells[1].innerHTML + '","material_name":"' + tabLen.rows[i].cells[2].innerHTML + '","quantity":' + quantity + ',"price":' + dj + ',"sum":' + sum + ',"currency":"' + tabLen.rows[i].cells[6].innerHTML + '","plant":"' + pk + '","sloc":"' + tabLen.rows[i].cells[8].innerHTML+ '","deliveryDate":"' + deliveryDate + '"},'
 }
     jsonT= jsonT.substr(0, jsonT.length - 1);
     jsonT += "]";
@@ -939,8 +992,12 @@ function create(){ //创建成功
             "vid": gyscode
     },
         success: function (data) {
-            let a = JSON.parse(data)
-showMessage({text: '创建成功！采购订单编号：'+a.content ,type: 'success',showClose: true, autoClose: false})}
+           let a = JSON.parse(data)
+            if(a.content!=0)
+            showMessage({text: '创建成功！采购订单编号：'+a.content ,type: 'success',showClose: true, autoClose: false})
+            else
+            showMessage({text: '商品不存在!',type: 'warning'})
+        }
         })
 }
 

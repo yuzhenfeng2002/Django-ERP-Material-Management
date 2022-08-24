@@ -185,19 +185,19 @@ MAIN SIDEBAR MENU
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">采购组织</label>
                             <div class="col-sm-10">
-                                <select type="text" class="form-control" name="pOrg" ></select>
+                                <select type="text" class="form-control" name="pOrg" id="porg"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">采购组</label>
                             <div class="col-sm-10">
-                                <select type="text" class="form-control" name="pgrp"></select>
+                                <select type="text" class="form-control" name="pgrp" id="pgrp"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">公司编码信息</label>
                             <div class="col-sm-10">
-                                <select type="text"  class="form-control" name="company"></select>
+                                <select type="text"  class="form-control" name="company" id="company"></select>
                             </div>
                         </div>
                         
@@ -268,113 +268,6 @@ MAIN SIDEBAR MENU
 
 
 
-<!--搜索商品编码modal-->
-              <div class="col-sm-12">
-                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                          <h4 class="modal-title" id="myModalLabel">搜索商品编码</h4>
-                        </div>
-                        <div class="modal-body">
-                          <!-- Hi there, I am a Modal Example for Dashgum Admin Panel. -->
-                          <!-- 搜索条件 -->
-                          <form class="form-horizontal style-form" id="material" method="post">
-                            <fieldset>
-                                <div class="form-group">
-                                    <label class="col-sm-4 col-sm-4 control-label">
-                                        <div class="pull-right">商品名称:</div>
-                                        </label>
-                                    <div class="col-sm-5">
-                                        <input type="text" class="form-control" name="mname" id="mname">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-4 col-sm-4 control-label">
-                                        <div class="pull-right">商品类型:</div>
-                                        </label>
-                                    <div class="col-sm-5">
-                                        <input type="text" class="form-control" name="industrySector" id="industrySector">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-4 col-sm-4 control-label">
-                                        <div class="pull-right">储存位置:</div>
-                                        </label>
-                                    <div class="col-sm-5">
-                                        <input type="text" class="form-control" name="mType" id="mType">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input class="btn btn-theme02" type="submit" name="submit" value="submit">
-                                    </div>
-                                </div>
-                              </fieldset>
-                        </form>
-                        
-
-                        <table  class="table table-bordered table-striped table-condensed">
-                            <thead>
-                                <!-- tr 指定表行标签-->
-                                <tr>
-                                    <!-- th 设置表头内容，默认加粗-->
-                                    <th>表头1</th>
-                                    <th>表头2</th>
-                                </tr>
-                            </thead>
-                            <tbody id="searchDiv">
-
-
-                            </tbody>
-                        </table>
-                        <script>
-                            $('#material').on('submit', function(e) {
-                                e.preventDefault();
-                                $.ajax(
-                                {
-                                    type: "POST",
-                                    data:{
-                                        mname: $("#mname").val(),
-                                        mType: $("#mType").val(),
-                                        industrySector: $("#industrySector").val(),
-                                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                                        dataType: "json"
-                                    },
-                                    success: function(data) {
-                                      //  $('#material_result').text(data);
-                                        var dataObj=eval("("+data+")");
-                                        var out = "";
-                                        var i;
-                                        //"pk": 1, "fields": {"mname": "CHLK", "mType": "HALB", "mGroup": "AS", "meaunit": "ABC", "netWeight": 1, "weightUnit": "ABC", "transGrp": "T", "loadingGrp": "L", "industrySector": "I"}
-                                        for(i = 0; i < dataObj.length; i++) {
-                                            //out += '<p '+ dataObj[i].fields.mname + '>' + '</p><br>';<a href="basic_table.html#">Company Ltd</a>
-                                            out += '<tr><td>'+ dataObj[i].pk+ '</td><td>' + dataObj[i].fields.mname +'</td><tr>';
-                                        }
-                                        document.getElementById("searchDiv").innerHTML=out;
-                                    },
-                                    failure: function() {
-                
-                                    }
-                                })
-                            });
-                            $("table").on("dblclick","tr",function(e){
-                                
-                                document.getElementById("materialInput").value=$(this).find('td').eq(0).text();
-                                $('#myModal1').modal('hide')
-                                
-                            })
-                            
-                        </script>
-                        </div>
-                        <div class="modal-footer">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<!--搜索商品编码modal-->
 
               <div class="col-md-12 mt">
                 <div class="content-panel">
@@ -508,6 +401,7 @@ MAIN SIDEBAR MENU
                     }
                 })
             });
+            
             $("table").on("dblclick","tr",function(e){
                 
                 document.getElementById("danwei").value=$(this).find('td').eq(1).text();
@@ -515,52 +409,38 @@ MAIN SIDEBAR MENU
                 
             });
 
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_plant' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择工厂</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
-                    }
-                    //由于一个页面里有多个表单，所以用name寻找各个下拉框进行赋值
-                    var items=document.getElementsByName("plant");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    }
-                },
-                failure: function() {
+          
+            $("#factory").change(function(){ 
+        
+                $.ajax({
+                    type: "post",
+                    url: "{% url 'MM:ajax_getStockByName' %}",
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        //plant值
+                        name:$("#factory").val(),
+                    },
+                    success: function(data) {
+                        $('#test').text(data);
+                        //add：如果没有该工厂，回传回来一个message提示
+                        //[{'message': '暂无该工厂相关数据，请重新确认！', 'fields': init}]
+                        var dataObj = eval("("+data+")");
+                        //注意：plant选择空的时候，这三项也返回空
+                        const pk = dataObj[0].pk;
+        sessionStorage.setItem('pk', pk)
 
-                }
-            });
-
-            $.ajax({
-                type: "post",
-                url: "{% url 'MM:ajax_load_porg' %}",
-                data:{
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                },
-                success: function(data) {
-                    var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择采购组织</option>";
-                    var i;
-                    for(i = 0; i < dataObj.length; i++) {
-                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
+                        fields = dataObj[0].fields
+                        $("#pgrp").val(fields.pGrp);
+                        $("#porg").val(fields.pOrg);
+                        $("#company").val(fields.companyCode);
+                    },
+                    failure: function() {
+        
                     }
-                    var items=document.getElementsByName("pOrg");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
-                },
-                failure: function() {
+                });
+            
+            }); 
 
-                }
-            });
             $.ajax({
                 type: "post",
                 url: "{% url 'MM:ajax_load_pgrp' %}",
@@ -569,21 +449,55 @@ MAIN SIDEBAR MENU
                 },
                 success: function(data) {
                     var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择采购组</option>";
+                    var out = "<option value='' >pgrp</option>";
                     var i;
                     for(i = 0; i < dataObj.length; i++) {
                         out += '<option value=' + dataObj[i].Pgrp+'>'+ dataObj[i].Pgrp + '--' + dataObj[i].Name + '</option>' ;
                     }
-                    var items=document.getElementsByName("pgrp");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
+                    document.getElementById("pgrp").innerHTML=out;
                 },
                 failure: function() {
 
                 }
             });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_plant' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >plant</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    document.getElementById("factory").innerHTML=out;
+                },
+                failure: function() {
 
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "{% url 'MM:ajax_load_porg' %}",
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(data) {
+                    var dataObj = eval("("+data+")");
+                    var out = "<option value='' >porg</option>";
+                    var i;
+                    for(i = 0; i < dataObj.length; i++) {
+                        out += '<option value=' + dataObj[i].Porg+'>'+ dataObj[i].Porg + '--' + dataObj[i].Name + '</option>' ;
+                    }
+                    document.getElementById("porg").innerHTML=out;
+                },
+                failure: function() {
+
+                }
+            });
             $.ajax({
                 type: "post",
                 url: "{% url 'MM:ajax_load_company' %}",
@@ -592,23 +506,19 @@ MAIN SIDEBAR MENU
                 },
                 success: function(data) {
                     var dataObj = eval("("+data+")");
-                    var out = "<option value='' >请选择公司编码</option>";
+                    var out = "<option value='' >company</option>";
                     var i;
                     for(i = 0; i < dataObj.length; i++) {
                         out += '<option value=' + dataObj[i].CompanyCode+'>'+ dataObj[i].CompanyCode + '--' + dataObj[i].Name + '</option>' ;
                     }
-                    var items=document.getElementsByName("company");
-                    for(i = 0; i < items.length; i++) {
-                        items[i].innerHTML=out;
-                    } 
+                    document.getElementById("company").innerHTML=out;
                 },
                 failure: function() {
 
                 }
             });
+            
 
-        </script>
-        <script>
             function currencyf() {
                 console.log(1);
     
@@ -642,6 +552,7 @@ function addgood() {
 function create(){ //提交表格，创建成功
     var tabLen = document.getElementById("gooddiv");
     var beizhu = $("#beizhu").val()
+    var pk=sessionStorage.getItem('pk')
         var jsonT = "[";
         for (var i = 0; i < tabLen.rows.length; i++) {
                 jsonT += '{"itemId":"' + tabLen.rows[i].cells[0].innerHTML + '","material_id":' + tabLen.rows[i].cells[1].innerHTML + ',"plant":"' + tabLen.rows[i].cells[2].innerHTML + '","estimatedPrice":' + tabLen.rows[i].cells[3].innerHTML + ',"currency":"' + tabLen.rows[i].cells[4].innerHTML + '","quantity":' + tabLen.rows[i].cells[5].innerHTML + ',"deliveryDate":"' + tabLen.rows[i].cells[6].innerHTML + '"},'

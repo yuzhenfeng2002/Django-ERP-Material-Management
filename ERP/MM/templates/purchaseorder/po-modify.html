@@ -264,7 +264,13 @@ MAIN SIDEBAR MENU
                         
 
                           </section>
-                          {{ message }}
+                          {% if message %}
+                          <script>
+                              mes = "{{message}}";
+                              if (!mes.match("message"))
+                                  alert(mes);
+                          </script>
+                          {% endif %}
                             </div><!-- /row -->
                       
                     </div><!-- /content-panel -->
@@ -321,72 +327,7 @@ MAIN SIDEBAR MENU
                     </div>
                 </div><!-- /col-md-12 -->
 
-                <!--结算货币modal--> 
-<div class="col-sm-12">
-    <div class="modal fade" id="myModalcurr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id="myModalLabel">货币</h4>
-            </div>
-            <div class="modal-body">
-              
-            <table  class="table table-bordered table-striped table-condensed">
-                <thead>
-                    <!-- tr 指定表行标签-->
-                    <tr>
-                        <!-- th 设置表头内容，默认加粗-->
-                        <th style="width: 100px;">序号</th>
-                        <th style="width: 120px;">货币</th>
-                        <th>名称</th>
-                    </tr>
-                </thead>
-                <tbody id="currDiv">
-
-                </tbody>
-            </table>
-
-            <script>   //不需要提交表单，点击input框加载modal直接列出
-                $('').on('', function(e) {
-                    e.preventDefault();
-                    $.ajax(
-                    {
-                        type: 
-                        url: 
-                        data:{
-                           
-                        },
-                        success: function() {
-                          var i=0 //序号
-                            for() {
-                                i++
-                                out += '<tr><td>'+ i + '</td><td>' + /* 货币 */ + '</td><td>' + /* 名称 */ +'</td><tr>';
-                            }
-                            document.getElementById("currDiv").innerHTML=out;
-                        },
-                        failure: function() {
-    
-                        }
-                    })
-                });
-                $("table").on("dblclick","tr",function(e){
-                    
-                    document.getElementById("curr1").value=$(this).find('td').eq(0).text();
-                    $('#myModalcurr').modal('hide')
-                    
-                })
-                
-            </script>
-            
-            </div>
-            <div class="modal-footer">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-<!--结算货币modal-->
+               
 
 		</section><! --/wrapper -->
       </section><!-- /MAIN CONTENT -->
@@ -456,7 +397,6 @@ MAIN SIDEBAR MENU
             url: '/mm/purchaseorder/modifyinfo3/',
             data:{"json":jsonT},
             success: function (data) {
-                alert(1);
                 showMessage({text: '保存商品信息成功！',type: 'success'})
 
             }
@@ -466,13 +406,7 @@ MAIN SIDEBAR MENU
 
     }
 
-    function currency() {
-
-//弹出模态框
-
-$("#myModalcurr").modal("show")
-
-}
+    
 
 </script>
 

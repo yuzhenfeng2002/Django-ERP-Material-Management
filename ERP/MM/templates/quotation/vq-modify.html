@@ -152,7 +152,7 @@ MAIN SIDEBAR MENU
                                                                                      <div class="content-panel">
                       <h4><i class="fa fa-angle-right"></i> 供应商报价详情
                         {% for a in quotation %}
-                    <label style="margin-left: 76%;color:brown;font-size:larger" >拒绝情况：<input type="checkbox" id="jujue" checked="{{a.rej}}"></label>
+                    <label style="margin-left: 76%;color:brown;font-size:larger" >拒绝情况：<input type="checkbox" id="jujue"></label>
                     </h4>
                           <section id="unseen">
 
@@ -415,8 +415,6 @@ MAIN SIDEBAR MENU
                 "rej": $('#jujue').prop('checked')
             },
             success: function (data) {
-                alert(data)
-                let a = JSON.parse(data)
                 showMessage({text: '保存成功！',type: 'success'})
             }
         });     
