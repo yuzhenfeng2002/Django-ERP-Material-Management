@@ -22,7 +22,7 @@
 
 <!--common script for all pages-->
 <script src="{% static 'assets/js/common-scripts.js' %}"></script>
-
+<script src="{% static 'assets/js/the-datepicker.js' %}"></script>
 <!--script for this page-->
 
 <!-- 引入刚刚下载的 ECharts 文件 -->
@@ -44,6 +44,7 @@
 
     <link href="{% static 'assets/css/purchase.css' %}" rel="stylesheet">
 
+    <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
 
   </head>
 
@@ -308,7 +309,7 @@ MAIN SIDEBAR MENU
         </form>
         {% comment %} <h4> 供应商</h4> {% endcomment %}
         {% comment %} <hr> {% endcomment %}
-        <table  class="table table-bordered table-striped table-condensed">
+        <table  class="table table-bordered table-striped table-condensed" id="sptable">
           *双击填入编号                                       
           <thead>
           <!-- 搜索编号返回的属性 style="width: 100px;"-->
@@ -369,7 +370,7 @@ MAIN SIDEBAR MENU
     });
 
     //双击行 信息进入“搜索商品条件”三个框
-    $("table").on("dblclick","tr",function(e){
+    $("#sptable").on("dblclick","tr",function(e){
         document.getElementById("spcode").value=$(this).find('td').eq(0).text();
         $('#myModalgood').modal('hide');
     });
@@ -429,14 +430,14 @@ MAIN SIDEBAR MENU
                                 <input type="text" class="form-control" name="gcode" id="gcode">
                             </div>
                             <div class="col-sm-2">
-                                <input class="btn btn-theme02" type="submit" name="submit" value="submit">
+                                <input class="btn btn-theme02" type="submit" name="submit" value="提交">
                             </div>
                         </div>
                       </fieldset>
                 </form>
                 
 
-                <table  class="table table-bordered table-striped table-condensed">
+                <table  class="table table-bordered table-striped table-condensed" id="prtable">
                     <thead>
                         <!-- tr 指定表行标签-->
                         <tr>
@@ -459,23 +460,25 @@ MAIN SIDEBAR MENU
                         $.ajax(
                         {
                             type: "POST",
-                            url: ,
+                            url: "/mm/purchaseorder/searchjiekouzhuanhua",
                             data:{
-                                $("#cname").val(),
-                                $("#ctime").val(),
-                                $("#gcode").val(),
+                                cname:$("#cname").val(),
+                                ctime:$("#ctime").val(),
+                                gcode:$("#gcode").val(),
                                 csrfmiddlewaretoken: '{{ csrf_token }}',
                                 dataType: "json"
                             },
                             success: function(data) {
+                              //  alert(data)
                               //  $('#material_result').text(data);
-                                var dataObj=eval("("+data+")");
+                             //   var dataObj=eval("("+data+")");
+                             let a = JSON.parse(data)
                                 var out = "";
                                 var i;
                                 //"pk": 1, "fields": {"mname": "CHLK", "mType": "HALB", "mGroup": "AS", "meaunit": "ABC", "netWeight": 1, "weightUnit": "ABC", "transGrp": "T", "loadingGrp": "L", "industrySector": "I"}
-                                for(i = 0; i < dataObj.length; i++) {
+                                for(i = 0; i < a.length; i++) {
                                     //out += '<p '+ dataObj[i].fields.mname + '>' + '</p><br>';<a href="basic_table.html#">Company Ltd</a>
-                                    out += '<tr><td>'+ /*采购申请编码*/+ '</td><td>' + /*创建者编码*/ + '</td><td>' + /*创建时间*/+ '</td><td>' + /*物料编码*/+ '</td><td>' + /*条目编码*/+'</td><tr>';
+                                    out += '<tr><td>'+ a[i].pr_id + '</td><td>' + a[i].pr__euser_id + '</td><td>' + a[i].deliveryDate + '</td><td>' + a[i].meterial__id+ '</td><td>' + a[i].itemId+'</td><tr>';
                                 }
                                 document.getElementById("prDiv").innerHTML=out;
                             },
@@ -484,7 +487,7 @@ MAIN SIDEBAR MENU
                             }
                         })
                     });
-                    $("table").on("dblclick","tr",function(e){
+                    $("#prtable").on("dblclick","tr",function(e){
                         
                         document.getElementById("prcode").value=$(this).find('td').eq(0).text();
                         $('#myModalpr').modal('hide')
@@ -563,7 +566,6 @@ MAIN SIDEBAR MENU
   </section>
 
 
-  <link href="{% static 'assets/css/the-datepicker.css' %}" rel="stylesheet">
 
     <script>
             function date(time){
