@@ -146,13 +146,18 @@ MAIN SIDEBAR MENU
           <section class="wrapper">
           	<h3><i class="fa fa-angle-right"></i> 修改供应商报价</h3>
 		  		<div class="row mt">
+                    <button  class="btn btn-danger" id="denybtn" style="margin-left:87%" onclick="deny()">拒绝供应商报价</button>
+
                     <div class="col-lg-12">
 			  		<div class="col-lg-12">
+                      
 
-                                                                                     <div class="content-panel">
+                        <div class="content-panel">
                       <h4><i class="fa fa-angle-right"></i> 供应商报价详情
+
                         {% for a in quotation %}
-                    <label style="margin-left: 76%;color:brown;font-size:larger" >拒绝情况：<input type="checkbox" id="jujue"></label>
+                    <label style="margin-left: 76%;color:brown;font-size:larger" >拒绝情况：<label id="rej">{{a.rej}}</label></label>
+                    
                     </h4>
                           <section id="unseen">
 
@@ -325,17 +330,18 @@ MAIN SIDEBAR MENU
                                             <label>报价有效期：</label>
                                             <label>{{b.validTime}}</label>
                                         </td>
+                                       
                                     </tr>
                                     <tr>
-                                        <td>
-                                        </td>
+                                        
                                     </tr>
                                 </tbody>
 
                             </table>
 
                             <div id="btn-vqm">
-                                <button  class="btn btn-primary btn-lg btn-block" onclick="save()">保存供应商报价</button>
+                               
+                                <button  class="btn btn-primary btn-lg btn-block" onclick="save()">保存</button>
                             </div>
                             {%endfor%}
                             {%endfor%}
@@ -389,12 +395,25 @@ MAIN SIDEBAR MENU
 
 </script>
 <script>
+    var obj = new Boolean(false);
+
+    $(document).ready(function () {
+        var rej=document.getElementById("rej").innerHTML
+        if(rej=="False")
+        $("#denybtn").show()
+        else $("#denybtn").hide()
+    })
+    
     function date(time){
         var datepicker = new TheDatepicker.Datepicker(time);
         datepicker.render();
 
         }
 
+        function deny(){
+            obj=true
+            showMessage({text: '拒绝成功！请保存。',type: 'success'})
+        }
 
     function save(){
        var rid=document.getElementById("rid").innerHTML
@@ -402,7 +421,7 @@ MAIN SIDEBAR MENU
        var deliveryDate=$("#deliveryDate").val()
        var quantity=$("#quantity").val()
        var collNo=$("#collNo").val()
-       console.log(rid,deadline,deliveryDate,quantity,collNo)
+      
         $.ajax({
             type: 'post',
             url: '/mm/purchaseorder/quomodifyjiekou/',
@@ -412,7 +431,7 @@ MAIN SIDEBAR MENU
                 "deliveryDate": deliveryDate,
                 "quantity": quantity,
                 "collNo": collNo,
-                "rej": $('#jujue').prop('checked')
+                "rej": obj
             },
             success: function (data) {
                 showMessage({text: '保存成功！',type: 'success'})
