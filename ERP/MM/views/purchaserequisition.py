@@ -349,7 +349,7 @@ def modify_pr(request: HttpRequest, pk):
 
 
 @csrf_exempt
-@login_required()
+@login_required
 def newrequeinsert(request):
     if request.method == "GET":
         return render(request, '../templates/purchaserequisition/create-new.html', locals())
