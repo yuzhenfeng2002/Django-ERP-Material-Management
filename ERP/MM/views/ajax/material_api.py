@@ -143,7 +143,7 @@ def create_item(request: HttpRequest):
             error_fields = list(e.error_dict.keys())
             return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
         new_material.save()
-        msg = "商品"
+        msg = "商品和"
         material: Material = new_material
     else:
         material = materials.first()
@@ -163,7 +163,7 @@ def create_item(request: HttpRequest):
             error_fields = list(e.error_dict.keys())
             return HttpResponse(json.dumps({'status':0, 'message':"表单填写错误！", 'fields':error_fields}))
         new_item.save()
-        msg += "和工厂"
+        msg += "商品条目"
         return HttpResponse(json.dumps({'status':1, 'message':msg+"创建成功！商品编号为"+str(material.id)+"，商品条目编号为"+str(new_item.id)+"。"}))
     else:
         return HttpResponse(json.dumps({'status':0, 'message':"该商品在当前工厂已存在！"}))
