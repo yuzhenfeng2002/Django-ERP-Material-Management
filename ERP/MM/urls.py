@@ -94,6 +94,7 @@ urlpatterns = [
     path('quotation/searchqinggou', quotation.searchqinggou, name='search_pur'),
     path('quotation/searchquo', quotation.searchquo, name='search_pur'),
     path('quotation/vqcreate/<int:pk>/', purchaseorder.vqcreate, name='search_pur'),
+    path('quotation/vqcreatejiekou/', purchaseorder.vqcreatejiekou, name='search_pur'),
     path('quotation/vreview/', purchaseorder.vreview, name='search_pur'),
     path('purchaseorder/pcs/', quotation.pcs, name='search_pur'),
     path('purchaseorder/info/<int:pk>/', purchaseorder.poinfo, name='search_pur'),

@@ -553,7 +553,12 @@ def quomodify(request: HttpRequest, pk):
         caigou = list(caigou)
         quotation = list(quotation)
         for i in requisitionItem:
-            i['price'] = price
+            if price==None:
+                i['price']=0
+            else:
+                i['price'] = price
+            if i['quantity']==None:
+                i['quantity']=0
             i['sum'] = i['quantity']*i['price']
         requisitionItem = list(requisitionItem)
         quotation = list(quotation)
