@@ -114,6 +114,8 @@ def create_item(request: HttpRequest):
     weightUnit = post.get('weightUnit')
     transGrp = post.get('transGrp')
     loadingGrp = post.get('loadingGrp')
+    if transGrp is None: transGrp = ''
+    if loadingGrp is None: loadingGrp = ''
     industrySector = post.get('industrySector')
     mGroup = post.get('mGroup')
     sloc = post.get('sloc')
