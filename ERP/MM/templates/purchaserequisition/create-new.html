@@ -653,7 +653,7 @@ function create(){ //提交表格，创建成功
         console.log(beizhu)
         $.ajax({
             type: 'post',
-            url: '',
+            url: '/mm/purchaserequisition/newinsertreque/',
             data:{"json":jsonT,"beizhu":beizhu},
             success: function (data) {
                 let a = JSON.parse(data)
