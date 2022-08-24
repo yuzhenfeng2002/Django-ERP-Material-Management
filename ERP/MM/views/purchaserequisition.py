@@ -349,7 +349,7 @@ def modify_pr(request: HttpRequest, pk):
 
 
 @csrf_exempt
-@login_required
+
 def newrequeinsert(request):
     if request.method == "GET":
         return render(request, '../templates/purchaserequisition/create-new.html', locals())
@@ -553,7 +553,12 @@ def quomodify(request: HttpRequest, pk):
         caigou = list(caigou)
         quotation = list(quotation)
         for i in requisitionItem:
-            i['price'] = price
+            if price==None:
+                i['price']=0
+            else:
+                i['price'] = price
+            if i['quantity']==None:
+                i['quantity']=0
             i['sum'] = i['quantity']*i['price']
         requisitionItem = list(requisitionItem)
         quotation = list(quotation)
