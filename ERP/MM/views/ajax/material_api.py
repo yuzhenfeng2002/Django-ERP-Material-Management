@@ -125,6 +125,7 @@ def create_item(request: HttpRequest):
     stock_name = post.get('name')
     shortText = post.get('shortText')
     materials: QuerySet = Material.objects.filter(mname__exact=mname)
+    msg=''
     if len(materials) == 0:
         new_material = Material(
             mname=mname, mType=mType, mGroup=mGroup, meaunit=meaunit,
