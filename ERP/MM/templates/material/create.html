@@ -1320,7 +1320,7 @@ function re(){
                         dataType: "json",
                         csrfmiddlewaretoken: '{{ csrf_token }}',
                         //输入三个搜索框的值
-                        mid: '',
+                        mid: $(this).find('td').eq(0).text(),
                         mname: $(this).find('td').eq(1).text(),
                         plant: $(this).find('td').eq(5).text(),
                         sloc: $(this).find('td').eq(6).text(),
