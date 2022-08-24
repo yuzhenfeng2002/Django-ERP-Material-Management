@@ -343,7 +343,7 @@
                                         <th>送货时间</th>
                                     </tr>
                                     </thead>
-                                    <tbody>{{reque}}
+                                    <tbody>
                                         {% for c in reque %}
                                     <tr>
                                         <td id="rid">{{c.id}}</td>
@@ -384,25 +384,25 @@
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">供应商名称</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="vdname">
+                                <input type="text" class="form-control" id="vdname1">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">城市</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="city">
+                                <input type="text" class="form-control" id="city1">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">街区地址</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="location">
+                                <input type="text" class="form-control" id="location1">
                             </div>
                         </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">供应商邮编</label>
                               <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="postcode">
+                                  <input type="text" class="form-control" id="postcode1">
                               </div>
                           </div>
 
@@ -511,8 +511,8 @@
               <th> 供应商编号</th>
               <th> 供应商名称</th>
               <th> 所在城市</th>
-              <th> 公司编码</th>
-              <th> 创建者编号</th>
+              <th> 街区地址</th>
+              <th> 供应商邮编</th>
           </tr>
           </thead>
           <tbody id="searchDiv"></tbody>
@@ -541,7 +541,7 @@
                         var i;
                         for(i = 0; i < dataObj.length; i++) {
                             fields = dataObj[i].fields
-                            out += '<tr><td>'+ dataObj[i].pk+ '</td><td>' + fields.vname+ '</td><td>' + fields.city+ '</td><td>' + fields.country+ '</td><td>'+ fields.euser+ '</td><tr>';
+                            out += '<tr><td>'+ dataObj[i].pk+ '</td><td>' + fields.vname+ '</td><td>' + fields.city+ '</td><td>' + fields.address+ '</td><td>'+ fields.fax+ '</td><tr>';
                         }
                         document.getElementById("searchDiv").innerHTML=out;
                     },
@@ -553,6 +553,10 @@
  //双击行 信息进入“搜索商品条件”三个框
  $("table").on("dblclick","tr",function(e){
     document.getElementById("gyscode").value=$(this).find('td').eq(0).text();
+    document.getElementById("vdname1").value=$(this).find('td').eq(1).text();
+    document.getElementById("city1").value=$(this).find('td').eq(2).text();
+    document.getElementById("location1").value=$(this).find('td').eq(3).text();
+    document.getElementById("postcode1").value=$(this).find('td').eq(4).text();
     $('#myModalgys').modal('hide');
 });
         </script>
@@ -658,10 +662,9 @@ var mid = document.getElementById("mid").innerHTML
         },
             success: function (data) {
                 let a = JSON.parse(data)
-                alert(a)
                 var j
   for(j=0;j<i;j++){
-    showMessage({text: '创建成功！报价申请编号：'+a.content ,type: 'success',showClose: true, autoClose: false})
+    showMessage({text: '创建成功！报价申请编号：'+a[j] ,type: 'success',showClose: true, autoClose: false})
   }
             }
         });     
