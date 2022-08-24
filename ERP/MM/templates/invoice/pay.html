@@ -228,7 +228,7 @@
                       <br>
                      
                         <div class="col-sm-6">
-                            <input  type="text" id="materialInput2" placeholder="请输入付款过账日期" class="form-control" >
+                            <input  type="text" id="materialInput2" placeholder="请输入付款过账日期" class="form-control" required>
                 
                         </div>
                         <script src="{% static 'assets/js/the-datepicker.js' %}"></script>
@@ -301,11 +301,16 @@
                         
                     },
                     success: function(data) {
-                        $('#item_result').text(data);
-                        var dataObj = eval("("+data+")");
-                        
-                       var out='';
+                      //  $('#item_result').text(data);
+                      var dataObj = eval("("+data+")");
+                      if(dataObj.status==1){
+                        showMessage({text: dataObj.message ,type: 'success'});
+                        var out='';
                        document.getElementById("searchDiv2").innerHTML=out;
+                    }else{
+                        showMessage({text: dataObj.message ,type: 'error'});
+                    }
+                      
                          //结算额
                         // document.getElementById("sum").innerHTML=out;
                         // console.log(out);
@@ -343,7 +348,7 @@
                        var out='';
                         for(i = 0; i < dataObj.gr.length; i++) {
                             content2 =dataObj.gr[i].fields;
-                            out += '<tr><td><input  id="cid'+i+'" onclick="submitpk(this.id)" name="checkbox" type="checkbox" ></td><td >'+ dataObj.gr[i].vendor.companyCode+ '</td><td>' + dataObj.gr[i].vendor.id + '</td><td id="itempk'+i+'">' + dataObj.gr[i].pk+ '</td><td>' + dataObj.gr[i].fields.text+ '</td><td>'+ dataObj.gr[i].fields.postDate.quantity+ '</td><td>'+ content2.sumAmount+ '</td><td id="bid'+i+'">未结算</td></tr>';
+                            out += '<tr><td><input  id="cid'+i+'" onclick="submitpk(this.id)" name="checkbox" type="checkbox" ></td><td >'+ dataObj.gr[i].vendor.companyCode+ '</td><td>' + dataObj.gr[i].vendor.vid + '</td><td id="itempk'+i+'">' + dataObj.gr[i].pk+ '</td><td>' + dataObj.gr[i].fields.text+ '</td><td>'+ dataObj.gr[i].fields.postDate+ '</td><td>'+ content2.sumAmount+ '</td><td id="bid'+i+'">未结算</td></tr>';
                          }
                         //  $('#item_result').text(out);
                          document.getElementById("searchDiv2").innerHTML=out;
