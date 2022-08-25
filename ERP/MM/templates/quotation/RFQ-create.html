@@ -614,18 +614,18 @@
     function addvendor() {
         i++
     var vdcode= $("#gyscode").val()
-    var vdname = $("#vdname").val()
-    var city = $("#city").val()
-    var location = $("#location").val()
-    var postcode = $("#postcode").val()
+    var vdname = $("#vdname1").val()
+    var city = $("#city1").val()
+    var location = $("#location1").val()
+    var postcode = $("#postcode1").val()
     var trStr = ''
     trStr = '<tr><td>' + vdcode + '</td><td>' + vdname + '</td><td>' + city + '</td><td>' + location + '</td><td>' + postcode + '</td></tr>'
     document.getElementById("gysdiv").innerHTML += trStr;
     $("#gyscode").val('');
-    $("#vdname").val('');
-    $("#city").val('');
-    $("#location").val('');
-    $("#postcode").val('');
+    $("#vdname1").val('');
+    $("#city1").val('');
+    $("#location1").val('');
+    $("#postcode1").val('');
     showMessage({text: '添加成功！',type: 'success'})
 
 }
