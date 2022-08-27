@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 
 from ..models import EUser
@@ -84,6 +84,7 @@ def register(request: HttpRequest) -> HttpResponse:
             )
             euser.set_password(password)
             euser.save()
+            messages.success(request=request, message="用户创建成功！")
             return HttpResponseRedirect(reverse('MM:login'))
         else:
             return render(
