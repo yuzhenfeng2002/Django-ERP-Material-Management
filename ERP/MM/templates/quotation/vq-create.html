@@ -301,18 +301,17 @@ MAIN SIDEBAR MENU
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="display:flex">
+                        <td>
                             <label>报价：</label>
                             <div class="form-group" style="display:flex">
-                                <input  class="form-control" name="price" placeholder="报价数值" id="price"><input  class="form-control" placeholder="单位" onclick="currencyf()" name="currency" id="danwei" style="width:100px">
+                                <input  class="form-control" name="price" placeholder="报价数值" id="price" style="width:200px"><input  class="form-control" placeholder="单位" onclick="currencyf()" name="currency" id="danwei" style="width:100px">
                             </div>
                         </td>
                         <td>
                             <label>报价有效期：</label>
                             <div class="form-group">
-                                <input  class="form-control"   name="validTime" placeholder="Valid to"  onclick="date(this)" id="validTime">
+                                <input  class="form-control"   name="validTime" placeholder="Valid to"  onclick="date(this)" id="validTime" style="width:200px">
                             </div>
-                            
                         </td>
                        
                     </tr>
@@ -433,6 +432,8 @@ MAIN SIDEBAR MENU
     </script>
     <script>
 
+
+
         $(document).ready(function() {
             
             $.ajax(
@@ -490,9 +491,11 @@ function create(){
     var date = new Date(); 
     var year = date.getFullYear(); 
     var month = date.getMonth() + 1;
-    var day = date.getDay();
+    var day = date.getDate();
    
-   if($.trim(year) > parseInt(dyear) || (parseInt(year) == parseInt(dyear) && parseInt(month) > parseInt(dmonth)) ||( parseInt(year) == parseInt(dyear) && parseInt(month) == parseInt(dmonth) && parseInt(day) > parseInt(dday)))
+
+    console.log(parseInt(dday))
+   if(parseInt(year) > parseInt(dyear) || (parseInt(year) == parseInt(dyear) && parseInt(month) > parseInt(dmonth)) ||( parseInt(year) == parseInt(dyear) && parseInt(month) == parseInt(dmonth) && parseInt(day) > parseInt(dday)))
     showMessage({text: '截止日期已过，无法添加报价!',type: 'warning'})
     else if(parseInt(vyear) < parseInt(dyear) || (parseInt(vyear) == parseInt(dyear) && parseInt(vmonth) < parseInt(dmonth)) ||( parseInt(vyear) == parseInt(dyear) && parseInt(vmonth) == parseInt(dmonth) && parseInt(vday) < parseInt(dday)))
     showMessage({text: '报价有效期必须在截止日期之后!',type: 'warning'})

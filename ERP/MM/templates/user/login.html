@@ -71,7 +71,20 @@
 		                </a>
 		            </div>
 		        </div>
-		
+
+
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                <script>
+                    mes = "{{message}}";
+                    if (!mes.match("message"))
+                        alert(mes);
+                </script>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
 		        <!-- Modal -->
 		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
 		              <div class="modal-dialog">

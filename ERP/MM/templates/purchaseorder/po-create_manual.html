@@ -326,7 +326,7 @@
           	
 
 
-              <div class="row mt">
+              <div class="row mt" id="poc-wrap">
                 <div class="col-lg-12">
                 <div class="form-panel">
                       <h4 class="mb"><i class="fa fa-angle-right"></i> 商品信息</h4>
@@ -691,7 +691,186 @@
         </div>
     <!--结算货币modal-->
 
+                                <!--搜索商品编码modal-->
+ <div class="modal fade" id="myModalgood" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">搜索商品编号</h4>
+        </div>
+        <div class="modal-body">
+          <!-- Hi there, I am a Modal Example for Dashgum Admin Panel. -->
+          <!-- 搜索条件 -->
+          <form  id="material4" class="form-horizontal style-form">
+            <div class="form-group">
+                <label class="col-sm-4 col-sm-4 control-label">
+                  <div class="pull-right">商品名称： </div>
+                </label>
+                <div class="col-sm-5">
+                    <input class="form-control" type="text" name="mname" id="mname" >
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-4 col-sm-4 control-label">
+                  <div class="pull-right">商品类型：</div>
+                </label>
+                <div class="col-sm-5">
+                    <select name="mType" id="mType" class="form-control" >
+                        <!-- 默认为未选 -->
+                        <option value=''>请选择商品类型</option>
+                        <option value='RM'>RM--原材料</option>
+                        <option value='HALB'>HALB--半成品</option>
+                        <option value='FERT'>SF00--成品</option>
+                        <option value='FREMD'>FG00--外部采购物料</option>
+                        <option value='PROC'>MI00--加工物料</option>
+                        <option value='HAWA'>RE00--贸易货物</option> 
+                        <option value='HIBE'>RE00--经营供应</option>
+                    </select>
+                   
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 col-sm-4 control-label">
+                  <div class="pull-right">工业部门：</div>
+                </label>
+                <div class="col-sm-5">
+                    <select class="form-control" name='industrySector' id='industrySector' >
+                        <option value=''>请选择工业部门</option>
+                        <option value='C'>化学工业</option>
+                        <option value='M'>机械工业</option>
+                        <option value='W'>药剂工业</option>
+                        <option value='F'>设备工程</option>
+                        <option value='R'>零售</option>
+                    </select>
+                    
+                </div>
+            </div>
+            
+
+            <div class="form-group">
+                <label class="col-sm-4 col-sm-4 control-label">
+                  <div class="pull-right">工厂：</div>
+                </label>
+                <div class="col-sm-5">
+                    <select class="form-control" name='plant' id='plant' ></select>
+                    
+                </div>
+            </div>
+            
+
+            <div class="form-group">
+                <label class="col-sm-4 col-sm-4 control-label">
+                  <div class="pull-right">存储位置：</div>
+                </label>
+                <div class="col-sm-5">
+                    <select class="form-control" name="sloc" id="sloc" >
+                        <option value=''>请选择存储位置</option>
+                        <option value='TG00'>TG00--贸易商品</option>
+                        <option value='RM00'>RM00--原材料</option>
+                        <option value='SF00'>SF00--半成品</option>
+                        <option value='FG00'>FG00--产成品</option>
+                        <option value='MI00'>MI00--混合产品</option>
+                        <option value='RE00'>RE00--退货产品</option> 
+                    </select>
+                    
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- <label class="col-sm-1 col-sm-1 control-label"></label> -->
+                <label class="col-sm-4 col-sm-4 control-label">
+                    <div class="pull-right">创建者编号：</div>
+                    </label>
+                <div class="col-sm-5">
+                    <input name="uid" id="uid" type="text" class="form-control">
+                </div>
+                <div class="col-sm-2">
+                    <input type="submit"  class="btn btn-theme02">
+                    </div>
+            </div>
+            
+
+        </form>
+        {% comment %} <h4> 供应商</h4> {% endcomment %}
+        {% comment %} <hr> {% endcomment %}
+        <table  class="table table-bordered table-striped table-condensed" id="sptable">
+          *双击填入编号                                       
+          <thead>
+          <!-- 搜索编号返回的属性 style="width: 100px;"-->
+          <tr>
+              <th> 商品编号</th>
+              <th> 商品名称</th>
+              <th> 商品类型</th>
+              <th> 工业部门</th>
+              <th> 工厂</th>
+              <th> 存储位置</th>
+              <th> 创建者编号</th>
+          </tr>
+          </thead>
+          <tbody id="goodDiv"></tbody>
+      </table>
+      <script>
+        
+         //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
+    $('#material4').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax(
+        {
+            type: "POST",
+            url: "{% url 'MM:ajax_search_item' %}",
+            data:{
+                dataType: "json",
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                mid: '',
+                mname: $("#mname").val(),
+                mType: $("#mType").val(),
+                industrySector: $("#industrySector").val(),
+                sloc: $("#sloc").val(),
+                plant: $("#plant").val(),
+                uid: $('#uid').val(),
+            },
+            success: function(data) {
+
+                $('#item_result').text(data);
+            
+                var dataObj = eval("("+data+")");
+                var out = "";
+                var i;
                 
+                for(i = 0; i < dataObj.length; i++) {
+                    //dataObj[i].fields.xx
+                    fields = dataObj[i].fields
+                    material = dataObj[i].material
+                    stock = dataObj[i].stock
+                    user = dataObj[i].user
+                    out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
+                }
+                document.getElementById("goodDiv").innerHTML=out;
+            },
+            failure: function() {
+
+            }
+        })
+    });
+
+    //双击行 信息进入“搜索商品条件”三个框
+    $("#sptable").on("dblclick","tr",function(e){
+        document.getElementById("goodcode-pocm").value=$(this).find('td').eq(0).text();
+        document.getElementById("goodname-pocm").value=$(this).find('td').eq(1).text()
+        $('#myModalgood').modal('hide');
+        $(".modal-backdrop").remove();
+    });
+
+
+      </script>
+        </div><div class="modal-footer"></div>
+    </div>
+      </div>
+    </div>
+  <!--搜索商品编码modal-->
+
 
 
 
@@ -836,7 +1015,7 @@ function currencyf() {
                 },
                 success: function(data) {
                     var dataObj = eval("("+data+")");
-                    var out = "<option value='' >plant</option>";
+                    var out = "<option value='' >请选择工厂</option>";
                     var i;
                     for(i = 0; i < dataObj.length; i++) {
                         out += '<option value=' + dataObj[i].Plant+'>'+ dataObj[i].Plant + '--' + dataObj[i].Name + '</option>' ;
@@ -939,6 +1118,8 @@ function addgood() { //商品
     document.getElementById("clocation-pocm").value=''
     document.getElementById("time-pocm").value=''
     showMessage({text: '添加成功！',type: 'success'})
+
+    $("#poc-wrap").hide()
   //     }
   // else
   //  showMessage({text: '添加失败，商品不存在。',type: 'warning'})

@@ -401,7 +401,11 @@ MAIN SIDEBAR MENU
         var rej=document.getElementById("rej").innerHTML
         if(rej=="False")
         $("#denybtn").show()
-        else $("#denybtn").hide()
+        else 
+        {
+            $("#denybtn").hide();
+            obj=true
+    }
     })
     
     function date(time){

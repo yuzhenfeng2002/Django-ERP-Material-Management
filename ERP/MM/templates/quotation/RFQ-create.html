@@ -641,8 +641,10 @@ var rid = document.getElementById("rid").innerHTML
 var iid = document.getElementById("iid").innerHTML
 var mid = document.getElementById("mid").innerHTML
         var jsonT = "[";
+        var v = new Array() 
         for (var i = 0; i < tabLen.rows.length; i++) {
                 jsonT += '{"vid":"' + tabLen.rows[i].cells[0].innerHTML  + '"},'
+                v[i]=tabLen.rows[i].cells[0].innerHTML
         }
         jsonT= jsonT.substr(0, jsonT.length - 1);
         jsonT += "]";
@@ -664,7 +666,7 @@ var mid = document.getElementById("mid").innerHTML
                 let a = JSON.parse(data)
                 var j
   for(j=0;j<i;j++){
-    showMessage({text: '创建成功！报价申请编号：'+a[j] ,type: 'success',showClose: true, autoClose: false})
+    showMessage({text: '供应商'+ v[j]+'的报价申请创建成功！报价申请单编号：'+a[j] ,type: 'success',showClose: true, autoClose: false})
   }
             }
         });     
