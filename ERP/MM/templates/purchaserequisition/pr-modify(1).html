@@ -461,6 +461,11 @@
     */
     function save(nowTr){ //保存
         //保存失败
+         var $td=$(nowTr).parent().parent();
+         var state=$td.find("#state").text();
+         if($.trim(state) == "已创建采购订单")
+         showMessage({text: '已创建采购订单，无法修改。',type: 'warning'})
+         else  {
         var rid=document.getElementById("rid").innerHTML
         var itemId = $(nowTr).parent().parent().children().eq(0).children().val();
         var mid = $(nowTr).parent().parent().children().eq(1).children().val();
@@ -490,12 +495,12 @@
               "meterial__sloc": sloc
           },
             success: function (data) {
-                showMessage({text: '创建成功！编号：',type: 'success',showClose: true, autoClose: false})
+                showMessage({text: '修改成功！',type: 'success'})  //成功
            
          }   
       })
    
-
+    }
     }
 </script>
 
