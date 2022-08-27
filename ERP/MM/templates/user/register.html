@@ -81,25 +81,12 @@
                 </div>
                 <label style="display:none" id="tishi"></label>     
                   <input type="password" name="password2" placeholder="再次输入密码" id="repw"  onkeyup="checkpassword()">
-                  <select type="text" name="question1" placeholder="验证问题1"  class="form-control">
-                    <option>请选择验证问题</option>
-                    <option>我的生日是？</option>
-                    <option>我最喜欢的颜色是？</option>
-                    <option>我最喜欢的运动是？</option>
-                    <option>我最喜欢的歌曲是？</option>
-                    <option>我最喜欢的菜是？</option>
-                  </select>
-                  <input type="text" name="answer1" placeholder="答案1" style="margin-top:8px">
-                  <select type="text" name="question2" placeholder="验证问题2" class="form-control" >
-                    <option>请选择验证问题</option>
-                    <option>我的生日是？</option>
-                    <option>我最喜欢的颜色是？</option>
-                    <option>我最喜欢的运动是？</option>
-                    <option>我最喜欢的歌曲是？</option>
-                    <option>我最喜欢的菜是？</option>
-                  </select>
-                  <input type="text" name="answer2" placeholder="答案2" style="margin-top:8px">
+                  <input type="text" name="question1" placeholder="验证问题1" >
+                  <input type="text" name="answer1" placeholder="答案1" >
+                  <input type="text" name="question2" placeholder="验证问题2" >
+                  <input type="text" name="answer2" placeholder="答案2" >
                 <input type="button" name="previous" class="previous action-button-previous" value="上一步"/>
+                <button formaction="{% url 'MM:register' %}" formmethod="post"  class="action-button">立即注册</button>
                 {% if message %}
                 <script>
                     mes = "{{message}}";
@@ -107,9 +94,6 @@
                         alert(mes);
                 </script>
                 {% endif %}
-
-                <button formaction="{% url 'MM:register' %}" formmethod="post"  class="action-button">立即注册</button>
-
               </fieldset>
             </form>
             
