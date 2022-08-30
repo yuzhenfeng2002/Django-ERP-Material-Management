@@ -673,43 +673,6 @@ def vreview(request: HttpRequest):
 
 
 
-@csrf_exempt
-def searchpo(request):
-    if request.method == "GET":
-        vendorid =  PurchaseOrder.objects.all().values('rfq__quantity','rfq__price','id','rfq__ri__meterial_id',
-                                                       'euser_id','time','rfq__rej','vendor_id','rfq__collNo','rfq__ri__itemId',
-                                                       'rfq__ri__currency','rfq__ri__status')
-        for i in vendorid:
-            i['sum'] = i['rfq__quantity']*i['rfq__price']
-        for i in vendorid:
-            if i['rfq__ri__status']=='0':
-                i['rfq__ri__status'] = "已创建采购申请"
-            if i['rfq__ri__status']=='1':
-                i['rfq__ri__status'] = "已创建采购订单"
-        vendorid = list(vendorid)
-        print(vendorid)
-        return render(request, '../templates/purchaseorder/purchase_order.html', locals())
-    if request.method == "POST":
-        id = request.POST.get("id")
-        ven = request.POST.get("ven")
-        mate = request.POST.get("mate")
-        eu = request.POST.get("euser")
-        vendorid = PurchaseOrder.objects.filter(id=id,vendor_id=ven,
-                                                rfq__ri__meterial=mate,
-                                                euser_id=eu,
-                                                ).values('rfq__quantity', 'rfq__price', 'id', 'rfq__ri__meterial_id',
-                                                      'euser_id', 'time', 'rfq__rej', 'vendor_id', 'rfq__collNo','rfq__ri__itemId',
-                                                         'rfq__ri__currency','rfq__ri__status')
-        print(vendorid)
-        for i in vendorid:
-            i['sum'] = i['rfq__quantity']*i['rfq__price']
-        for i in vendorid:
-            if i['rfq__ri__status']=='0':
-                i['rfq__ri__status'] = "已创建采购申请"
-            if i['rfq__ri__status']=='1':
-                i['rfq__ri__status'] = "已创建采购订单"
-        vendorid = list(vendorid)
-        return render(request, '../templates/purchaseorder/purchase_order.html', locals())
 
 
 
@@ -743,20 +706,31 @@ def searchqo(request):
 @csrf_exempt
 def searchpo(request):
     if request.method == "GET":
-        vendorid =  PurchaseOrder.objects.all().values('rfq__quantity','rfq__price','id','rfq__ri__meterial_id',
-                                                       'euser_id','time','rfq__rej','vendor_id','rfq__collNo','rfq__ri__itemId',
-                                                       'rfq__ri__currency','rfq__ri__status')
+        vendorid = OrderItem.objects.all().values("po_id",
+                                                  "itemId",
+                                                  "meterialItem__id",
+                                                  "quantity",
+                                                  "price",
+                                                  "currency",
+                                                  "po__vendor",
+                                                  "po__euser",
+                                                  "po__time",
+                                                  "status")
         for i in vendorid:
-            if i['rfq__quantity']==None:
-                i['rfq__quantity']=0
-            if i['rfq__price']==None:
-                i['rfq__price'] =0
-            i['sum'] = i['rfq__quantity']*i['rfq__price']
+            if i['quantity']==None:
+                i['quantity']=0
+            if i['price']==None:
+                i['price'] =0
+            i['sum'] = i['quantity']*i['price']
         for i in vendorid:
-            if i['rfq__ri__status']=='0':
-                i['rfq__ri__status'] = "已创建采购申请"
-            if i['rfq__ri__status']=='1':
-                i['rfq__ri__status'] = "已创建采购订单"
+            if i['status']=='0':
+                i['status']="货物未发出"
+            if i['status']=='1':
+                i['status']="货物已送达"
+            if i['status']=='2':
+                i['status']="已收到发票"
+            if i['status']=='3':
+                i['status']="已完成支付"
         vendorid = list(vendorid)
         print(vendorid)
         return render(request, '../templates/purchaseorder/purchase_order.html', locals())
@@ -765,20 +739,27 @@ def searchpo(request):
         ven = request.POST.get("ven")
         mate = request.POST.get("mate")
         eu = request.POST.get("euser")
-        vendorid = PurchaseOrder.objects.filter(id=id,vendor_id=ven,
-                                                rfq__ri__meterial=mate,
-                                                euser_id=eu,
-                                                ).values('rfq__quantity', 'rfq__price', 'id', 'rfq__ri__meterial_id',
-                                                      'euser_id', 'time', 'rfq__rej', 'vendor_id', 'rfq__collNo','rfq__ri__itemId',
-                                                         'rfq__ri__currency','rfq__ri__status')
+        vendorid = OrderItem.objects.filter(po_id=id,po__vendor=ven,
+                                                meterialItem__id=mate,
+                                                po__euser=eu,
+                                                ).values("po_id","itemId","currency",
+                                                         "po__time","meterialItem__id","quantity","price","po__vendor","po__euser","status")
         print(vendorid)
         for i in vendorid:
-            i['sum'] = i['rfq__quantity']*i['rfq__price']
+            if i['quantity'] == None:
+                i['quantity'] = 0
+            if i['price'] == None:
+                i['price'] = 0
+            i['sum'] = i['quantity'] * i['price']
         for i in vendorid:
-            if i['rfq__ri__status']=='0':
-                i['rfq__ri__status'] = "已创建采购申请"
-            if i['rfq__ri__status']=='1':
-                i['rfq__ri__status'] = "已创建采购订单"
+            if i['status'] == '0':
+                i['status'] = "货物未发出"
+            if i['status'] == '1':
+                i['status'] = "货物已送达"
+            if i['status'] == '2':
+                i['status'] = "已收到发票"
+            if i['status'] == '3':
+                i['status'] = "已完成支付"
         vendorid = list(vendorid)
         return render(request, '../templates/purchaseorder/purchase_order.html', locals())
 
