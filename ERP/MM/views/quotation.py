@@ -301,7 +301,7 @@ def vendor_modify_item(request: HttpRequest, pk):
 @login_required
 def makebyrq(request: HttpRequest, pk,itemId):
     if request.method == "GET":
-        reque = PurchaseRequisition.objects.filter(id=pk,requisitionitem__itemId=itemId).values("id",
+        reque = PurchaseRequisition.objects.filter(id=pk,requisitionitem__itemId=itemId).values("requisitionitem__id",
                                                                "requisitionitem__itemId",
                                                                "requisitionitem__meterial__id",
                                                                "requisitionitem__meterial__stock",
@@ -335,7 +335,7 @@ def makebyrq(request: HttpRequest, pk,itemId):
                                              time=now_time,
                                              collNo=collNo,
                                              deliveryDate=deliveryDate,
-                                             rej=1
+                                             rej=0
                                              )
         if quotation:
             print("111111c")
@@ -375,7 +375,7 @@ def rfqinfojiekou(request):
                                                  time=now_time,
                                                  collNo=collNo,
                                                  deliveryDate=deliveryDate,
-                                                 rej=1
+                                                 rej=0
                                                  )
             quoid = quotation.id
             quolist.append(quoid)
