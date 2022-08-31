@@ -204,19 +204,7 @@ MAIN SIDEBAR MENU
                                 <input type="text" class="form-control" id="goodname">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 col-sm-2 control-label">商品组</label>
-                            <div class="col-sm-10">
-                                <select name='mGroup' id='mGroup2' class="form-control">
-                                    <option value=''>请选择商品组</option>
-                                    <option value='AS'>AS--配件</option>
-                                    <option value='RAW'>RAW--原材料</option>
-                                    <option value='WASH'>WASH--洗衣机</option>
-                                    <option value='AIRC'>AIRC--空调</option>
-                                    <option value='FRIG'>MI00--冰箱</option>
-                                </select>
-                            </div>
-                        </div>
+                       
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">工厂</label>
                             <div class="col-sm-10">
@@ -755,7 +743,7 @@ function create(){ //提交表格，创建成功
             data:{"json":jsonT,"beizhu":beizhu},
             success: function (data) {
                 let a = JSON.parse(data)
-                showMessage({text: '创建成功！采购订单编号：'+a.content ,type: 'success',showClose: true, autoClose: false})
+                showMessage({text: '创建成功！采购申请编号：'+a.content ,type: 'success',showClose: true, autoClose: false})
             }
         });     
 
