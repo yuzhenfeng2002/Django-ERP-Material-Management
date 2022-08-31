@@ -565,22 +565,22 @@ MAIN SIDEBAR MENU
                             <tbody>
                                 {%for c in vendorid %}
                             <tr>
-                                <td>{{c.id}}</td>
-                                <td>{{c.rfq__ri__itemId}}</td>
+                                <td>{{c.po_id}}</td>
+                                <td>{{c.itemId}}</td>
                                 <td>
-                                    {{c.rfq__ri__meterial_id}}
+                                    {{c.meterialItem__id}}
                                 </td>
-                                <td>{{c.rfq__quantity}}</td>
-                                <td>{{c.sum}} {{c.rfq__ri__currency}}</td>
-                                <td>{{c.vendor_id}}
+                                <td>{{c.quantity}}</td>
+                                <td>{{c.sum}} {{c.currency}}</td>
+                                <td>{{c.po__vendor}}
                                 </td>
-                                <td>{{c.euser_id}}</td>
-                                <td>{{c.time}}</td>
-                                <td>{{c.rfq__ri__status}}</td>
+                                <td>{{c.po__euser}}</td>
+                                <td>{{c.po__time}}</td>
+                                <td>{{c.status}}</td>
                                 <td>
                                     <!-- <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button> -->
-                              <a href="/mm/purchaseorder/info/{{c.id}}"> <button class="btn btn-success btn-xs"><i class="fa fa-search-plus"></i></button> </a>     
-                              <a href="/mm/purchaseorder/modifyinfo/{{c.id}}">   <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></button> </a>   
+                              <a href="/mm/purchaseorder/info/{{c.po_id}}"> <button class="btn btn-success btn-xs"><i class="fa fa-search-plus"></i></button> </a>
+                              <a href="/mm/purchaseorder/modifyinfo/{{c.po_id}}">   <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></button> </a>
 {%endfor%}
                              
                             </tbody>

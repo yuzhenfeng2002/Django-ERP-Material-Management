@@ -481,10 +481,11 @@ def createmanu(request):
 
 
 @csrf_exempt
-
+@login_required
 def creamanujiekou(request):
     if request.method == "POST":
-        euserid=1
+        euser = request.user
+        euserid = euser.pk
         data1= request.POST.get("json")
         data1 = eval(data1)
         telephone = request.POST.get("telephone")
@@ -510,7 +511,7 @@ def creamanujiekou(request):
                 return HttpResponse(json.dumps(datalist))
         pr =PurchaseOrder.objects.create(euser_id=euserid, telephone=telephone,
                                                  shippingAddress=shippingAddress, fax=fax,
-                                                 vendor_id=vendor_id,time=now_time)
+                                                 vendor_id=vendor_id,time=now_time,rfq_id=1)
         prid = pr.id
         for i in data1:
             print(i['deliveryDate'])
