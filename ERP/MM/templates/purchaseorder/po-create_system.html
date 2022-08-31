@@ -457,9 +457,9 @@ MAIN SIDEBAR MENU
                 var tabLen = document.getElementById("podiv");
                 var rfq__id=document.getElementById("rfq__id").innerHTML;
                 var vendor__id=document.getElementById("vendor__id").innerHTML;
-                var telephone=document.getElementById("telephone").innerHTML;
-                var fax=document.getElementById("fax").innerHTML;
-                var shippingAddress=document.getElementById("address").innerHTML;
+                var telephone=$("#telephone").val();
+                var fax=$("#fax").val();
+                var shippingAddress=$("#address").val();
                 var jsonT = "[";
         for (var i = 0; i < tabLen.rows.length; i++) {
             var quantity = $("#podiv").children().eq(i).children().eq(3).children().val();
@@ -472,7 +472,7 @@ MAIN SIDEBAR MENU
         }
         jsonT= jsonT.substr(0, jsonT.length - 1);
         jsonT += "]";
-        console.log(jsonT);
+        console.log(jsonT,telephone,fax,shippingAddress);
         $.ajax({
             type: 'post',
             url: '',
