@@ -148,7 +148,7 @@ def create_item(request: HttpRequest):
     else:
         material = materials.first()
     items: QuerySet = MaterialItem.objects.filter(
-        material__id__exact=material.id, stock__name__exact=stock_name, sloc__exact=sloc
+        material__id__exact=material.id, stock__name__exact=stock_name
     )
     stocks = Stock.objects.filter(
         companyCode__regex=companyCode, pOrg__regex=pOrg, pGrp__regex=pGrp
