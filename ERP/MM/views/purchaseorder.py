@@ -581,14 +581,15 @@ def pomodifyinfo3(request):
 @csrf_exempt
 def vreview(request: HttpRequest):
     if request.method == "GET":
-        quotation= Quotation.objects.all().values("id","vendor_id","collNo","ri__meterial__material_id",
-                                                  "ri__quantity","vendor__vname","price","euser__material__mname")
+        quotation= Quotation.objects.all().values("id","vendor_id","collNo",
+                                                  "ri__quantity","vendor__vname","price","ri__meterial__material_id")
         quotation = list(quotation)
+        print("quotation长度：",len(quotation))
+        print(quotation)
         for i in quotation:
             vendorid = i['vendor_id']
             orderitem = OrderItem.objects.filter(po__vendor=vendorid).values()
             orderitem = list(orderitem)
-            print(orderitem)
             sum = 0
             ontimeScore = 0
             quantityScore =0
@@ -597,7 +598,6 @@ def vreview(request: HttpRequest):
             for j in orderitem:
                 sum+=j['price']*j['quantity']
             for p in orderitem:
-                print(p['ontimeScore'])
                 if p['ontimeScore']==None:
                     p['ontimeScore'] =0
                 if p['quantityScore']==None:
@@ -627,8 +627,8 @@ def vreview(request: HttpRequest):
         b = request.POST.get("collNo")
         print(a)
         print(b)
-        quotation = Quotation.objects.filter(ri__meterial__sOrg=a,collNo=b).values("id", "vendor_id", "collNo", "ri__meterial__material_id",
-                                                   "ri__quantity", "vendor__vname", "price","euser__material__mname")
+        quotation = Quotation.objects.filter(ri__meterial__sOrg=a,collNo=b).values("id","vendor_id","collNo",
+                                                  "ri__quantity","vendor__vname","price","ri__meterial__material_id")
         quotation = list(quotation)
         for i in quotation:
             vendorid = i['vendor_id']
