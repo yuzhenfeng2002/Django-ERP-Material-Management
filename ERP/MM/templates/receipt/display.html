@@ -82,12 +82,19 @@
                       <div class="content-panel">
                         <h4 style="text-align:center">商品收据</h4>
                         <section id="unseen">
+                            
                           <table class="table">
-                              
+                            <thead>
+                                <tr>
+                                    <th>基本信息</th>
+                                   
+                                </tr>
+                                </thead>
+                           
                                   <tbody>
                                   <tr>
                                       <td>
-                                          <label>采购订单编码：</label>
+                                          <label>商品收据编码：</label>
                                           <label>{{context.gr.id}}</label>
                                       </td>
                                       <td>
@@ -96,14 +103,33 @@
                                       </td>
                                       
                                   </tr>
-                                  
+                                  <tr>
+                                    <td>
+                                        <label>预期送达时间：</label>
+                                        <label>{{context.deliveryDate}}</label>
+                                    </td>
+                                    
+                                    <td>
+                                        <label>收货时间：</label>
+                                        <label>{{context.gr.time}}</label>
+                                    </td>
+                                    <td>
+                                        <label>过账时间：</label>
+                                        <label>{{context.gr.postTime}}</label>
+                                    </td>
+                                </tr>
                       
-                              </thead>
+                              </tbody>
                   
                           </table>
 
                           <table class="table">
-                             
+                            <thead>
+                                <tr>
+                                    <th>商品详情</th>
+                                   
+                                </tr>
+                                </thead>
                               <tbody>
                                   <tr>
                                       <td>
@@ -127,7 +153,12 @@
                                           <label>{{context.gr.actualQnty}}</label>
                                       </td>
                                   </tr>
-                                  
+                                  <thead>
+                                    <tr>
+                                        <th>库存信息</th>
+                                       
+                                    </tr>
+                                    </thead>
                                 <tr>
                                     <td>
                                         <label>工厂：</label>
@@ -143,21 +174,7 @@
                                         <label>{{context.gr.sType}}</label>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <label>预期送达时间：</label>
-                                        <label>{{context.deliveryDate}}</label>
-                                    </td>
-                                    
-                                    <td>
-                                        <label>收货时间：</label>
-                                        <label>{{context.gr.time}}</label>
-                                    </td>
-                                    <td>
-                                        <label>过账时间：</label>
-                                        <label>{{context.gr.postTime}}</label>
-                                    </td>
-                                </tr>
+                               
 
                               </tbody>
                           </table>
