@@ -255,14 +255,23 @@
             });
     
                     //点击按钮，收据编码给后端
-                function submitpk(clicked_id){
+                    function submitpk(clicked_id){
+                        var itempk="#itempk"+clicked_id[3];
+                        //var orpk="#orpk"+clicked_id[3];
+                       // console.log($(orpk).html());
+                        //待补充，两个参数    dataObj.gr[i].orderItem.itemId dataObj.gr[i].po.id
+                        var target="{% url 'MM:display_invoice' %}"+'?'+'pk='+ $(itempk).html() ;
+                        window.location.href=target; 
+                        
+                    }
+                {% comment %} function submitpk(clicked_id){
                     var itempk='itempk'+clicked_id[6];
                     
                     var target="{% url 'MM:display_invoice' %}"+'?'+'itemID='+ '1'+'&'+'orderID='+'1';
                     window.location.href=target; 
                         window.location.href=target; 
                     
-                }
+                } {% endcomment %}
                 </script>
 
 

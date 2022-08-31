@@ -315,11 +315,11 @@
                                                   </thead>
                                                   <tbody >
                                                     <tr>
-                                                        <td>在途库存</td>
+                                                        <td>无限制库存</td>
                                                         <td id="stock0"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>无限制库存</td>
+                                                        <td>质量检验库存</td>
                                                         <td id="stock1"></td>
                                                     </tr>
                                                     <tr>
@@ -327,7 +327,7 @@
                                                         <td id="stock2"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>质量检验库存</td>
+                                                        <td>在途库存</td>
                                                         <td id="stock3"></td>
                                                     </tr>
                                                 </tbody>
@@ -642,108 +642,7 @@
             } 
         </script>
 
-        <script>
-            //商品搜索 三项内容都填才能发起搜索，否则返回提示:请填写xxx（第一个未填的项）；如果搜不到，返回提示：没有符合条件的商品（这个也不返回了，可以判断是否为序列中只有一个元素）
-            $('#material1').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "{% url 'MM:ajax_search_item' %}",
-                    data:{
-                        dataType: "json",
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        //输入三个搜索框的值
-                        mid: $("#materialInput1").val(),
-                        plant: $("#materialInput2").val(),
-                        sloc: $("#materialInput3").val(),
-                    },
-                    success: function(data) {
-                        document.getElementById("fu").style.display="";
-                        $('#item_result').text(data);
-                        var dataObj = eval("("+data+")");
-                        fields = dataObj[0].fields;
-                        material = dataObj[0].material;
-                        stock = dataObj[0].stock;
-                        user = dataObj[0].user;
-                        //输入表单material3的属性的id
-                        $("#pk2").val(material.id);
-                        $("#mname2").val(material.mname); 
-                        $("#mType2").val(material.mType);
-                        $("#meaunit2").val(material.meaunit);
-                        $("#netWeight2").val(material.netWeight);
-                        $("#weightUnit2").val(material.weightUnit);
-                        $("#transGrp2").val(material.transGrp);
-                        $("#loadingGrp2").val(material.loadingGrp);
-                        $("#industrySector2").val(material.industrySector);
-                        $("#mGroup2").val(material.mGroup);
-                        $("#sloc2").val(fields.sloc);
-                        $("#sorg2").val(fields.sOrg);
-                        $("#distrchannel2").val(fields.distrChannel);
-                        $("#company2").val(stock.companyCode);
-                        $("#porg2").val(stock.pOrg);
-                        $("#pgrp2").val(stock.pGrp);
-                        $("#plant2").val(stock.name);
-                        //document.getElementById("material3").style.visibility="visible";
-                    },
-                    failure: function() {
-
-                    }
-                })
-            });
-
-            //编号搜索 如果搜不到，返回提示：没有符合条件的商品（这个就不返回了，可以判断是否为空）
-            $('#material2').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "{% url 'MM:ajax_search_item' %}",
-                    data:{
-                        dataType: "json",
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        mid: '',
-                        mname: $("#mname").val(),
-                        mType: $("#mType").val(),
-                        industrySector: $("#industrySector").val(),
-                        sloc: $("#sloc").val(),
-                        plant: $("#plant").val(),
-                        uid: $('#uid').val(),
-                    },
-                    success: function(data) {
-
-                        $('#item_result').text(data);
-                    
-                        var dataObj = eval("("+data+")");
-                        var out = "";
-                        var i;
-                        
-                        for(i = 0; i < dataObj.length; i++) {
-                            //dataObj[i].fields.xx
-                            fields = dataObj[i].fields
-                            material = dataObj[i].material
-                            stock = dataObj[i].stock
-                            user = dataObj[i].user
-                            out += '<tr><td>'+ material.id+ '</td><td>' + material.mname+ '</td><td>' + material.mType+ '</td><td>' + material.industrySector+ '</td><td>'+ stock.name+ '</td><td>'+ fields.sloc+ '</td><td>'+ user.username + '</td><tr>';
-                        }
-                        document.getElementById("searchDiv").innerHTML=out;
-                    },
-                    failure: function() {
-
-                    }
-                })
-            });
-
-            //双击行 信息进入“搜索商品条件”三个框
-            $("table").on("dblclick","tr",function(e){
-                document.getElementById("materialInput1").value=$(this).find('td').eq(0).text();
-                document.getElementById("materialInput2").value=$(this).find('td').eq(4).text();
-                document.getElementById("materialInput3").value=$(this).find('td').eq(5).text();
-                $('#myModal1').modal('hide');
-            });
-
-            
-        </script>
+        
 
     </body>
 </html>
