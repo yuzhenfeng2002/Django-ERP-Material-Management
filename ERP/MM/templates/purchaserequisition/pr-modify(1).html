@@ -323,7 +323,7 @@
                                             <div class="form-group">
                           <label class="col-sm-2 col-sm-2 control-label">备注</label>
                           <div class="col-sm-10">
-                              <input rows="3" name="beizhu" type="text" class="form-control" value="{{c.text}}"></input>
+                              <input rows="3" name="beizhu" type="text" class="form-control" value="{{c.text}}" id="beizhu"></input>
                           </div>
                       </div>
                       {%endfor%}
@@ -375,11 +375,11 @@
           </div><!-- /col-md-12 -->
       </div>
       <div id="btn-pr-create">
-          <button type="submit" class="btn btn-primary btn-lg btn-block">保存采购申请</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="savepr()">保存采购申请</button>
       </div>
                       </form>
 
-
+<input onclick="savepr()">
                 </div>
                 </div><!-- col-lg-12-->      	
             </div><!-- /row -->
@@ -502,6 +502,27 @@
    
     }
     }
+
+    function savepr(){ //保存备注
+        var rid=document.getElementById("rid").innerHTML
+        var beizhu=$("#beizhu").val()
+        console.log(rid,beizhu)
+        $.ajax({
+            type: 'post',
+            url: '',
+            data:{
+              "rid": rid,
+              "beizhu" :beizhu
+          },
+            success: function (data) {
+                showMessage({text: '保存采购申请成功！',type: 'success'})  //成功
+           
+         }   
+      })
+   
+    }
+    
+
 </script>
 
 </body>
