@@ -145,7 +145,7 @@ def search_unpaied_invoice(request: HttpRequest):
     vid = getPkExact(post.get('vid'), 'V')
     status = post.get('status')
     status = 2
-    invoices: QuerySet = Invoice.objects.filter(orderItem__status=status, orderItem__po__id=vid)
+    invoices: QuerySet = Invoice.objects.filter(orderItem__status=status, orderItem__po__vendor__vid=vid)
     results_list = json.loads(serializers.serialize('json', list(invoices)))
     for i, r in enumerate(invoices):
         r: Invoice
