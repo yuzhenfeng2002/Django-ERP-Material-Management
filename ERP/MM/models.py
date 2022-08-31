@@ -96,6 +96,9 @@ class MaterialItem(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ("material", "stock")
+
     def __str__(self) -> str:
         return self.material.mname + str(self.stock.id).zfill(4) + self.distrChannel
 
