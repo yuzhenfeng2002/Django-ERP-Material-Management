@@ -264,7 +264,100 @@ function re(){
 }
 </script>
   <body>
-
+    <section id="container" >
+        <!-- **********************************************************************************************************************************************************
+        TOP BAR CONTENT & NOTIFICATIONS
+        *********************************************************************************************************************************************************** -->
+        <!--header start-->
+        <header class="header black-bg">
+          <div class="sidebar-toggle-box">
+              <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+          </div>
+        <!--logo start-->
+        <a href="index.html" class="logo"><b>MD集团物料管理系统</b></a>
+        <!--logo end-->
+        <div class="nav notify-row" id="top_menu">
+            <!--  notification start -->
+        
+    </header>
+  <!--header end-->
+  
+  <!-- **********************************************************************************************************************************************************
+  MAIN SIDEBAR MENU
+  *********************************************************************************************************************************************************** -->
+  <!--sidebar start-->
+  <aside>
+      <div id="sidebar"  class="nav-collapse ">
+          <!-- sidebar menu start-->
+          <ul class="sidebar-menu" id="nav-accordion">
+                  
+              <p class="centered"><img src="/static/assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+              <h5 class="centered">物料管理</h5>
+                  
+            <li class="mt">
+                <a href="/mm/home/">
+                    <i class="fa fa-dashboard"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+  
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-desktop"></i>
+                    <span>供应商管理</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="/mm/vendor/create/">创建新供应商</a></li>
+                    <li><a  href="/mm/vendor/search/">查看或修改供应商信息</a></li>
+                    <li><a  href="/mm/vendor/history/">供应商交易历史汇总</a></li>
+                </ul>
+            </li>
+  
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-cogs"></i>
+                    <span>商品管理</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="/mm/material/search/">创建新商品</a></li>
+                    <li><a  href="/mm/material/item/create/">查看或修改商品信息</a></li>
+                    <li><a  href="/mm/material/item/stock/">查看商品库存</a></li>
+                </ul>
+            </li>
+            
+            <li class="sub-menu">
+                    <a href="javascript:;" >
+                        <i class="fa fa-th"></i>
+                        <span>采购订单管理</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a  href="/mm/purchaserequisition/getpq/">采购申请</a></li>
+                        <li><a  href="/mm/quotation/vreview/">供应商评估管理</a></li>
+                        <li><a  href="/mm/purchaseorder/searchpo/">采购订单</a></li>
+                    </ul>
+                </li>
+                
+                <li class="sub-menu">
+                    <a href="javascript:;" >
+                        <i class="fa fa-tasks"></i>
+                        <span>收货管理</span>
+                    </a>
+                    <ul class="sub">
+                        <li ><a  href="/mm/receipt/orders/search/">创建商品收据</a></li>
+                        <li ><a  href="/mm/receipt/search/">查看商品收据</a></li>
+                        <li ><a  href="/mm/invoice/orders/search/">创建发票收据</a></li>
+                        <li ><a  href="/mm/invoice/search/">查看发票收据</a></li>
+                        <li ><a  href="/mm/invoice/payment/">付款</a></li>
+                    </ul>
+                </li>
+            
+  
+        </ul>
+          
+          <!-- sidebar menu end-->
+      </div>
+  </aside>
+  </section> 
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
@@ -1153,14 +1246,7 @@ function re(){
     </div>
         <!--main content end-->
         <!--footer start-->
-        <footer class="site-footer">
-            <div class="text-center">
-                2014 - Alvarez.is
-                <a href="responsive_table.html#" class="go-top">
-                    <i class="fa fa-angle-up"></i>
-                </a>
-            </div>
-        </footer>
+       
         <!--footer end-->
     </section>
       
